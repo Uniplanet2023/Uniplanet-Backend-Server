@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-depl
+spec:
+  replicas: 1
+  selector: # letting deployment know what app should dealing with
+    matchLabels:
+      app: user
+  template: # specify exact configuration of the pod we want to deployment to create
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          # image: uniplanet/user:latest
+          image: us.gcr.io/sigma-composite-408000/user:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://user-mongo-srv:27017/user'
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: JWT_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_TOKEN_SECRET
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: SMTP_HOST
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: SMTP_PORT
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: CLIENT_SECRET
+            - name: REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: REDIRECT_URI
+            - name: REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: REFRESH_TOKEN
+            - name: OTP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: OTP_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-srv
+spec:
+  selector:
+    app: user
+  ports:
+    - name: user
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,35 @@
+version: "3.8" # Specifies the version of the Compose file format
+
+services:
+  posts: # Name of your service
+    build:
+      context: ./posts # Specifies the directory of the Dockerfile (current directory in this case)
+      dockerfile: Dockerfile # Name of the Dockerfile
+    ports:
+      - "3000:3000" # Maps port 3000 of the container to port 3000 on the host
+    volumes:
+      - .:/posts/src # Mounts the current directory on the host to /app/src in the container
+      - /posts/src/node_modules # Anonymous volume for node_modules
+    environment:
+      - NODE_ENV=production # Environment variables (optional)
+    command: npm start # Override the default command (optional)
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+volumes:
+  kafka_data:
+    driver: local

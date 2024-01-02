@@ -1,0 +1,54 @@
+{
+    "configurations": [
+        
+        {
+            "command": "npm start",
+            "name": "Run npm start",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/user"
+        },
+ 
+        {
+            "command": "npm run listen",
+            "name": "Run nats-test",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/nats-test"
+        },
+        {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/user/src/index.ts",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "Kubernetes: Run/Debug",
+            "type": "cloudcode.kubernetes",
+            "request": "launch",
+            "skaffoldConfig": "${workspaceFolder}/skaffold.yaml",
+            "watch": true,
+            "cleanUp": true,
+            "portForward": true,
+            "imageRegistry": "gcr.io/sigma-composite-408000",
+            "debug": [
+                {
+                    "image": "us.gcr.io/sigma-composite-408000/auth",
+                    "containerName": "auth",
+                    "localRoot": "${workspaceFolder}/user",
+                    "remoteRoot": "/app",
+                    "sourceFileMap": {
+                        "${workspaceFolder}/auth": "/app/src"
+                        
+                    },
+                    "port": 9229,
+                    "protocol": "inspector"
+                },
+
+            ]
+        }
+    ]
+}

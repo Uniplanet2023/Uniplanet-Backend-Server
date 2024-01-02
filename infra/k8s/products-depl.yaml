@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-depl
+spec:
+  replicas: 1
+  selector: # letting deployment know what app should dealing with
+    matchLabels:
+      app: products
+  template: # specify exact configuration of the pod we want to deployment to create
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+        - name: products
+          # image: uniplanet/products:latest
+          image: us.gcr.io/sigma-composite-408000/product:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-srv
+spec:
+  selector:
+    app: products
+  ports:
+    - name: products
+      protocol: TCP
+      port: 3001
+      targetPort: 3001
