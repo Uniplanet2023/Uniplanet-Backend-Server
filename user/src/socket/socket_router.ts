@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import { Server as HTTPServer } from 'http'
 import { Message, ChatRoom, UserChatRoom } from '../models' // Update the path according to your project structure
 
-
 interface UserData {
 	user?: string
 	token?: string
@@ -19,8 +18,6 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 	io = new SocketIOServer(httpServer)
 
 	io.use((socket: Socket, next) => {
-
-
 		const { headers } = socket.handshake
 
 		try {
@@ -44,7 +41,6 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 			userData.token = token
 			userData.chatRoomList = []
 
-
 			next()
 		} catch (err) {
 			console.error('\x1b[31m Middle Ware Auth has issues!! \x1b[0m')
@@ -66,8 +62,6 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 	// socket API
 	io.on('connection', socket => {
 		socket.on('joinChatRoom', async chatRoomId => {
-
-
 			const userList = await isUserInChatRoom(chatRoomId)
 			console.log(userList)
 			console.log(userList.includes(userData.user!))
@@ -86,12 +80,9 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 				userId: userList,
 				chatRoomId,
 			})
-
 		})
 
 		socket.on('seenMessageACK', async (msgId, myChatRoomId, chatRoomId) => {
-
-
 			const session = await mongoose.startSession()
 			// const originalMessage = await Message.findById(msgId);
 			try {
@@ -105,12 +96,9 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 			} finally {
 				session.endSession()
 			}
-
-
 		})
 
 		socket.on('sendMessage', async (msg, chatRoomId) => {
-
 			// console.log('chat Room Id is ' + chatRoomId);
 
 			const newMessage = new Message({
@@ -143,7 +131,6 @@ const socketInit = (httpServer: HTTPServer): SocketIOServer => {
 
 				await session.commitTransaction() // Committing the transaction
 				io.to(chatRoomId).emit('receiveMessage', newMessage)
-
 			} catch (error) {
 				await session.abortTransaction()
 				console.log(error)

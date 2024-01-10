@@ -9,7 +9,6 @@ const chatRouter = express.Router()
 
 chatRouter.post('/api/createChatRoom', auth, async (req, res) => {
 	try {
-		
 		const session = await mongoose.startSession() // start a new session for the transaction
 		session.startTransaction() // Start the transaction
 		const { receiverId, productId } = req.body
@@ -109,31 +108,22 @@ chatRouter.post('/api/createChatRoom', auth, async (req, res) => {
 			})
 
 		res.status(200).json(myChatRoom)
-
-		
-	} catch (e) {
-		
-	}
+	} catch (e) {}
 })
 
 chatRouter.get('/api/getChatRooms', auth, async (req, res) => {
 	try {
-		
 		console.log('1. Finding ChatRoom from DB')
 		// const populatedUser = await getUserDataFunction(req.user as UserPay)
 		// if (!populatedUser) {
 		// 	throw Error()
 		// }
 		// res.status(200).json(populatedUser.myChatRoom)
-		
-	} catch (e) {
-		
-	}
+	} catch (e) {}
 })
 
 chatRouter.post('/api/getMessages', auth, async (req, res) => {
 	try {
-		
 		const { myChatRoomId, page } = req.body
 
 		if (!myChatRoomId) {
@@ -168,9 +158,6 @@ chatRouter.post('/api/getMessages', auth, async (req, res) => {
 
 		const { messages } = myChatRoom.chatRoom
 		res.status(200).json({ messages })
-		
-	} catch (e) {
-		
-	}
+	} catch (e) {}
 })
 export default chatRouter

@@ -1,5 +1,5 @@
 import { User } from '../../models'
-import {UserVerified} from '@uniplanet-lib/common'
+import { UserVerified } from '@uniplanet-lib/common'
 
 let validUserInfo = {
 	email: '',

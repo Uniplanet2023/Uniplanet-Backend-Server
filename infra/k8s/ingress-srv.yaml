@@ -8,17 +8,19 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: user.com
+    # - host: localhost
+    - host: user.uniplanet.shop
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/user/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: user-srv
                 port:
                   number: 3000
-    - host: products.com
+    # - host: localhost
+    - host: products.uniplanet.shop
       http:
         paths:
           - path: /api/products/?(.*)

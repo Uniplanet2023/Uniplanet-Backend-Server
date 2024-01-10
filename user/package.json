@@ -8,9 +8,10 @@
 		"lint:staged": "lint-staged",
 		"prettier:check": "prettier --check .",
 		"prettier:fix": "prettier --write .",
-		"start": "NODE_ENV=production nodemon src/index.ts",
+		"start": "NODE_ENV=production ts-node src/index.ts",
 		"dev": "NODE_ENV=production nodemon src/index.ts",
 		"test": "jest --verbose --forceExit --detectOpenHandles",
+		"test:ci": "jest --verbose --forceExit --detectOpenHandles",
 		"test:watch": "jest --verbose --watchAll --no-cache --runInBand --detectOpenHandles",
 		"tsc:check": "tsc --noEmit"
 	},
@@ -25,7 +26,9 @@
 	"license": "ISC",
 	"dependencies": {
 		"@socket.io/redis-emitter": "5.1.0",
+		"@types/bull": "^4.10.0",
 		"@uniplanet-lib/common": "^1.0.22",
+		"bull": "^4.12.0",
 		"cookie-session": "^2.0.0",
 		"cors": "2.8.5",
 		"crypto-ts": "1.0.2",
@@ -39,13 +42,13 @@
 		"ioredis": "5.3.2",
 		"jsonwebtoken": "9.0.2",
 		"mongoose": "8.0.2",
+		"mongoose-update-if-current": "^1.4.0",
 		"node-cron": "3.0.3",
 		"node-nats-streaming": "^0.3.2",
 		"nodemailer": "6.9.7",
 		"otp-generator": "4.0.1",
 		"redis": "4.6.11",
-		"socket.io": "4.7.2",
-		"update": "^0.7.4"
+		"socket.io": "4.7.2"
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "2.4.6",
@@ -58,7 +61,6 @@
 		"@types/node-cron": "3.0.11",
 		"@types/nodemailer": "6.4.14",
 		"@types/otp-generator": "4.0.2",
-		"@types/redis": "4.0.11",
 		"@types/supertest": "2.0.16",
 		"@typescript-eslint/eslint-plugin": "6.13.1",
 		"@typescript-eslint/parser": "6.13.1",

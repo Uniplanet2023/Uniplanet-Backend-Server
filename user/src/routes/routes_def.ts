@@ -1,5 +1,5 @@
-export const SIGNUP_ROUTE = '/api/users/signup'
-export const SIGNIN_ROUTE = '/api/users/signin'
+export const SIGNUP_ROUTE = '/api/user/signup'
+export const SIGNIN_ROUTE = '/api/user/signin'
 export const DELETE_USER_ROUTE = '/api/user/delete_user'
 export const FORGGOTTEN_PASSWORD_ROUTE = '/api/user/forgotten_password'
 export const LOG_OUT_SIGNIN_ROUTE = '/api/user/logout'

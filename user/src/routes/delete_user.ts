@@ -3,7 +3,6 @@ import { User } from '../models/index'
 import { auth, tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_USER_ROUTE } from './routes_def'
 
-
 const deleteUserRoute = express.Router()
 deleteUserRoute.delete(DELETE_USER_ROUTE, tokenValidation, auth, async (req, res) => {
 	// Delete User 7 days after

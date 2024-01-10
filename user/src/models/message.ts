@@ -1,7 +1,6 @@
 import { MessageDocument } from '@uniplanet-lib/common'
 import { Model, Schema, model } from 'mongoose'
 
-
 export type MessageModel = Model<MessageDocument>
 
 const messageSchema = new Schema(

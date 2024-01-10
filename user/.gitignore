@@ -123,3 +123,4 @@ dist
 # IDE specific
 .idea/
 .DS_Store
+package-lock.json

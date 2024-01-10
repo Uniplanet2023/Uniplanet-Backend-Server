@@ -1,5 +1,7 @@
 import { model, Model, Schema, UpdateQuery } from 'mongoose'
 import { PasswordHash, DuplicatedEmail, UserDocument } from '@uniplanet-lib/common'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
+
 type UserAttrs = {
 	name: string
 	email: string
@@ -71,6 +73,9 @@ const userSchema: Schema = new Schema(
 		timestamps: true,
 	},
 )
+userSchema.set('versionKey','version');
+userSchema.plugin(updateIfCurrentPlugin);
+
 async function validateUniqueness(userDoc: UserDocument) {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	const existingUser = await User.findOne({ email: userDoc.email })

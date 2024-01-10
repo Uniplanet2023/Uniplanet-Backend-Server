@@ -1,4 +1,3 @@
-
 import {
 	generatePassword,
 	generateEmailVerificationToken,
@@ -7,7 +6,7 @@ import {
 	EmailApiSendSignUpVerificationEmailArgs,
 	EmailApiSendResetPasswordEmailArgs,
 	EmailApiSendResetPasswordResponse,
-} from '@uniplanet-lib/common';
+} from '@uniplanet-lib/common'
 
 export const mockSendSignUpVerificationEmail = jest.fn(
 	(toEmail: string): Promise<EmailApiSendEmailResponse> =>

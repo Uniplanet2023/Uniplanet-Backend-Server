@@ -36,9 +36,7 @@ likeRouter.post('/api/add-like', auth, async (req: Request, res: Response) => {
 		// }
 		// user = await user.save()
 		res.json(user)
-	} catch (e) {
-		
-	}
+	} catch (e) {}
 })
 
 likeRouter.delete('/api/remove-from-like/:id', auth, async (req: Request, res: Response) => {
@@ -46,12 +44,10 @@ likeRouter.delete('/api/remove-from-like/:id', auth, async (req: Request, res: R
 	// 	const { id } = req.params
 	// 	const product = await Product.findById(id)
 	// 	let user = await User.findById(req.user)
-
 	// 	if (!user || !product) {
 	// 		res.status(404).send('User or Product not found')
 	// 		return
 	// 	}
-
 	// 	for (let i = 0; i < user.like.length; i += 1) {
 	// 		if (user.like[i]._id.equals(product._id)) {
 	// 		}
@@ -59,7 +55,6 @@ likeRouter.delete('/api/remove-from-like/:id', auth, async (req: Request, res: R
 	// 	user = await user.save()
 	// 	res.json(user)
 	// } catch (e) {
-		
 	// }
 })
 export default likeRouter

@@ -12,11 +12,9 @@ dotenv.config({
 	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
 })
 
-
 // IMPORTS FROM OTHER FILES
 import userRouter from './routes'
 import { NotFoundError } from '@uniplanet-lib/common'
-
 
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx

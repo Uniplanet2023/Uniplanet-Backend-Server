@@ -1,7 +1,6 @@
 import { EventDocument } from '@uniplanet-lib/common'
 import { Model, Schema, model } from 'mongoose'
 
-
 export type EventModel = Model<EventDocument>
 
 const eventSchema = new Schema(

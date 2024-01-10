@@ -25,8 +25,8 @@ signInRoute.post(
 		})
 
 		req.session = { jwt: token }
-		const currentUser =new GetUserInfo(user);
-		res.status(currentUser.getStatusCode()).send(currentUser.serializeRest());
+		const currentUser = new GetUserInfo(user)
+		res.status(currentUser.getStatusCode()).send(currentUser.serializeRest())
 	},
 )
 

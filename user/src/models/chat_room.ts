@@ -1,7 +1,6 @@
 import { ChatRoomDocument } from '@uniplanet-lib/common'
 import { Model, Schema, model } from 'mongoose'
 
-
 export type ChatRoomModel = Model<ChatRoomDocument>
 
 // Define the schema

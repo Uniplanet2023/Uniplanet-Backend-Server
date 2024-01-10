@@ -74,6 +74,8 @@ spec:
                 secretKeyRef:
                   name: gmail-api
                   key: OTP_KEY
+            - name: REDIS_HOST
+              value: user-redis-srv
 ---
 apiVersion: v1
 kind: Service

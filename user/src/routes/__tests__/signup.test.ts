@@ -5,7 +5,7 @@ import { User } from '../../models/index'
 import { EmailSender } from '@uniplanet-lib/common'
 import { MockEmailApi, mockSendSignUpVerificationEmail } from '../../test_util/mock_email_api'
 
-jest.mock('../../nats-wrapper');  //instead of import real one, import __mocks__ nats-wrapper
+jest.mock('../../nats-wrapper') //instead of import real one, import __mocks__ nats-wrapper
 
 beforeEach(() => {
 	const emailSender = EmailSender.getInstance()
@@ -67,15 +67,11 @@ describe('test Validify of email input', () => {
 
 	it('should return 201 if the email is valid', async () => {
 		validUserInfo.email = 'emailTest@stonybrook.edu'
-		const cookie = await signin();
+		const cookie = await signin()
 
-		const response = await request(app)
-		.get('/api/users/tokenValidation')
-		.set('Cookie',cookie)
-		.send()
-		.expect(201);
+		const response = await request(app).get('/api/users/tokenValidation').set('Cookie', cookie).send().expect(201)
 
-		console.log(response.body);
+		console.log(response.body)
 	})
 })
 
@@ -194,18 +190,15 @@ describe('tests the email verification behavior on signup', () => {
 })
 
 declare global {
-	var signin: () => Promise<string[]>;
-  }
-global.signin = async() =>{
-	const email = 'test@test.com';
-	const password = 'password';
+	var signin: () => Promise<string[]>
+}
+global.signin = async () => {
+	const email = 'test@test.com'
+	const password = 'password'
 
-	const response = await request(app)
-	.post(SIGNUP_ROUTE)
-	.send(validUserInfo)
-	.expect(201)
+	const response = await request(app).post(SIGNUP_ROUTE).send(validUserInfo).expect(201)
 
-	const cookie = response.get('Set-Cookie');
+	const cookie = response.get('Set-Cookie')
 
 	return cookie
 }
