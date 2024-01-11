@@ -14,15 +14,15 @@ spec:
     spec:
       containers:
         - name: products
-          image: uniplanet/products:latest
+          image: uniplanet/products
           # image: us.gcr.io/sigma-composite-408000/product:latest
           resources:
             limits:
               memory: 128Mi
-              cpu: "100m"
+              cpu: "50m"
             requests:
               memory: 64Mi
-              cpu: "50m"
+              cpu: "10m"
 ---
 apiVersion: v1
 kind: Service

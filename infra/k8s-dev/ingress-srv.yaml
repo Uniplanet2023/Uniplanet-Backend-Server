@@ -9,7 +9,7 @@ spec:
   ingressClassName: nginx
   rules:
     # - host: localhost
-    - host: auth.uniplanet.shop
+    - host: auth.com
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -20,7 +20,7 @@ spec:
                 port:
                   number: 3000
     # - host: localhost
-    - host: products.uniplanet.shop
+    - host: products.com
       http:
         paths:
           - path: /api/products/?(.*)

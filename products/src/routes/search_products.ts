@@ -11,6 +11,7 @@ searchProductRouter.get(`${PRODUCT_ROUTE}/search/:productName`, async (req, res)
 		productName: { $regex: productName.trim(), $options: 'i' },
 	}).populate('seller')
 	const productsInfo = await new GetProductsInfo(products)
+	
 	return res.status(productsInfo.getStatusCode()).json(productsInfo.serializeRest())
 })
 
