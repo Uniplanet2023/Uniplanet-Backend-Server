@@ -35,7 +35,7 @@ likeRouter.post('/api/add-like', auth, async (req: Request, res: Response) => {
 		// 	}
 		// }
 		// user = await user.save()
-		res.json(user)
+		
 	} catch (e) {}
 })
 
