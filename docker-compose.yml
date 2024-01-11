@@ -3,13 +3,13 @@ version: "3.8" # Specifies the version of the Compose file format
 services:
   posts: # Name of your service
     build:
-      context: ./user # Specifies the directory of the Dockerfile (current directory in this case)
+      context: ./auth # Specifies the directory of the Dockerfile (current directory in this case)
       dockerfile: Dockerfile # Name of the Dockerfile
     ports:
       - "3000:3000" # Maps port 3000 of the container to port 3000 on the host
     volumes:
-      - .:/user/src # Mounts the current directory on the host to /app/src in the container
-      - /user/src/node_modules # Anonymous volume for node_modules
+      - .:/auth/src # Mounts the current directory on the host to /app/src in the container
+      - /auth/src/node_modules # Anonymous volume for node_modules
     environment:
       - NODE_ENV=production # Environment variables (optional)
     command: npm start # Override the default command (optional)

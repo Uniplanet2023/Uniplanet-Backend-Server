@@ -9,14 +9,14 @@ spec:
   ingressClassName: nginx
   rules:
     # - host: localhost
-    - host: user.uniplanet.shop
+    - host: auth.uniplanet.shop
       http:
         paths:
-          - path: /api/user/?(.*)
+          - path: /api/auth/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: user-srv
+                name: auth-srv
                 port:
                   number: 3000
     # - host: localhost

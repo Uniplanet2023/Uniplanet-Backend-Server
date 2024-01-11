@@ -2,9 +2,9 @@ apiVersion: skaffold/v4beta8
 kind: Config
 build:
   artifacts:
-    # - image: uniplanet/user
-    - image: us.gcr.io/sigma-composite-408000/user
-      context: user
+    # - image: uniplanet/auth
+    - image: us.gcr.io/sigma-composite-408000/auth
+      context: auth
       sync:
         manual:
           - src: src/**/*.ts
