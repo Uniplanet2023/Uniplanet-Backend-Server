@@ -8,7 +8,7 @@ const likeRouter = express.Router()
 
 likeRouter.post('/api/add-like', auth, async (req: Request, res: Response) => {
 	// automatically guess req is which type
-	try {
+	
 		const { id } = req.body
 		// const product = await Product.findById(id)
 		let user = await User.findById(req.user)
@@ -36,7 +36,7 @@ likeRouter.post('/api/add-like', auth, async (req: Request, res: Response) => {
 		// }
 		// user = await user.save()
 		
-	} catch (e) {}
+	
 })
 
 likeRouter.delete('/api/remove-from-like/:id', auth, async (req: Request, res: Response) => {
