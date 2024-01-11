@@ -15,7 +15,7 @@ emailSender.setEmailApi(new NodemailerEmailApi())
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
 	if (!process.env.JWT_TOKEN_SECRET) {
-		throw new Error('JWT_TOKEN_SECRET tocken have to be define')
+		throw new Error('JWT_TOKEN_SECRET tocken have to be define`')
 	}
 	if (!process.env.SMTP_HOST) {
 		throw new Error('SMTP_HOST tocken have to be define')
