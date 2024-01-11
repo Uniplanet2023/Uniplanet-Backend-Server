@@ -18,8 +18,8 @@ spec:
           # image: us.gcr.io/sigma-composite-408000/auth:latest
           resources:
             limits:
-              memory: 512Mi
-              cpu: "1"
+              memory: 256Mi
+              cpu: "0.2"
             requests:
               memory: 256Mi
               cpu: "0.2"
