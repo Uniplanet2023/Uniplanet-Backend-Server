@@ -73,8 +73,8 @@ const userSchema: Schema = new Schema(
 		timestamps: true,
 	},
 )
-userSchema.set('versionKey','version');
-userSchema.plugin(updateIfCurrentPlugin);
+userSchema.set('versionKey', 'version')
+userSchema.plugin(updateIfCurrentPlugin)
 
 async function validateUniqueness(userDoc: UserDocument) {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
