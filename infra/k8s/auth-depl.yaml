@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: auth
-          # image: uniplanet/auth:latest
-          image: us.gcr.io/sigma-composite-408000/auth:latest
+          image: uniplanet/auth:latest
+          # image: us.gcr.io/sigma-composite-408000/auth:latest
           resources:
             limits:
               memory: 512Mi

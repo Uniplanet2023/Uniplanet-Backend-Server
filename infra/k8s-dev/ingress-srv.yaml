@@ -8,7 +8,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: auth.com
+    # - host: localhost
+    - host: auth.uniplanet.shop
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -18,7 +19,8 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: products.com
+    # - host: localhost
+    - host: products.uniplanet.shop
       http:
         paths:
           - path: /api/products/?(.*)

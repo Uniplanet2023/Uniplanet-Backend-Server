@@ -2,8 +2,8 @@ apiVersion: skaffold/v4beta8
 kind: Config
 build:
   artifacts:
-    # - image: uniplanet/auth
-    - image: us.gcr.io/sigma-composite-408000/auth
+    - image: uniplanet/auth
+    # - image: us.gcr.io/sigma-composite-408000/auth
       context: auth
       sync:
         manual:
@@ -11,8 +11,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    # - image: uniplanet/products
-    - image: us.gcr.io/sigma-composite-408000/product
+    - image: uniplanet/products
+    # - image: us.gcr.io/sigma-composite-408000/product
       context: products
       sync:
         manual:
@@ -20,12 +20,14 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: sigma-composite-408000
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: sigma-composite-408000
 manifests:
   rawYaml:
     - ./infra/k8s/*
+    - ./infra/k8s-dev/*
 deploy:
   kubectl: {}
+ 
