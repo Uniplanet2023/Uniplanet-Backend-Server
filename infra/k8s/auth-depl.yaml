@@ -18,11 +18,11 @@ spec:
           # image: us.gcr.io/sigma-composite-408000/auth:latest
           resources:
             limits:
-              memory: 256Mi
-              cpu: "0.2"
+              memory: 128Mi
+              cpu: "100m"
             requests:
-              memory: 256Mi
-              cpu: "0.2"
+              memory: 64Mi
+              cpu: "50m"
           env:
             - name: MONGO_URI
               value: 'mongodb://auth-mongo-srv:27017/auth'
