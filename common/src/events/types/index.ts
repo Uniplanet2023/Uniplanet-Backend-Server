@@ -1,1 +1,1 @@
-export * from './message_status'
+export * from './message-status'
