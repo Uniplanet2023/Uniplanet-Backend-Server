@@ -2,7 +2,7 @@ import { Topics } from "./topics";
 
 
 export interface UserCreatedEvent {
-  subject: Topics.UserCreated;
+  topic: Topics.UserCreated;
   data: {
     email: string;
   };
