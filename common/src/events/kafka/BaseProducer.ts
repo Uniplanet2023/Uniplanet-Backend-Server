@@ -21,13 +21,14 @@ export abstract class BaseProducer<T extends Event> {
         console.log('Kafka Producer connected');
     }
 
-    async publish(data: T['data']): Promise<void> {
+    async sendMessage(data: T['data']): Promise<void> {
         try {
             const messages = [{ value: JSON.stringify(data) }];
             await this.producer.send({
                 topic: this.topic,
                 messages,
-                compression: CompressionTypes.GZIP,
+				acks: -1,
+				compression: CompressionTypes.GZIP,
             });
             console.log('Event published to topic', this.topic);
         } catch (error) {
