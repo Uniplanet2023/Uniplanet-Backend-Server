@@ -1,4 +1,4 @@
 export * from './topics'
 export * from './BaseConsumer'
 export * from './BaseProducer'
-export * from './user-created-event'
+export * from './UserCreatedEvent'
