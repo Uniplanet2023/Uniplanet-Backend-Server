@@ -6,7 +6,7 @@ interface Event{
     data: any;
 }
 
-export abstract class BasePublisher<T extends Event> {
+export abstract class BaseProducer<T extends Event> {
     abstract topic: T['topic'];
     private client: Kafka;
     private producer;
