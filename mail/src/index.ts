@@ -14,11 +14,11 @@ dotenv.config({
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
-    emailSender.setEmailApi(new NodemailerEmailApi())
-        const { status, hash } = await emailSender.sendSignUpVerificationEmail({
-            name: 'test',
-            toEmail: 'qkrtlwp1111@gmail.com',
-        })    
+    // emailSender.setEmailApi(new NodemailerEmailApi())
+    //     const { status, hash } = await emailSender.sendSignUpVerificationEmail({
+    //         name: 'test',
+    //         toEmail: 'qkrtlwp1111@gmail.com',
+    //     })    
     // try{
     //     kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
     //     const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
