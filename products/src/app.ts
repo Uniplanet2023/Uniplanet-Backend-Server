@@ -2,15 +2,15 @@ import express from 'express'
 import 'express-async-errors'
 import { errorHandler } from '@uniplanet-lib/common'
 import cors from 'cors'
-import dotenv from 'dotenv-safe'
-import cookieSession from 'cookie-session'
 
-if(process.env.NODE_ENV! == 'production'){
-	const parsedNodeEnv = process.env.NODE_ENV || 'example'
-	dotenv.config({
-		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-	})
-}
+import cookieSession from 'cookie-session'
+// import dotenv from 'dotenv-safe'
+// if(process.env.NODE_ENV! == 'production'){
+// 	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+// 	dotenv.config({
+// 		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+// 	})
+// }
 
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'

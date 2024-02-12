@@ -1,14 +1,14 @@
 import { EmailSender, NodemailerEmailApi } from "./email-sender";
 import UserCreatedConsumer from "./event/consumer/UserCreatedConsumer";
 
-import dotenv from 'dotenv-safe'
+// import dotenv from 'dotenv-safe'
 
-if(process.env.NODE_ENV! == 'production'){
-	const parsedNodeEnv = process.env.NODE_ENV || 'example'
-	dotenv.config({
-		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-	})
-}
+// if(process.env.NODE_ENV! == 'production'){
+// 	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+// 	dotenv.config({
+// 		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+// 	})
+// }
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
