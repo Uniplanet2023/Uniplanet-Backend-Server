@@ -1,16 +1,14 @@
 import { EmailSender, NodemailerEmailApi } from "./email-sender";
 import UserCreatedConsumer from "./event/consumer/UserCreatedConsumer";
-// import { kafkaClient } from "./kafka-client";
 
 import dotenv from 'dotenv-safe'
 
-const parsedNodeEnv = process.env.NODE_ENV || 'example'
-
-console.log(parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example')
-dotenv.config({
-	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-})
-
+if(process.env.NODE_ENV! == 'production'){
+	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+	dotenv.config({
+		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+	})
+}
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()

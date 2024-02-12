@@ -5,11 +5,12 @@ import cors from 'cors'
 import dotenv from 'dotenv-safe'
 import cookieSession from 'cookie-session'
 
-const parsedNodeEnv = process.env.NODE_ENV! || 'example'
-
-dotenv.config({
-	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-})
+if(process.env.NODE_ENV! == 'production'){
+	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+	dotenv.config({
+		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+	})
+}
 
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'
