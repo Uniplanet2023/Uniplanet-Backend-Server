@@ -1,0 +1,9 @@
+config:
+  clientID: "781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com"
+  clientSecret: "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"
+  cookieSecret: "OU3kWRzvNDqbbOdyS-8Kn5EH9VSu5QG2KApq_GDRaoQ="
+  configFile: |-
+    email_domains:
+    - "uniplanet.info@gmail.com"
+    upstreams:
+    - file:///dev/null
