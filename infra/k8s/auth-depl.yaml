@@ -23,11 +23,6 @@ spec:
                memory: 500Mi
                cpu: "250m"
           env:
-            - name: MONGO_DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb
-                  key: MONGO_DB_NAME
             - name: MONGO_DB_HOST
               valueFrom:
                 secretKeyRef:
