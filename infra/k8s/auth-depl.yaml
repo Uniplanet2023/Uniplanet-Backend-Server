@@ -33,14 +33,6 @@ spec:
                 secretKeyRef:
                   name: kafka
                   key: KAFKA_BROKER
-            - name: NATS_URL
-              value: 'http://nats-srv:4222'
-            - name: NATS_CLUSTER_ID
-              value: 'ticketing'
-            - name: NATS_CLIENT_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
             - name: JWT_TOKEN_SECRET
               valueFrom:
                 secretKeyRef:
