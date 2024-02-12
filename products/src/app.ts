@@ -10,7 +10,7 @@ const parsedNodeEnv = process.env.NODE_ENV! || 'example'
 dotenv.config({
 	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
 })
-console.log('test')
+
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'
 

@@ -1,3 +1,0 @@
-# products
-
-uniplanet-backend-products

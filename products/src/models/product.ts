@@ -6,7 +6,6 @@ export type ProductDocument = Document & {
 	// seller: UserDocument
 	description: string
 	images: string[]
-	// likes: UserDocument[]
 	price: number
 	category: string
 }
