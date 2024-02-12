@@ -1,1 +1,1 @@
-export { default as UserDeleteScheduler } from './user_delete_schedule'
+export { default as UserDeleteScheduler } from './user-delete-schedule'

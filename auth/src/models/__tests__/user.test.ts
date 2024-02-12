@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
-import { User } from '../index'
-import { PasswordHash, UserDocument, BaseCustomError, DuplicatedEmail } from '@uniplanet-lib/common'
+import { User, UserDocument } from '../index'
+import { PasswordHash, BaseCustomError, DuplicatedEmail } from '@uniplanet-lib/common'
 let validUserInfo = {
 	email: '',
 	profileImage: '',
@@ -23,12 +23,14 @@ describe('tests the User mongoose model', () => {
 	})
 
 	it('should not save a user if the email is already in the database', async () => {
-		const newUser1 = await User.create(validUserInfo)
+		const newUser1 = User.build(validUserInfo)
+		await newUser1.save()
 		expect(newUser1).toBeDefined()
 		expect(newUser1.email).toEqual(validUserInfo.email)
 		let err
 		try {
-			await User.create(validUserInfo) // Error
+			User.build(validUserInfo) // Error
+			await newUser1.save()
 		} catch (e) {
 			err = e as DuplicatedEmail
 		}
@@ -41,9 +43,11 @@ describe('tests the User mongoose model', () => {
 	})
 
 	it("should not update an existing user's email if the new email is already in the database", async () => {
-		await User.create(validUserInfo)
+		const newUser1 = User.build(validUserInfo)
+		await newUser1.save()
 		validUserInfo.email = 'test2@stonybrook.edu'
-		const newUser2 = await User.create(validUserInfo)
+		const newUser2 = User.build(validUserInfo)
+		await newUser2.save()
 
 		let err: DuplicatedEmail | undefined
 
@@ -62,17 +66,19 @@ describe('tests the User mongoose model', () => {
 	})
 
 	it('should encrypt the password when creating the user', async () => {
-		const newUser = await User.create(validUserInfo)
+		const newUser = User.build(validUserInfo)
+		await newUser.save()
 		expect(newUser.password).not.toEqual(validUserInfo.password)
 		expect(newUser.password.split('.')).toHaveLength(2)
 		expect(newUser.password.split('.')[1].length).toEqual(randomBytes(16).toString('hex').length)
 	})
 	it('should encrypt the password when the user updates the password', async () => {
-		let newUser: UserDocument | undefined = await User.create(validUserInfo)
+		let newUser: UserDocument | undefined = User.build(validUserInfo)
+		await newUser.save()
 
 		newUser = (await User.findOneAndUpdate(
 			{
-				_id: newUser._id,
+				_id: newUser!._id,
 			},
 			{ password: 'Newvalid123!' },
 			{ new: true },
@@ -84,7 +90,8 @@ describe('tests the User mongoose model', () => {
 	})
 
 	it('should return true when comparing the hashedPassword with its original providedPassword', async () => {
-		const newUser = await User.create(validUserInfo)
+		const newUser = User.build(validUserInfo)
+		await newUser.save()
 
 		expect(
 			PasswordHash.compareSync({
@@ -100,18 +107,19 @@ describe('tests the User mongoose model', () => {
 		).toEqual(true)
 	})
 	it('should set verified to false when the value is not provided', async () => {
-		const newUser = await User.create(validUserInfo)
-
+		const newUser = User.build(validUserInfo)
+		await newUser.save()
 		expect(newUser.verified).toBeFalsy()
 	})
 	it('should set verified to false on first save, even if the provided value is set to true', async () => {
 		validUserInfo.verified = true
-		const newUser = await User.create(validUserInfo)
-
+		const newUser = User.build(validUserInfo)
+		await newUser.save()
 		expect(newUser.verified).toEqual(false)
 	})
 	it('should allow to change verified to true if the user already exists', async () => {
-		const newUser = await User.create(validUserInfo)
+		const newUser = User.build(validUserInfo)
+		await newUser.save()
 
 		const updatedUser = await User.findOneAndUpdate({ _id: newUser._id }, { verified: true }, { new: true })
 		expect(updatedUser).toBeDefined()

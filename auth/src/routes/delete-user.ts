@@ -1,0 +1,18 @@
+import express from 'express'
+import { User } from '../models/index'
+import { auth, tokenValidation } from '@uniplanet-lib/common'
+import { DELETE_USER_ROUTE } from './routes-def'
+
+const deleteUserRouter = express.Router()
+deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, auth, async (req, res) => {
+	// Delete User 7 days after
+	await User.findByIdAndUpdate(
+		{ _id: req.user!.id },
+		{ deletionDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
+		{ new: true },
+	)
+	// TODO: Delete All the product, messages, userchat related to the User
+
+	res.status(200).json('Account Successfully Deleted')
+})
+export default deleteUserRouter

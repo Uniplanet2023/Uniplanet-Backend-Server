@@ -5,10 +5,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/auth-url: https://auth.com/oauth2/auth
+    nginx.ingress.kubernetes.io/auth-signin: https://auth.com/oauth2/start?rd=$escaped_request_uri
 spec:
   ingressClassName: nginx
   rules:
-    # - host: localhost
     - host: auth.com
       http:
         paths:
@@ -19,7 +20,16 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    # - host: localhost
+    - host: mail.com
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: my-oauth2-proxy
+                port:
+                  number: 80
     - host: products.com
       http:
         paths:

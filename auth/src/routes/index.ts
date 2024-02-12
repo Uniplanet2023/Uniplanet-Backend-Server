@@ -1,19 +1,22 @@
 import express from 'express'
 import signUpRouter from './signup'
-import signInRoute from './signin'
-import deleteUserRoute from './delete_user'
-import updateUserRoute from './password_update_user'
-import forgottenPassword from './forgotten_password'
-import passwordUpdateRouter from './password_update_user'
-import signOutRoute from './logout'
+import signInRouter from './signin'
+import deleteUserRouter from './delete-user'
+import forgottenPasswordRouter from './forgotten-password'
+import passwordUpdateRouter from './password-update-user'
+import signOutRouter from './logout'
+import sendingTokenRouter from './send-token'
+import tokenValidationRouter from './token-verification'
 
 const userRouter = express.Router()
-userRouter.use(signOutRoute)
+
+userRouter.use(signOutRouter)
 userRouter.use(passwordUpdateRouter)
-userRouter.use(deleteUserRoute)
+userRouter.use(deleteUserRouter)
 userRouter.use(signUpRouter)
-userRouter.use(signInRoute)
-userRouter.use(updateUserRoute)
-userRouter.use(forgottenPassword)
+userRouter.use(signInRouter)
+userRouter.use(forgottenPasswordRouter)
+userRouter.use(sendingTokenRouter)
+userRouter.use(tokenValidationRouter)
 
 export default userRouter

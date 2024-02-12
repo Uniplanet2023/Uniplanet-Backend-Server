@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/index'
-import { GetUserInfo, validateRequest, PasswordHash, emailValidation, passwordValidation } from '@uniplanet-lib/common'
-import { SIGNIN_ROUTE, TOKEN_IS_VALID_ROUTE } from './routes_def'
+import { validateRequest, PasswordHash, emailValidation, passwordValidation } from '@uniplanet-lib/common'
+import { SIGNIN_ROUTE } from './routes-def'
+import UserSerializer from '../events/serializer/UserSerializer'
 
-const signInRoute = express.Router()
-signInRoute.post(
+const signInRouter = express.Router()
+signInRouter.post(
 	SIGNIN_ROUTE,
 	[...emailValidation, ...passwordValidation],
 	validateRequest,
@@ -25,9 +26,9 @@ signInRoute.post(
 		})
 
 		req.session = { jwt: token }
-		const currentUser = new GetUserInfo(user)
+		const currentUser = new UserSerializer(user)
 		res.status(currentUser.getStatusCode()).send(currentUser.serializeRest())
 	},
 )
 
-export default signInRoute
+export default signInRouter
