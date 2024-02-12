@@ -1,7 +1,7 @@
 import express from 'express'
 import Product from '../models/product'
 import { PRODUCT_ROUTE } from '../route_defs'
-import { auth, GetProductInfo } from '@uniplanet-lib/common'
+import { auth } from '@uniplanet-lib/common'
 
 const uploadProductRouter = express.Router()
 
@@ -20,7 +20,6 @@ uploadProductRouter.post(`${PRODUCT_ROUTE}/upload_product`, auth, async (req, re
 	})
 	product = await product.save()
 	await product.populate('seller')
-	const productInfo = await new GetProductInfo(product)
-	return res.status(productInfo.getStatusCode()).json(productInfo.serializeRest())
+	return res.status(201).json(product)
 })
 export default uploadProductRouter

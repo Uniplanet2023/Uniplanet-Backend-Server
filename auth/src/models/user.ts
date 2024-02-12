@@ -1,6 +1,17 @@
 import { model, Model, Schema, UpdateQuery } from 'mongoose'
-import { PasswordHash, DuplicatedEmail, UserDocument } from '@uniplanet-lib/common'
+import { PasswordHash, DuplicatedEmail } from '@uniplanet-lib/common'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
+import { Document } from 'mongoose'
+
+export type UserDocument = Document & {
+	name: string
+	email: string
+	school: string
+	verified: boolean
+	password: string
+	profileImage: string
+	type: string
+}
 
 type UserAttrs = {
 	name: string
@@ -50,23 +61,24 @@ const userSchema: Schema = new Schema(
 			type: String,
 			default: 'user',
 		},
-		recentSearchHistory: [{ type: String }],
-		recentViewHistory: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		like: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		myEvent: [{ type: Schema.Types.ObjectId, ref: 'Event' }], // when you like save button
-		selling: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		sold: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		bought: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		myChatRoom: [{ type: Schema.Types.ObjectId, ref: 'UserChatRoom' }],
+		// recentSearchHistory: [{ type: String }],
+		// recentViewHistory: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+		// like: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+		// myEvent: [{ type: Schema.Types.ObjectId, ref: 'Event' }], // when you like save button
+		// selling: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+		// sold: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+		// bought: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+		// myChatRoom: [{ type: Schema.Types.ObjectId, ref: 'UserChatRoom' }],
 
 		deletionDate: { type: Date, default: null },
 	},
 	{
 		toJSON: {
-			transform(doc, ret) {
+			transform(ret) {
 				ret.id = ret._id
 				delete ret._id
 				delete ret.password
+				// eslint-disable-next-line no-underscore-dangle
 				delete ret.__v
 			},
 		},
@@ -123,9 +135,8 @@ userSchema.pre(/^.*([Uu]pdate).*$/, async function preHashPassword(this: UpdateQ
 		})
 	}
 })
-
 userSchema.statics.build = (attrs: UserAttrs) => {
-	console.log(attrs)
+	//eslint-disable-next-line @typescript-eslint/no-use-before-define
 	return new User(attrs)
 }
 

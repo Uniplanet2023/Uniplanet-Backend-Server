@@ -9,7 +9,7 @@
 		"prettier:check": "prettier --check .",
 		"prettier:fix": "prettier --write .",
 		"start": "NODE_ENV=production ts-node src/index.ts",
-		"dev": "NODE_ENV=production nodemon src/index.ts",
+		"dev": "NODE_ENV=development nodemon src/index.ts",
 		"test": "jest --verbose --forceExit --detectOpenHandles",
 		"test:ci": "jest --verbose --forceExit --detectOpenHandles",
 		"test:watch": "jest --verbose --watchAll --no-cache --runInBand --detectOpenHandles",
@@ -19,13 +19,13 @@
 		"testEnvironment": "node",
 		"preset": "ts-jest",
 		"setupFilesAfterEnv": [
-			"./src/test_util/setup_files_after_env.ts"
+			"./src/test-util/setup-files-after-env.ts"
 		]
 	},
 	"author": "Sije Park",
 	"license": "ISC",
 	"dependencies": {
-		"@uniplanet-lib/common": "^1.0.18",
+		"@uniplanet-lib/common": "^1.0.31",
 		"cookie-session": "^2.0.0",
 		"cors": "2.8.5",
 		"dotenv-safe": "8.2.0",

@@ -15,17 +15,29 @@ spec:
       containers:
         - name: auth
           image: uniplanet/auth
-          # image: us.gcr.io/sigma-composite-408000/auth:latest
           resources:
             limits:
-              memory: 128Mi
-              cpu: "50m"
+              memory: 500Mi
+              cpu: "500m"
             requests:
-              memory: 64Mi
-              cpu: "10m"
+               memory: 500Mi
+               cpu: "250m"
           env:
-            - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+            - name: MONGO_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: MONGO_DB_NAME
+            - name: MONGO_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: MONGO_DB_HOST
+            - name: KAFKA_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: kafka
+                  key: KAFKA_BROKER
             - name: NATS_URL
               value: 'http://nats-srv:4222'
             - name: NATS_CLUSTER_ID

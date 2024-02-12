@@ -2,16 +2,15 @@ import express from 'express'
 import 'express-async-errors'
 import { errorHandler } from '@uniplanet-lib/common'
 import cors from 'cors'
-// import dotenv from 'dotenv-safe'
+import dotenv from 'dotenv-safe'
 import cookieSession from 'cookie-session'
 
-const parsedNodeEnv = process.env.NODE_ENV || 'example'
+const parsedNodeEnv = process.env.NODE_ENV! || 'example'
 
-// console.log(parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example')
-// dotenv.config({
-// 	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-// })
-console.log('test');
+dotenv.config({
+	path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+})
+console.log('test')
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'
 

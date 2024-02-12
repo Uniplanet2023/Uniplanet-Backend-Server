@@ -1,4 +1,4 @@
-export { default as errorHandler } from './error_handler'
-export { default as auth } from './auth'
-export { default as validateRequest } from './validate_request'
-export { default as tokenValidation } from './token_validation'
+export { errorHandler } from './error-handler'
+export { auth } from './auth'
+export { validateRequest } from './validate-request'
+export { tokenValidation } from './token-validation'

@@ -1,5 +1,15 @@
 import { Model, Schema, model } from 'mongoose'
-import { ProductDocument } from '@uniplanet-lib/common'
+
+export type ProductDocument = Document & {
+	productName: string
+	forSale: boolean
+	// seller: UserDocument
+	description: string
+	images: string[]
+	// likes: UserDocument[]
+	price: number
+	category: string
+}
 
 export type ProductModel = Model<ProductDocument>
 

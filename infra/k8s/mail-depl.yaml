@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-depl
+spec:
+  replicas: 1
+  selector: # letting deployment know what app should dealing with
+    matchLabels:
+      app: mail
+  template: # specify exact configuration of the pod we want to deployment to create
+    metadata:
+      labels:
+        app: mail
+    spec:
+      containers:
+        - name: mail
+          image: uniplanet/mail
+          resources:
+            limits:
+              memory: 500Mi
+              cpu: "500m"
+            requests:
+               memory: 500Mi
+               cpu: "250m"
+          env:
+            - name: KAFKA_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: kafka
+                  key: KAFKA_BROKER
+            - name: JWT_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_TOKEN_SECRET
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: SMTP_HOST
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: SMTP_PORT
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: CLIENT_SECRET
+            - name: REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: REDIRECT_URI
+            - name: REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: REFRESH_TOKEN
+            - name: OTP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-api
+                  key: OTP_KEY
