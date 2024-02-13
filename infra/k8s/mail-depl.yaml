@@ -21,7 +21,7 @@ spec:
               cpu: "500m"
             requests:
                memory: 500Mi
-               cpu: "250m"
+               cpu: "50m"
           env:
             - name: KAFKA_BROKER
               valueFrom:

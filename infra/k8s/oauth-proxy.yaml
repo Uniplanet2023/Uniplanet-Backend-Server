@@ -22,19 +22,21 @@ spec:
                       cpu: "500m"
                     requests:
                       memory: 500Mi
-                      cpu: "250m"
+                      cpu: "50m"
                   imagePullPolicy: Always
                   name: oauth2-proxy
                   args:
                       - --email-domain=*
                       - --provider=google
                       - --upstream=file:///dev/null
-                      - --http-address=0.0.0.0:<Port>
+                      - --http-address=0.0.0.0:4000
                   env:
                       - name: OAUTH2_PROXY_CLIENT_ID
-                        value: 781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com
+                        value: "781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com"
                       - name: OAUTH2_PROXY_CLIENT_SECRET
-                        value: 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
+                        value: "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"
+                      - name: OAUTH2_PROXY_COOKIE_SECRET
+                        value: "I5G9NRfNP9a_oSauN6S4Z5Z5vcZn9tDRJ_KY12ytlDY="
                   ports:
                       - containerPort: 4000
                         protocol: TCP
