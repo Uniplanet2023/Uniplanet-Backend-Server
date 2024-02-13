@@ -29,14 +29,15 @@ const start  = async () =>{
     // }
 };
 
-import express from 'express'
-const app = express()
-// middleware
-app.use(express.json())
+// import express from 'express'
+// const app = express()
+// // middleware
+// app.use(express.json())
 
-const PORT = process.env.PORT || 3003
+// const PORT = process.env.PORT || 3003
 
-app.listen(PORT, async () => {
-	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-    start();
-})
+// app.listen(PORT, async () => {
+// 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
+//     start();
+// })
+start();
