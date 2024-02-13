@@ -1,9 +1,81 @@
-config:
-  clientID: "781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com"
-  clientSecret: "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"
-  cookieSecret: "OU3kWRzvNDqbbOdyS-8Kn5EH9VSu5QG2KApq_GDRaoQ="
-  configFile: |-
-    email_domains:
-    - "uniplanet.info@gmail.com"
-    upstreams:
-    - file:///dev/null
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        k8s-app: uniplanet-oauth2-proxy
+    name: uniplanet-oauth2-proxy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            k8s-app: uniplanet-oauth2-proxy
+    template:
+        metadata:
+            labels:
+                k8s-app: uniplanet-oauth2-proxy
+        spec:
+            containers:
+                - image: quay.io/oauth2-proxy/oauth2-proxy
+                  resources:
+                    limits:
+                      memory: 500Mi
+                      cpu: "500m"
+                    requests:
+                      memory: 500Mi
+                      cpu: "250m"
+                  imagePullPolicy: Always
+                  name: oauth2-proxy
+                  args:
+                      - --email-domain=*
+                      - --provider=google
+                      - --upstream=file:///dev/null
+                      - --http-address=0.0.0.0:<Port>
+                  env:
+                      - name: OAUTH2_PROXY_CLIENT_ID
+                        value: 781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com
+                      - name: OAUTH2_PROXY_CLIENT_SECRET
+                        value: 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
+                  ports:
+                      - containerPort: 4000
+                        protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+        k8s-app: uniplanet-oauth2-proxy
+    name: uniplanet-oauth2-proxy
+spec:
+    ports:
+        - name: http
+          port: 4000
+          protocol: TCP
+          targetPort: 4000
+    selector:
+        k8s-app: uniplanet-oauth2-proxy
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: uniplanet-oauth2-proxy
+spec:
+    rules:
+        - host: uniplanet-back.autos.com
+          http:
+              paths:
+                  - backend:
+                        service:
+                            name: uniplanet-oauth2-proxy
+                            port:
+                                number: 4000
+                    path: /oauth2
+                    pathType: Prefix
+# config:
+#   clientID: "781295919386-5j301qsnondc4lfjj2n1ef7fqvvj7npp.apps.googleusercontent.com"
+#   clientSecret: "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"
+#   cookieSecret: "OU3kWRzvNDqbbOdyS-8Kn5EH9VSu5QG2KApq_GDRaoQ="
+#   configFile: |-
+#     email_domains:
+#     - "uniplanet.info@gmail.com"
+#     upstreams:
+#     - file:///dev/null
