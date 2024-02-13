@@ -27,10 +27,10 @@ spec:
           - path: /oauth2
             pathType: Prefix
             backend:
-              service:
-                name: my-oauth2-proxy
+               service:
+                name: uniplanet-oauth2-proxy
                 port:
-                  number: 80
+                  number: 4000
     - host: products.com
       http:
         paths:
