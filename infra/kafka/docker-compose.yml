@@ -2,7 +2,7 @@ version: '3.8'
 
 services:  
   postgresql:
-    image: postgres:14
+    image: postgres:16
     hostname: postgresql
     volumes:
       - pg_data:/var/lib/postgresql/data
