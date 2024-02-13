@@ -29,15 +29,26 @@ const start  = async () =>{
     // }
 };
 
-// import express from 'express'
-// const app = express()
-// // middleware
-// app.use(express.json())
+import express from 'express'
+import cookieSession from 'cookie-session'
 
-// const PORT = process.env.PORT || 3003
+const app = express()
+app.set('trust proxy', true) // proxy ingress nginx
 
-// app.listen(PORT, async () => {
-// 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-//     start();
-// })
-start();
+// middleware
+app.use(express.json())
+app.use(
+	cookieSession({
+		signed: false,
+		secure: false,
+	}),
+)
+// middleware
+app.use(express.json())
+
+const PORT = process.env.PORT || 3003
+
+app.listen(PORT, async () => {
+	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
+    start();
+})
