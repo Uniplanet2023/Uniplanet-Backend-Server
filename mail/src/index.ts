@@ -1,5 +1,6 @@
-import { EmailSender, NodemailerEmailApi } from "./email-sender";
+import { EmailSender } from "./email-sender";
 import UserCreatedConsumer from "./event/consumer/UserCreatedConsumer";
+import { kafkaClient } from "./kafka-client";
 
 // import dotenv from 'dotenv-safe'
 
@@ -12,43 +13,37 @@ import UserCreatedConsumer from "./event/consumer/UserCreatedConsumer";
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
-    emailSender.setEmailApi(new NodemailerEmailApi())
-        const { status, hash } = await emailSender.sendSignUpVerificationEmail({
-            name: 'test',
-            toEmail: 'qkrtlwp1111@gmail.com',
-        })    
-    // try{
-    //     kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
-    //     const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
-    //     console.log('kafka connecting ... ')
+    try{
+        kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
+        const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
+        console.log('kafka connecting ... ')
 
-    //     await userCreatedConsumer.connect();
+        await userCreatedConsumer.connect();
 
-    // }catch(err){
-    //     console.error(err);
-    // }
+    }catch(err){
+        console.error(err);
+    }
 };
+start();
 
-import express from 'express'
-import cookieSession from 'cookie-session'
 
-const app = express()
-app.set('trust proxy', true) // proxy ingress nginx
+// const app = express()
+// app.set('trust proxy', true) // proxy ingress nginx
 
-// middleware
-app.use(express.json())
-app.use(
-	cookieSession({
-		signed: false,
-		secure: false,
-	}),
-)
-// middleware
-app.use(express.json())
+// // middleware
+// app.use(express.json())
+// app.use(
+// 	cookieSession({
+// 		signed: false,
+// 		secure: false,
+// 	}),
+// )
+// // middleware
+// app.use(express.json())
 
-const PORT = process.env.PORT || 3003
+// const PORT = process.env.PORT || 3003
 
-app.listen(PORT, async () => {
-	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-    start();
-})
+// app.listen(PORT, async () => {
+// 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
+//     start();
+// })
