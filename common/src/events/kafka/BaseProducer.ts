@@ -27,8 +27,8 @@ export abstract class BaseProducer<T extends Event> {
             await this.producer.send({
                 topic: this.topic,
                 messages,
-				acks: -1,
-				compression: CompressionTypes.GZIP,
+				// acks: -1,
+				// compression: CompressionTypes.GZIP,
             });
             console.log('Event published to topic', this.topic);
         } catch (error) {
