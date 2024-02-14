@@ -17,11 +17,11 @@ spec:
           image: uniplanet/products
           resources:
             limits:
-              memory: 64Mi
-              cpu: "250m"
-            requests:
-              memory: 32Mi
+              memory: 500Mi
               cpu: "200m"
+            requests:
+              memory: 500Mi
+              cpu: "150m"
 ---
 apiVersion: v1
 kind: Service

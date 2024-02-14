@@ -13,6 +13,10 @@ import { kafkaClient } from "./kafka-client";
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
+    const { status, hash } = await emailSender.sendSignUpVerificationEmail({
+        name: 'test',
+        toEmail: 'qkrtlwp1111@gmail.com',
+    })    
     try{
         kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
         const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
