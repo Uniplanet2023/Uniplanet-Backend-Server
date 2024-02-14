@@ -1,5 +1,7 @@
-import { EmailSender } from "./email-sender";
+import { EmailSender, NodemailerEmailApi } from "./email-sender";
 import UserCreatedConsumer from "./event/consumer/UserCreatedConsumer";
+import express from 'express'
+import cookieSession from 'cookie-session'
 import { kafkaClient } from "./kafka-client";
 
 // import dotenv from 'dotenv-safe'
@@ -13,10 +15,7 @@ import { kafkaClient } from "./kafka-client";
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
-    const { status, hash } = await emailSender.sendSignUpVerificationEmail({
-        name: 'test',
-        toEmail: 'qkrtlwp1111@gmail.com',
-    })    
+    emailSender.setEmailApi(new NodemailerEmailApi())
     try{
         kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
         const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
@@ -28,26 +27,6 @@ const start  = async () =>{
         console.error(err);
     }
 };
+
+
 start();
-
-
-// const app = express()
-// app.set('trust proxy', true) // proxy ingress nginx
-
-// // middleware
-// app.use(express.json())
-// app.use(
-// 	cookieSession({
-// 		signed: false,
-// 		secure: false,
-// 	}),
-// )
-// // middleware
-// app.use(express.json())
-
-// const PORT = process.env.PORT || 3003
-
-// app.listen(PORT, async () => {
-// 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-//     start();
-// })
