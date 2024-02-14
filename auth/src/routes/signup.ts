@@ -27,8 +27,17 @@ signUpRouter.post(
 
 		if (user) {
 			if (user.verified) throw new DuplicatedEmail()
-			// await sendVerificationEmail(user)
+			if (process.env.NODE_ENV == 'production') {
+				const message = {
+					name: user.name,
+					email: user.email,
+				}
+				const userCreateProducer = new UserCreatedProducer(kafkaClient.kafka)
+				await userCreateProducer.connect()
+				await userCreateProducer.sendMessage(message)
+			}
 			const userSignedUp = await new UserSerializer(user)
+			
 			return res.status(userSignedUp.getStatusCode()).json(userSignedUp.serializeRest())
 		}
 
