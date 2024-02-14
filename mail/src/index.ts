@@ -31,7 +31,6 @@ const start  = async () =>{
 
 
 const app = express()
-app.set('trust proxy', true) // proxy ingress nginx
 
 // middleware
 app.use(express.json())
