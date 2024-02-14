@@ -15,6 +15,7 @@ import { kafkaClient } from "./kafka-client";
 const start  = async () =>{
     const emailSender = EmailSender.getInstance()
     emailSender.activate()
+    emailSender.setEmailApi(new NodemailerEmailApi())
     try{
         kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string]);
         const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
