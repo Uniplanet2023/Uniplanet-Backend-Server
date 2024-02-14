@@ -17,11 +17,11 @@ spec:
           image: uniplanet/mail
           resources:
             limits:
-              memory: 500Mi
-              cpu: "500m"
+              memory: 64Mi
+              cpu: "250m"
             requests:
-               memory: 500Mi
-               cpu: "50m"
+              memory: 32Mi
+              cpu: "200m"
           env:
             - name: KAFKA_BROKER
               valueFrom:
