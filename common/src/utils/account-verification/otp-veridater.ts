@@ -18,8 +18,8 @@ export const verifyOtp = async (params: VerifyOtpParams) => {
 	}
 
 	const data = `${params.email}.${params.otpCode}.${expires}`
-
-	const newCalculatedHash = crypto.createHmac('sha256', key).update(data).digest('hex')
+	console.log(key);
+	const newCalculatedHash = crypto.createHmac('sha256', key as string).update(data).digest('hex')
 
 	if (otpHash === newCalculatedHash) {
 		return 'Success'
