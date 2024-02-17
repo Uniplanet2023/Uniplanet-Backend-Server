@@ -1,54 +1,30 @@
 {
     "configurations": [
-        
         {
-            "command": "npm start",
-            "name": "Run npm start",
+            "name": "Flutter: Attach to Device",
+            "type": "dart",
+            "request": "attach",
+            "program": "UniPlanet-mobile/lib/main.dart"
+        },
+        {
+            "name": "Flutter",
+            "type": "dart",
+            "request": "launch",
+            "program": "UniPlanet-mobile/lib/main.dart"
+        },
+        {
+            "command": "npm run dev",
+            "name": "Run mail server",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/mail"
         },
- 
         {
-            "command": "npm run listen",
-            "name": "Run nats-test",
+            "command": "npm run dev",
+            "name": "Run auth server",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceFolder}/nats-test"
+            "cwd": "${workspaceFolder}/auth"
         },
-        {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/user/src/index.ts",
-            "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "name": "Kubernetes: Run/Debug",
-            "type": "cloudcode.kubernetes",
-            "request": "launch",
-            "skaffoldConfig": "${workspaceFolder}/skaffold.yaml",
-            "watch": true,
-            "cleanUp": true,
-            "portForward": true,
-            "imageRegistry": "gcr.io/sigma-composite-408000",
-            "debug": [
-                {
-                    "image": "us.gcr.io/sigma-composite-408000/auth",
-                    "containerName": "auth",
-                    "localRoot": "${workspaceFolder}/user",
-                    "remoteRoot": "/app",
-                    "sourceFileMap": {
-                        "${workspaceFolder}/auth": "/app/src"
-                        
-                    },
-                    "port": 9229,
-                    "protocol": "inspector"
-                },
-
-            ]
-        }
     ]
 }
