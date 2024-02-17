@@ -79,18 +79,27 @@ export class NodemailerEmailApi implements EmailApi {
 
 	private async sendEmail(args: EmailApiSendEmailArgs): Promise<void> {
 		const { toEmail, subject, htmlBody, textBody } = args
-		console.log(toEmail)
-		const accessToken = await this.smtpServer.getAccessToken()
-		console.log(accessToken)
-		await this.transporter.sendMail({
-			from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
-			to: toEmail,
-			subject,
-			text: textBody,
-			html: htmlBody,
-			auth: {
-				accessToken: accessToken,
-			},
-		} as nodemailer.SendMailOptions)
+		if (process.env.NODE_ENV === 'production'){
+			const accessToken = await this.smtpServer.getAccessToken()
+			await this.transporter.sendMail({
+				from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
+				to: toEmail,
+				subject,
+				text: textBody,
+				html: htmlBody,
+				auth: {
+					accessToken: accessToken,
+				},
+			} as nodemailer.SendMailOptions)
+		}else{
+			await this.transporter.sendMail({
+				from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
+				to: toEmail,
+				subject,
+				text: textBody,
+				html: htmlBody,
+			} as nodemailer.SendMailOptions)
+		}
+		
 	}
 }
