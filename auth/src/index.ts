@@ -17,8 +17,8 @@ app.listen(PORT, async () => {
 	if (process.env.NODE_ENV == 'production') {
 		kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 	}
-
-	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(() => {
+	console.log(process.env.MONGO_DB_HOST);
+	await mongoose.connect(`${process.env.MONGO_DB_HOST+`/Auth` as string}`).then(() => {
 		console.log('DB connection!!')
 		new UserDeleteScheduler().taskInitializer()
 	})

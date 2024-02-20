@@ -28,51 +28,62 @@ spec:
                 secretKeyRef:
                   name: mongodb
                   key: MONGO_DB_HOST
+
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:
                   name: kafka
                   key: KAFKA_BROKER
+
             - name: JWT_TOKEN_SECRET
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_TOKEN_SECRET
+
             - name: SMTP_HOST
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: smtp-config
                   key: SMTP_HOST
             - name: SMTP_PORT
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: smtp-config
                   key: SMTP_PORT
+            - name: SMTP_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_MODE
+
             - name: CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: google-oauth
                   key: CLIENT_ID
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: google-oauth
                   key: CLIENT_SECRET
             - name: REDIRECT_URI
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: google-oauth
                   key: REDIRECT_URI
             - name: REFRESH_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: google-oauth
                   key: REFRESH_TOKEN
+
             - name: OTP_KEY
               valueFrom:
                 secretKeyRef:
-                  name: gmail-api
+                  name: utils
                   key: OTP_KEY
+                  
             - name: REDIS_HOST
               value: auth-redis-srv
 ---

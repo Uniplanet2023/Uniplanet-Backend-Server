@@ -18,14 +18,21 @@ signInRouter.post(
 
 		const isMatch = PasswordHash.compareSync({ providedPassword: password, storedPassword: user.password })
 		if (!isMatch) throw new Error('Invalid Credential')
-
-		const token = jwt.sign(user.toJSON(), process.env.JWT_TOKEN_SECRET as string, {
-			expiresIn: '10d',
+		// Generate JWT
+		const userJwt = jwt.sign(JSON.stringify({
+			id:user.id,
+			email: user.email,
+			profileImage: user.profileImage,
+			school: user.school,
+			verified:user.verified
+		}),process.env.JWT_TOKEN_SECRET!,{
 			issuer: 'UniPlanet',
 			subject: 'userInfo',
-		})
-
-		req.session = { jwt: token }
+		});
+		// Store it on session object
+		req.session = {
+			jwt: userJwt
+		};
 		const currentUser = new UserSerializer(user)
 		res.status(currentUser.getStatusCode()).send(currentUser.serializeRest())
 	},

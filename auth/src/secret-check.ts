@@ -1,5 +1,5 @@
 const secretCheck = () => {
-	// COMMON ENV 
+	// COMMON ENV
 	if (!process.env.SMTP_HOST) {
 		throw new Error('SMTP_HOST tocken have to be define')
 	}
@@ -12,28 +12,27 @@ const secretCheck = () => {
 	if (!process.env.JWT_TOKEN_SECRET) {
 		throw new Error('JWT_TOKEN_SECRET tocken have to be define`')
 	}
-	if(!process.env.CLIENT_ID || !process.env.CLIENT_SECRET){
-			throw new Error('CLIENT_ID or CLIENT_SECRET have to be define')
+	if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
+		throw new Error('CLIENT_ID or CLIENT_SECRET have to be define')
 	}
-
+	if (!process.env.SMTP_MODE) {
+		throw new Error('SMTP_MODE have to be define')
+	}
+	
 	// Production , Development, Test, Example
-	if( process.env.NODE_ENV! === 'production'){
+
+	if (process.env.NODE_ENV! === 'production') {
 		if (!process.env.KAFKA_BROKER) {
 			throw new Error('KAFKA_BROKER have to be define')
 		}
-		if (!process.env.REDIRECT_URI) {
-			throw new Error('REDIRECT_URI have to be define')
+		if(process.env.SMTP_MODE! == 'gmail'){
+			if (!process.env.REDIRECT_URI) {
+				throw new Error('REDIRECT_URI have to be define')
+			}
+			if (!process.env.REFRESH_TOKEN) {
+				throw new Error('REFRESH_TOKEN have to be define')
+			}
 		}
-		if (!process.env.REFRESH_TOKEN) {
-			throw new Error('REFRESH_TOKEN have to be define')
-		}
-	}else if (process.env.NODE_ENV! === 'development'){
-	
-		
-	}else if (process.env.NODE_ENV! === 'test'){
-
-	}else{
-
 	}
 }
 

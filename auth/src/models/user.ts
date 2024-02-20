@@ -57,10 +57,6 @@ const userSchema: Schema = new Schema(
 			required: true,
 			type: String,
 		},
-		type: {
-			type: String,
-			default: 'user',
-		},
 		// recentSearchHistory: [{ type: String }],
 		// recentViewHistory: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 		// like: [{ type: Schema.Types.ObjectId, ref: 'Product' }],

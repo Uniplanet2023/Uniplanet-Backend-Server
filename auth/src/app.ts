@@ -5,14 +5,12 @@ import cors from 'cors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
 
-if(process.env.NODE_ENV! == 'development'){
-	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+if (process.env.NODE_ENV! == 'development') {
 	dotenv.config({
-		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+		path: '.env.dev',
 	})
 }
-
-
+console.log(process.env.CLIENT_ID)
 // IMPORTS FROM OTHER FILES
 import userRouter from './routes'
 const app = express()
