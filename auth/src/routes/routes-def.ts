@@ -1,5 +1,6 @@
 export const SIGNUP_ROUTE = '/api/auth/signup'
 export const SIGNIN_ROUTE = '/api/auth/signin'
+export const TOKEN_LOGIN_ROUTE = '/api/auth/token-login'
 export const DELETE_USER_ROUTE = '/api/auth/delete_user'
 export const FORGGOTTEN_PASSWORD_ROUTE = '/api/auth/forgotten_password'
 export const LOG_OUT_SIGNIN_ROUTE = '/api/auth/logout'

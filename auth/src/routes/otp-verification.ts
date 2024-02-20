@@ -1,26 +1,23 @@
 import express, { Request, Response } from 'express'
-import { AccountVerification, User } from '../models'
+import { User } from '../models'
 import { VERIFY_OTP_ROUTE } from './routes-def'
 import { verifyOtp } from '@uniplanet-lib/common'
+import jwt from 'jsonwebtoken'
+const otpValidationRouter = express.Router()
 
-const tokenValidationRouter = express.Router()
-
-tokenValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
+otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
 	try {
 		const { otpHash, email, otpCode } = req.body
-		console.log(otpHash);
-		console.log(otpCode);
-		console.log(email);
+		console.log(otpHash)
+		console.log(otpCode)
+		console.log(email)
 		const result = await verifyOtp({ otpHash, email, otpCode })
 
 		switch (result) {
 			case 'Success':
 				const user = await User.findOne({ email })
-				if (!user) {
-					throw Error('Error! No User ')
-				} else {
-					await User.findByIdAndUpdate(user.id,{verified: true})
-				}
+				if (!user) throw Error('Error! No User ')
+				await User.findByIdAndUpdate(user.id, { verified: true })
 				return res.status(200).json({ message: result })
 			case 'OTP expired':
 				return res.status(401).json({ message: result })
@@ -34,4 +31,4 @@ tokenValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response)
 	}
 })
 
-export default tokenValidationRouter
+export default otpValidationRouter
