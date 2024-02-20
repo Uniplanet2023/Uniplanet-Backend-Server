@@ -23,7 +23,7 @@ export default class NodemailerSmtpServer implements SmtpServer {
 
 	constructor() {
 		
-		if (process.env.NODE_ENV == 'production') {
+		if (process.env.SMTP_MODE == 'gmail') {
 			this.oAuth2Client = new google.auth.OAuth2(this.smtpPublic, this.smtpPrivate, this.smtpRedirect)
 			this.oAuth2Client.setCredentials({ refresh_token: this.smtpRefreshToken })
 			if (this.oAuth2Client == null || this.oAuth2Client == undefined) {
@@ -45,7 +45,6 @@ export default class NodemailerSmtpServer implements SmtpServer {
 	}
 
 	async getAccessToken() {
-		console.log(this.accessToken)
 		if (this.accessToken === undefined || this.accessToken === null) {
 			try {
 				if (this.oAuth2Client) {
@@ -68,7 +67,7 @@ export default class NodemailerSmtpServer implements SmtpServer {
 			port: this.port,
 		}
 		config.auth = this.configAuth
-		if (process.env.NODE_ENV == 'production') {
+		if (process.env.SMTP_MODE == 'gmail') {
 			config.secure = true
 		}
 		return config

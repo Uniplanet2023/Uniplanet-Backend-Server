@@ -79,7 +79,7 @@ export class NodemailerEmailApi implements EmailApi {
 
 	private async sendEmail(args: EmailApiSendEmailArgs): Promise<void> {
 		const { toEmail, subject, htmlBody, textBody } = args
-		if (process.env.NODE_ENV === 'production'){
+		if (process.env.SMTP_MODE === 'gmail'){
 			const accessToken = await this.smtpServer.getAccessToken()
 			await this.transporter.sendMail({
 				from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
