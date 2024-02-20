@@ -19,18 +19,32 @@ export default class NodemailerSmtpServer implements SmtpServer {
 
 	private accessToken: null | undefined | string
 
+	private configAuth: GmailServerConfigAuth | NodemailerServerConfigAuth
+
 	constructor() {
-		if (process.env.NODE_ENV == 'production') {
+		
+		if (process.env.SMTP_MODE == 'gmail') {
 			this.oAuth2Client = new google.auth.OAuth2(this.smtpPublic, this.smtpPrivate, this.smtpRedirect)
 			this.oAuth2Client.setCredentials({ refresh_token: this.smtpRefreshToken })
 			if (this.oAuth2Client == null || this.oAuth2Client == undefined) {
 				throw Error('oAuth2 has Error')
 			}
+			this.configAuth = {
+				type: 'OAuth2',
+				user: 'uniplanet.info@gmail.com',
+				clientId: this.smtpPublic,
+				clientSecret: this.smtpPrivate,
+				refreshToken: this.smtpRefreshToken,
+			} as GmailServerConfigAuth
+		}else{
+			this.configAuth = {
+				user: this.smtpPublic,
+				pass: this.smtpPrivate,
+			} as NodemailerServerConfigAuth
 		}
 	}
 
 	async getAccessToken() {
-		console.log(this.accessToken)
 		if (this.accessToken === undefined || this.accessToken === null) {
 			try {
 				if (this.oAuth2Client) {
@@ -52,21 +66,9 @@ export default class NodemailerSmtpServer implements SmtpServer {
 			host: this.host,
 			port: this.port,
 		}
-
-		if (process.env.NODE_ENV == 'production') {
+		config.auth = this.configAuth
+		if (process.env.SMTP_MODE == 'gmail') {
 			config.secure = true
-			config.auth = {
-				type: 'OAuth2',
-				user: 'uniplanet.info@gmail.com',
-				clientId: this.smtpPublic,
-				clientSecret: this.smtpPrivate,
-				refreshToken: this.smtpRefreshToken,
-			} as GmailServerConfigAuth
-		} else {
-			config.auth = {
-				user: this.smtpPublic,
-				pass: this.smtpPrivate,
-			} as NodemailerServerConfigAuth
 		}
 		return config
 	}

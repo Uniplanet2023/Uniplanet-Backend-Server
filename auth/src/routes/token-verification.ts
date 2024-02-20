@@ -8,6 +8,9 @@ const tokenValidationRouter = express.Router()
 tokenValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
 	try {
 		const { otpHash, email, otpCode } = req.body
+		console.log(otpHash);
+		console.log(otpCode);
+		console.log(email);
 		const result = await verifyOtp({ otpHash, email, otpCode })
 
 		switch (result) {
@@ -16,8 +19,7 @@ tokenValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response)
 				if (!user) {
 					throw Error('Error! No User ')
 				} else {
-					user.updateOne({ verified: true })
-					await AccountVerification.create({ userId: user.id })
+					await User.findByIdAndUpdate(user.id,{verified: true})
 				}
 				return res.status(200).json({ message: result })
 			case 'OTP expired':

@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-const key = process.env.OTP_KEY as string
+
 
 type VerifyOtpParams = {
 	otpHash: string
@@ -18,8 +18,8 @@ export const verifyOtp = async (params: VerifyOtpParams) => {
 	}
 
 	const data = `${params.email}.${params.otpCode}.${expires}`
-
-	const newCalculatedHash = crypto.createHmac('sha256', key).update(data).digest('hex')
+	
+	const newCalculatedHash = crypto.createHmac('sha256', process.env.OTP_KEY as string).update(data).digest('hex')
 
 	if (otpHash === newCalculatedHash) {
 		return 'Success'
