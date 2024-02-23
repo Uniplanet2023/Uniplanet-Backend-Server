@@ -32,7 +32,8 @@ spec:
   selector:
     app: auth-mongo
   ports:
-    - name: auth-db
+    - name: db
       protocol: TCP
-      port: 27018
-      targetPort: 27018
+      nodePort: 30000
+      port: 27017
+      targetPort: 27017
