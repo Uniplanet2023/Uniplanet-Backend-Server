@@ -20,8 +20,8 @@ const productSchema: Schema = new Schema(
 			trim: true,
 			index: true,
 		},
-		forSale: {
-			type: Boolean,
+		status: {
+			type: String,
 			required: true,
 			default: true,
 		},
@@ -42,7 +42,10 @@ const productSchema: Schema = new Schema(
 				required: true,
 			},
 		],
-		likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+		likes: {
+			type: Number,
+			default: 0,
+		},
 		price: {
 			type: Number,
 			required: true,
