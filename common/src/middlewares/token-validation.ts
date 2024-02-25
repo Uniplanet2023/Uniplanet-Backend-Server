@@ -19,7 +19,7 @@ declare global {
 
 export const tokenValidation = async (req: Request, res: Response, next: NextFunction) => {
 	if (!req.session?.jwt) {
-		return next()
+		return res.status(401).send({ access: false })
 	}
 	const payload = jwt.verify(req.session.jwt, process.env.JWT_TOKEN_SECRET as string) as UserPayload
 	req.user = payload
