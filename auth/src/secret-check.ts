@@ -18,7 +18,12 @@ const secretCheck = () => {
 	if (!process.env.SMTP_MODE) {
 		throw new Error('SMTP_MODE have to be define')
 	}
-	
+	if(!process.env.REDIS_HOST){
+		throw new Error('REDIS_HOST have to be define')
+	}
+	if(!process.env.REDIS_PORT){
+		throw new Error('REDIS_PORT have to be define')
+	}
 	// Production , Development, Test, Example
 
 	if (process.env.NODE_ENV! === 'production') {

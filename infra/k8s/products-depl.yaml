@@ -65,7 +65,7 @@ spec:
                 secretKeyRef:
                   name: google-oauth
                   key: CLIENT_SECRET
-            - name: REDIRECT_URI
+            - name: REDIRECT_URI           
               valueFrom:
                 secretKeyRef:
                   name: google-oauth

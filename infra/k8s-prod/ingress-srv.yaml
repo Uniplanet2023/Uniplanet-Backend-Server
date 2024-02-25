@@ -29,6 +29,8 @@ spec:
                 name: products-srv
                 port:
                   number: 3001
+    - host: mongo.uniplanet-back.autos
+      
 ---
 apiVersion: v1
 kind: Service

@@ -3,6 +3,7 @@ import { User } from '../models'
 import { VERIFY_OTP_ROUTE } from './routes-def'
 import { verifyOtp } from '@uniplanet-lib/common'
 import jwt from 'jsonwebtoken'
+import { redisClient } from '../redis-client'
 const otpValidationRouter = express.Router()
 
 otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
@@ -18,6 +19,7 @@ otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) =
 				const user = await User.findOne({ email })
 				if (!user) throw Error('Error! No User ')
 				await User.findByIdAndUpdate(user.id, { verified: true })
+				await redisClient.redis.set(user.email,JSON.stringify({verified:true}));
 				return res.status(200).json({ message: result })
 			case 'OTP expired':
 				return res.status(401).json({ message: result })
