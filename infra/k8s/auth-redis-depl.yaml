@@ -28,7 +28,6 @@ kind: Service
 metadata:
   name: auth-redis-srv
 spec:
-  type: LoadBalancer
   selector:
     app: auth-redis
   ports:

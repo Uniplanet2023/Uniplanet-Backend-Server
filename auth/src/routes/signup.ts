@@ -27,11 +27,11 @@ async function sendVerificationEmail(name: string, email: string) {
 
 signUpRouter.post(
 	SIGNUP_ROUTE,
-	[...emailValidation, nameValidation, profileImageValidation, schoolValidation, ...passwordValidation],
+	[...emailValidation, nameValidation, schoolValidation, ...passwordValidation],
 	validateRequest,
 	async (req: Request, res: Response) => {
-		try {
-			const { name, email, password, profileImage, school, type } = req.body
+		
+			const { name, email, password, school } = req.body
 			const existingUser = await User.findOne({ email })
 
 			if (existingUser) {
@@ -45,7 +45,7 @@ signUpRouter.post(
 			}
 
 			// Create and save new user
-			const newUser = User.build({ email, password, name, profileImage, school, type })
+			const newUser = User.build({ email, password, name, school })
 			await newUser.save()
 			console.log('new User Created')
 
@@ -53,11 +53,7 @@ signUpRouter.post(
 			const { hash } = await sendVerificationEmail(newUser.name, newUser.email)
 			const userSignedUp = new UserSerializer(newUser)
 			return res.status(userSignedUp.getStatusCode()).json({ hash, ...userSignedUp.serializeRest() })
-		} catch (error) {
-			// Handle errors gracefully
-			console.error('Error during sign up:', error)
-			return res.status(500).json({ error: 'Internal server error' })
-		}
+		
 	},
 )
 

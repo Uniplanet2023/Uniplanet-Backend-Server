@@ -18,7 +18,7 @@ type UserAttrs = {
 	email: string
 	school: string
 	password: string
-	profileImage: string
+	profileImage?: string
 	verified?: boolean
 	type?: string
 }
@@ -54,7 +54,7 @@ const userSchema: Schema = new Schema(
 			default: false,
 		},
 		profileImage: {
-			required: true,
+			// required: true,
 			type: String,
 		},
 		// recentSearchHistory: [{ type: String }],
