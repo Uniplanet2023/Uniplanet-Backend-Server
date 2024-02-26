@@ -1,18 +1,24 @@
 import express from 'express'
 import Product from '../models/product'
-import { PRODUCT_ROUTE } from '../route_defs'
-import { auth } from '@uniplanet-lib/common'
+import { UPLOAD_PRODUCT_ROUTE } from '../route_defs'
+import { auth, tokenValidation } from '@uniplanet-lib/common'
+import User from '../models/user'
 
 const uploadProductRouter = express.Router()
 
 // Add product
-uploadProductRouter.post(`${PRODUCT_ROUTE}/upload_product`, auth, async (req, res) => {
-	const { productName, forSale, seller, description, images, price, category } = req.body
-
+uploadProductRouter.post(`${UPLOAD_PRODUCT_ROUTE}`, tokenValidation, async (req, res) => {
+	const { productName, forSale, description, images, price, category } = req.body
+	let seller = User.build({
+		email: req.user!.email,
+		name: req.user!.name,
+		school: req.user!.school,
+		profileImage: req.user!.profileImage,
+	})
 	let product = new Product({
 		productName,
 		forSale,
-		seller,
+		
 		description,
 		images,
 		price,

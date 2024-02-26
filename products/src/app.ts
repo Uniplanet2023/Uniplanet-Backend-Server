@@ -4,13 +4,14 @@ import { errorHandler } from '@uniplanet-lib/common'
 import cors from 'cors'
 
 import cookieSession from 'cookie-session'
-// import dotenv from 'dotenv-safe'
-// if(process.env.NODE_ENV! == 'production'){
-// 	const parsedNodeEnv = process.env.NODE_ENV || 'example'
-// 	dotenv.config({
-// 		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-// 	})
-// }
+import dotenv from 'dotenv-safe'
+if(process.env.NODE_ENV !== 'production'){
+	console.log('NODE_ENV:', process.env.NODE_ENV)
+	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+	dotenv.config({
+		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+	})
+}
 
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'

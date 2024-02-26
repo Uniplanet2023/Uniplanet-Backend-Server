@@ -39,21 +39,25 @@ signUpRouter.post(
 					throw new DuplicatedEmail()
 				}
 				// User exists but not verified, resend verification email
+				if(process.env.SMTP_HOST === 'kubernetes-env'){
+					// Create and save new user
+					return res.status(201).json({ existingUser})
+				}
 				const { hash } = await sendVerificationEmail(existingUser.name, existingUser.email)
 				const userSerialized = new UserSerializer(existingUser)
 				return res.status(userSerialized.getStatusCode()).json({ hash, ...userSerialized.serializeRest() })
 			}
-
-			// Create and save new user
 			const newUser = User.build({ email, password, name, school })
 			await newUser.save()
-			console.log('new User Created')
-
-			// Send verification email to new user
-			const { hash } = await sendVerificationEmail(newUser.name, newUser.email)
-			const userSignedUp = new UserSerializer(newUser)
-			return res.status(userSignedUp.getStatusCode()).json({ hash, ...userSignedUp.serializeRest() })
-		
+			if(process.env.SMTP_HOST === 'kubernetes-env'){
+				// Create and save new user
+				return res.status(201).json({ newUser})
+			}else{
+				// Send verification email to new user
+				const { hash } = await sendVerificationEmail(newUser.name, newUser.email)
+				const userSignedUp = new UserSerializer(newUser)
+				return res.status(userSignedUp.getStatusCode()).json({ hash, ...userSignedUp.serializeRest() })
+			}
 	},
 )
 

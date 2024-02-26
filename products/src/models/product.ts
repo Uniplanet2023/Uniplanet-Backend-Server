@@ -1,9 +1,10 @@
 import { Model, Schema, model } from 'mongoose'
+import { UserDocument } from './user'
 
 export type ProductDocument = Document & {
 	productName: string
 	forSale: boolean
-	// seller: UserDocument
+	seller: UserDocument
 	description: string
 	images: string[]
 	price: number
@@ -60,34 +61,15 @@ const productSchema: Schema = new Schema(
 	{ timestamps: true },
 )
 
-// productSchema.pre(/^.*([Ff]ind).*$/, function () {
-// 	const pageNumber = parseInt(this.getQuery().page ?? 0, 10)
-// 	const limit = 20
-// 	const skip = pageNumber * limit
-// 	this.skip(skip).limit(20).sort({ createdAt: -1 })
-// })
+productSchema.pre(/^.*([Ff]ind).*$/, function (this: any, next) {
+	console.log(this.getQuery());
+	const page = parseInt(this.getQuery().page as string) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+	this.skip(skip).limit(10).sort({ createdAt: -1 })
+	next()
+})
 
 const Product = model<ProductDocument, ProductModel>('Product', productSchema)
 export default Product
-
-// const changeStream = Product.watch()
-
-// changeStream.on('change', async change => {
-// 	if (change.operationType === 'insert') {
-// 		const productId = change.documentKey._id
-// 		const sellerId = change.fullDocument.seller
-
-// 		try {
-// 			await User.updateOne({ _id: sellerId }, { $push: { selling: productId } })
-// 			console.log(`Updated seller ${sellerId} with new product ${productId}`)
-// 		} catch (error) {
-// 			console.error(`Error updating seller ${sellerId}: ${error}`)
-// 		}
-// 	}
-// })
-
-// Make sure to handle errors and close the change stream when the application is terminating
-// changeStream.on('error', error => {
-// 	console.error('Error watching Product collection:', error)
-// 	changeStream.close()
-// })
