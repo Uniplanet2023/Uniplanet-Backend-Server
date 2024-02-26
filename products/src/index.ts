@@ -8,9 +8,7 @@ app.listen(PORT, async () => {
 	if (!process.env.JWT_TOKEN_SECRET) {
 		throw new Error('JWT_TOKEN_SECRET tocken have to be define')
 	}
-	if (!process.env.SMTP_HOST) {
-		throw new Error('SMTP_HOST tocken have to be define')
-	}
+	console.log(process.env.JWT_TOKEN_SECRET)
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}/${process.env.MONGO_DB_NAME}`).then(() => {
 		console.log('DB connection!!!')
 	})

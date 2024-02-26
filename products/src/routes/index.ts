@@ -1,6 +1,6 @@
 import express from 'express'
 
-import getRecentProductRouter from './get_product'
+import getRecentProductRouter from './get-product'
 import searchProductRouter from './search_products'
 import uploadProductRouter from './upload_product'
 

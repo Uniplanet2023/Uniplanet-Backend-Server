@@ -1,7 +1,5 @@
-export const PRODUCT_ROUTE = '/api/products'
-/* Product Route
-    1. Serach Product : /search/:name
-    2. Upload Product : /upload_product
-    3. Category Product : /category
-    4. GetRecent Product : /recent
-*/
+export const GET_PRODUCT_ROUTE = '/api/product/get-product'
+export const UPLOAD_PRODUCT_ROUTE = '/api/product/upload-product'
+export const DELETE_PRODUCT_ROUTE = '/api/product/delete-product'
+export const UPDATE_PRODUCT_ROUTE = '/api/product/update-product'
+export const SEARCH_PRODUCT_ROUTE = '/api/product/search-product'

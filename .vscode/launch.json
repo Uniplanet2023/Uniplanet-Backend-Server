@@ -26,5 +26,12 @@
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/auth"
         },
+        {
+            "command": "npm run dev",
+            "name": "Run products server",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/products"
+        },
     ]
 }

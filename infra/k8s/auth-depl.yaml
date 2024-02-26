@@ -83,9 +83,16 @@ spec:
                 secretKeyRef:
                   name: utils
                   key: OTP_KEY
-                  
             - name: REDIS_HOST
-              value: auth-redis-srv
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_PORT
 ---
 apiVersion: v1
 kind: Service

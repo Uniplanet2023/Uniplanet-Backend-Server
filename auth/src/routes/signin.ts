@@ -28,7 +28,7 @@ async function enforceTokenUniqueness(user:UserDocument) {
 	  // Check again if the new token exists in Redis
 	  tokenExists = await redisClient.redis.exists(token);
 	} while (tokenExists)
-  
+
 	// Once a unique token is generated, set it in Redis
 	await redisClient.redis.set(token,JSON.stringify({verified:true}));
   
@@ -53,8 +53,6 @@ signInRouter.post(
 
 		// Store it on session object
 		req.session = { jwt: userJwt };
-
-		const currentUser = new UserSerializer(user)
 		res.status(202).send({'access':true})
 	},
 )
