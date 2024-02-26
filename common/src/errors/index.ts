@@ -1,6 +1,6 @@
 export { BaseCustomError }from './base-custom-error'
 export { InvalidInput } from './invalid-input'
-export { DuplicatedEmail } from './duplicated-email'
+export { DuplicatedEmail } from './auth/duplicated-email'
 export { NotFoundError } from './not-found-error'
-export { NotAuthorizedError } from './not-authorized-error'
+export { NotAuthorizedError } from './auth/not-authorized-error'
 export * from './type/serialized-error-output'
