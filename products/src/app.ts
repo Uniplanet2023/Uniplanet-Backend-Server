@@ -4,14 +4,14 @@ import { errorHandler } from '@uniplanet-lib/common'
 import cors from 'cors'
 
 import cookieSession from 'cookie-session'
-import dotenv from 'dotenv-safe'
-if(process.env.NODE_ENV !== 'production'){
-	console.log('NODE_ENV:', process.env.NODE_ENV)
-	const parsedNodeEnv = process.env.NODE_ENV || 'example'
-	dotenv.config({
-		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
-	})
-}
+// import dotenv from 'dotenv-safe'
+// if(process.env.NODE_ENV !== 'production'){
+// 	console.log('NODE_ENV:', process.env.NODE_ENV)
+// 	const parsedNodeEnv = process.env.NODE_ENV || 'example'
+// 	dotenv.config({
+// 		path: parsedNodeEnv.trim() === 'production' ? '.env.production' : 'development' ? '.env.dev' : '.env.example',
+// 	})
+// }
 
 // IMPORTS FROM OTHER FILES
 import { default as productRouter } from './routes'
@@ -22,11 +22,17 @@ const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 // middleware
 app.use(express.json())
+app.use(cors({
+	origin:['http://auth.uniplanet-back.autos','http://products.uniplanet-back.autos'],
+	credentials:true
+}))
 app.use(
 	cookieSession({
 		signed: false,
 		// secure: process.env.NODE_ENV !== 'test',
 		secure: false,
+		sameSite:'lax',
+		domain: '.uniplanet-back.autos'
 	}),
 )
 app.use(cors())

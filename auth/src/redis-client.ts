@@ -1,15 +1,16 @@
 import { RedisClientType, createClient } from 'redis'
 
 class RedisClient {
-	private _redisClient?:RedisClientType;
+	private _redisClient?: RedisClientType
 
-	async create(host: string, port: number)  {
-        // eslint-disable-next-line no-underscore-dangle
-        this._redisClient = await createClient({
-            socket:{
-                host,
-                port
-            }})
+	async create(host: string, port: number) {
+		// eslint-disable-next-line no-underscore-dangle
+		this._redisClient = await createClient({
+			socket: {
+				host,
+				port,
+			},
+		})
 	}
 
 	get redis() {

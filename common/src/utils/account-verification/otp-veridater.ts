@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { Signup } from '../../api-status'
 
 
 type VerifyOtpParams = {
@@ -13,7 +14,7 @@ export const verifyOtp = async (params: VerifyOtpParams) => {
 
 	// checking if OTP received is expired before continuing
 	if (now > parseInt(expires, 10)) {
-		const notice = 'OTP expired'
+		const notice = Signup.OTP_EXPIRED
 		return notice
 	}
 
@@ -24,5 +25,5 @@ export const verifyOtp = async (params: VerifyOtpParams) => {
 	if (otpHash === newCalculatedHash) {
 		return 'Success'
 	}
-	return 'Invalid Verification number'
+	return Signup.OTP_INVALID_NUMBER
 }

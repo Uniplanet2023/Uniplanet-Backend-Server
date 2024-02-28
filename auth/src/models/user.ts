@@ -54,8 +54,9 @@ const userSchema: Schema = new Schema(
 			default: false,
 		},
 		profileImage: {
-			// required: true,
+			required: true,
 			type: String,
+			default: 'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
 		},
 		// recentSearchHistory: [{ type: String }],
 		// recentViewHistory: [{ type: Schema.Types.ObjectId, ref: 'Product' }],

@@ -1,13 +1,13 @@
 import express from 'express'
 import { User } from '../models/index'
-import { auth, tokenValidation } from '@uniplanet-lib/common'
+import { UserNotFoundError, auth, tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_USER_ROUTE } from './routes-def'
 
 const deleteUserRouter = express.Router()
-deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, auth, async (req, res) => {
-	const user = await User.findOne({email:req.user?.email});
-	if(!user){
-		throw Error('No User');
+deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => {
+	const user = await User.findOne({ email: req.user?.email })
+	if (!user) {
+		throw new UserNotFoundError();
 	}
 	// Delete User 7 days after
 	await User.findByIdAndUpdate(

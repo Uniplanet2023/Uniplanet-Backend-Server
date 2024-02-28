@@ -2,13 +2,16 @@ import { Model, Schema, model } from 'mongoose'
 import { UserDocument } from './user'
 
 export type ProductDocument = Document & {
+	_id:string
 	productName: string
-	forSale: boolean
+	status: string
 	seller: UserDocument
 	description: string
 	images: string[]
+	likes: number
 	price: number
 	category: string
+	createdAt: Date
 }
 
 export type ProductModel = Model<ProductDocument>
@@ -40,7 +43,6 @@ const productSchema: Schema = new Schema(
 		images: [
 			{
 				type: String,
-				required: true,
 			},
 		],
 		likes: {
@@ -50,6 +52,7 @@ const productSchema: Schema = new Schema(
 		price: {
 			type: Number,
 			required: true,
+			default: 0,
 		},
 		category: {
 			type: String,
@@ -61,15 +64,6 @@ const productSchema: Schema = new Schema(
 	{ timestamps: true },
 )
 
-productSchema.pre(/^.*([Ff]ind).*$/, function (this: any, next) {
-	console.log(this.getQuery());
-	const page = parseInt(this.getQuery().page as string) || 1;
-    const limit = 10;
-    const skip = (page - 1) * limit;
-
-	this.skip(skip).limit(10).sort({ createdAt: -1 })
-	next()
-})
 
 const Product = model<ProductDocument, ProductModel>('Product', productSchema)
 export default Product
