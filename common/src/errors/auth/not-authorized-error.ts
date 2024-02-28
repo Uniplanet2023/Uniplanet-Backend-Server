@@ -1,13 +1,14 @@
-import { BaseCustomError } from './index'
-import { SerializedErrorOutput } from './type/serialized-error-output'
+import { Common } from '../../api-status/common'
+import { BaseCustomError } from '../index'
+import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class NotAuthorizedError extends BaseCustomError {
 	private statusCode = 422
 
-	private defaultErrorMessage = 'Not authorized'
+	private defaultErrorMessage = Common.NOT_AUTHORIZED
 
 	constructor() {
-		super('The email is already in the database')
+		super(Common.NOT_AUTHORIZED)
 
 		Object.setPrototypeOf(this, NotAuthorizedError.prototype)
 	}

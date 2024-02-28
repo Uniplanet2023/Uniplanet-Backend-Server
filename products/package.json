@@ -25,7 +25,7 @@
 	"author": "Sije Park",
 	"license": "ISC",
 	"dependencies": {
-		"@uniplanet-lib/common": "^1.0.40",
+		"@uniplanet-lib/common": "^1.0.46",
 		"cookie-session": "2.1.0",
 		"cors": "2.8.5",
 		"dotenv-safe": "9.0.0",
@@ -53,12 +53,12 @@
 		"jest": "29.7.0",
 		"lint-staged": "15.2.2",
 		"mongodb-memory-server": "9.1.6",
-		"nodemon": "3.0.2",
 		"prettier": "3.2.5",
 		"supertest": "6.3.4",
 		"ts-jest": "29.1.2",
 		"ts-node": "10.9.2",
-		"typescript": "5.3.3"
+		"typescript": "5.3.3",
+		"nodemon": "3.0.2"
 	},
 	"lint-staged": {
 		"src/**/*.ts": [

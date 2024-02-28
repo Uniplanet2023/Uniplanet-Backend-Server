@@ -1,17 +1,17 @@
 import express from 'express'
 import { User } from '../models/index'
-import { EmailSender } from '@uniplanet-lib/common'
+import { EmailSender, UserNotFoundError, tokenValidation } from '@uniplanet-lib/common'
 import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
 
 const forgottenPasswordRouter = express.Router()
 
-forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
+forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, tokenValidation, async (req, res) => {
 	const { email } = req.body
 
 	const existingUser = await User.findOne({ email })
 
 	if (!existingUser) {
-		return res.status(401).json({ message: "User with the given email address doesn't exists!" })
+		throw new UserNotFoundError();
 	}
 
 	const emailSender = EmailSender.getInstance()

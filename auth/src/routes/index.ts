@@ -4,8 +4,8 @@ import signInRouter from './signin'
 import deleteUserRouter from './delete-user'
 import forgottenPasswordRouter from './forgotten-password'
 import passwordUpdateRouter from './password-update-user'
-import signOutRouter from './logout'
-import sendingTokenRouter from './send-token'
+import signOutRouter from './signout'
+import requestOTPRouter from './request-opt'
 import otpValidationRouter from './otp-verification'
 import tokenLoginRouter from './token-login'
 const userRouter = express.Router()
@@ -16,7 +16,7 @@ userRouter.use(deleteUserRouter)
 userRouter.use(signUpRouter)
 userRouter.use(signInRouter)
 userRouter.use(forgottenPasswordRouter)
-userRouter.use(sendingTokenRouter)
+userRouter.use(requestOTPRouter)
 userRouter.use(otpValidationRouter)
 userRouter.use(tokenLoginRouter)
 

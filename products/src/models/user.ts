@@ -4,6 +4,7 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { Document } from 'mongoose'
 
 export type UserDocument = Document & {
+	_id: string
 	name: string
 	email: string
 	school: string
@@ -50,6 +51,10 @@ const userSchema: Schema = new Schema(
 			transform(ret) {
 				ret.id = ret._id
 				delete ret._id
+				delete ret.deletionDate
+				delete ret.createdAt
+				delete ret.updatedAt
+				delete ret.version
 				// eslint-disable-next-line no-underscore-dangle
 				delete ret.__v
 			},
@@ -59,24 +64,6 @@ const userSchema: Schema = new Schema(
 )
 userSchema.set('versionKey', 'version')
 userSchema.plugin(updateIfCurrentPlugin)
-
-async function validateUniqueness(userDoc: UserDocument) {
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define
-	const existingUser = await User.findOne({ email: userDoc.email })
-
-	if (existingUser) {
-		throw new DuplicatedEmail()
-	}
-}
-
-userSchema.pre('save', async function preValidateUniqueness(this: UserDocument) {
-	await validateUniqueness(this)
-})
-
-userSchema.pre(/^.*([Uu]pdate).*$/, async function preValidateUniqueness(this: UpdateQuery<UserDocument>) {
-	await validateUniqueness(this._update)
-})
-
 
 userSchema.statics.build = (attrs: UserAttrs) => {
 	//eslint-disable-next-line @typescript-eslint/no-use-before-define

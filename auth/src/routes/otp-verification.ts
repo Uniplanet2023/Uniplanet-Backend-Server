@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express'
 import { User } from '../models'
 import { VERIFY_OTP_ROUTE } from './routes-def'
-import { verifyOtp } from '@uniplanet-lib/common'
+import { InvalidInput, OTPExpiredError, OTPInvalidNumberError, Signup, UserNotFoundError, verifyOtp } from '@uniplanet-lib/common'
 import jwt from 'jsonwebtoken'
 import { redisClient } from '../redis-client'
 const otpValidationRouter = express.Router()
 
 otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
-	try {
+	
 		const { otpHash, email, otpCode } = req.body
 		console.log(otpHash)
 		console.log(otpCode)
@@ -17,20 +17,18 @@ otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) =
 		switch (result) {
 			case 'Success':
 				const user = await User.findOne({ email })
-				if (!user) throw Error('Error! No User ')
+				if (!user) throw new UserNotFoundError();
 				await User.findByIdAndUpdate(user.id, { verified: true })
-				await redisClient.redis.set(user.email,JSON.stringify({verified:true}));
+				await redisClient.redis.set(user.email, JSON.stringify({ verified: true }))
 				return res.status(200).json({ message: result })
-			case 'OTP expired':
-				return res.status(401).json({ message: result })
-			case 'Invalid Verification number':
-				return res.status(401).json({ message: result })
+			case Signup.OTP_EXPIRED:
+				throw new OTPExpiredError();
+			case Signup.OTP_INVALID_NUMBER:
+				throw new OTPInvalidNumberError();
 			default:
-				return res.status(400).json({ message: 'Invalid response' })
+				throw new Error('Error while processing OTP');
 		}
-	} catch (error) {
-		res.status(400).json({ message: 'Error while processing OTP', error })
-	}
+	
 })
 
 export default otpValidationRouter

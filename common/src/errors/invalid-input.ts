@@ -1,6 +1,7 @@
 import { FieldValidationError, ValidationError } from 'express-validator'
 import { BaseCustomError } from './index'
 import { SerializedErrorField, SerializedErrorOutput } from './type/serialized-error-output'
+import { Common } from '../api-status/common'
 
 export type InvalidInputConstructorErrorsParam = ValidationError[]
 
@@ -9,10 +10,10 @@ export class InvalidInput extends BaseCustomError {
 
 	private statusCode = 422
 
-	private defaultErrorMessage = 'The input provided is invalid.'
+	private defaultErrorMessage = Common.INVALID_INPUT
 
 	constructor(errors?: InvalidInputConstructorErrorsParam) {
-		super('The input provided is invalid.')
+		super(Common.INVALID_INPUT)
 		this.errors = errors
 		Object.setPrototypeOf(this, InvalidInput.prototype)
 	}
