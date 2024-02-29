@@ -9,7 +9,7 @@ tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, r
 	if (!req.user!.verified) {
 		throw new VerificationRequiredError();
 	}
-
+	console.log(req.session!.jwt);
 	const result = await redisClient.redis.get(req.session!.jwt)
 	
 	if (!result) {
