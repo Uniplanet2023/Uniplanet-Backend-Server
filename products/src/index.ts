@@ -9,7 +9,7 @@ app.listen(PORT, async () => {
 		throw new Error('JWT_TOKEN_SECRET tocken have to be define')
 	}
 	console.log(process.env.JWT_TOKEN_SECRET)
-	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}/${process.env.MONGO_DB_NAME}`).then(() => {
+	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(() => {
 		console.log('DB connection!!!')
 	})
 })
