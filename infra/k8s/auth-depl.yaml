@@ -24,11 +24,7 @@ spec:
                cpu: "150m"
           env:
             - name: MONGO_DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb
-                  key: MONGO_DB_HOST
-
+              value: "mongodb://auth-mongo-srv:27017/auth"
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:

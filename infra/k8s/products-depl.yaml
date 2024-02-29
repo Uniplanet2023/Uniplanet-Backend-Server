@@ -24,10 +24,7 @@ spec:
               cpu: "150m"
           env:
             - name: MONGO_DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb
-                  key: MONGO_DB_HOST
+              value: "mongodb://products-mongo-srv:27017/products"
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:
@@ -83,6 +80,8 @@ spec:
                   key: OTP_KEY
             - name: REDIS_HOST
               value: auth-redis-srv
+            - name: MONGO_DB
+              value: mongodb://products-mongo-srv:27017/products
 ---
 apiVersion: v1
 kind: Service
