@@ -6,5 +6,7 @@ export interface UserCreatedEvent {
   data: {
     name: string;
     email: string;
+    school: string;
+    profileImage: string;
   };
 }

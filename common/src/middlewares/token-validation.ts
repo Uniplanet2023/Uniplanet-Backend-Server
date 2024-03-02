@@ -7,7 +7,6 @@ interface UserPayload {
 	email: string
 	school: string
 	verified: string
-	profileImage: string
 }
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
