@@ -7,6 +7,5 @@ export interface UserCreatedEvent {
     name: string;
     email: string;
     school: string;
-    profileImage: string;
   };
 }
