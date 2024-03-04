@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from '../models/index'
-import { auth, tokenValidation } from '@uniplanet-lib/common'
+import { tokenValidation } from '@uniplanet-lib/common'
 import { PASSWORD_UPDATE_ROUTE } from './routes-def'
 
 const passwordUpdateRouter = express.Router()

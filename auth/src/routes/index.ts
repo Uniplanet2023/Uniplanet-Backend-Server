@@ -8,6 +8,7 @@ import signOutRouter from './signout'
 import requestOTPRouter from './request-opt'
 import otpValidationRouter from './otp-verification'
 import tokenLoginRouter from './token-login'
+
 const userRouter = express.Router()
 
 userRouter.use(signOutRouter)

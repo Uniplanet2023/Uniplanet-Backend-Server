@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express'
-import { auth, tokenValidation } from '@uniplanet-lib/common'
+import { tokenValidation } from '@uniplanet-lib/common'
 import { SIGNOUT_OUT_SIGNIN_ROUTE } from './routes-def'
 import { redisClient } from '../redis-client'
 
 const signOutRouter = express.Router()
-signOutRouter.delete(SIGNOUT_OUT_SIGNIN_ROUTE, tokenValidation, auth, async (req: Request, res: Response) => {
+signOutRouter.delete(SIGNOUT_OUT_SIGNIN_ROUTE, tokenValidation, async (req: Request, res: Response) => {
 	// Remove the JWT from Redis
 	await redisClient.redis.del(req.session!.jwt)
 	// Clear the session

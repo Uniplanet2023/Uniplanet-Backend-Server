@@ -9,7 +9,6 @@ export type UserDocument = Document & {
 	school: string
 	verified: boolean
 	password: string
-	profileImage: string
 	type: string
 }
 
@@ -18,7 +17,6 @@ type UserAttrs = {
 	email: string
 	school: string
 	password: string
-	profileImage?: string
 	verified?: boolean
 	type?: string
 }
@@ -53,20 +51,6 @@ const userSchema: Schema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		profileImage: {
-			required: true,
-			type: String,
-			default: 'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
-		},
-		// recentSearchHistory: [{ type: String }],
-		// recentViewHistory: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		// like: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		// myEvent: [{ type: Schema.Types.ObjectId, ref: 'Event' }], // when you like save button
-		// selling: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		// sold: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		// bought: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-		// myChatRoom: [{ type: Schema.Types.ObjectId, ref: 'UserChatRoom' }],
-
 		deletionDate: { type: Date, default: null },
 	},
 	{

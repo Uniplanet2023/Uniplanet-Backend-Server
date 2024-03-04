@@ -13,7 +13,6 @@ export async function enforceTokenUniqueness(user: UserDocument) {
 				id: user.id,
 				email: user.email,
                 name: user.name,
-                profileImage: user.profileImage,
 				verified: user.verified,
 				school: user.school,
 			},
@@ -25,11 +24,12 @@ export async function enforceTokenUniqueness(user: UserDocument) {
 		)
 
 		// Check again if the new token exists in Redis
-		tokenExists = await redisClient.redis.exists(token)
+		const tempToken = await redisClient.redis.get(user.id)
+		tokenExists = tempToken === token
 	} while (tokenExists)
 
 	// Once a unique token is generated, set it in Redis
-	await redisClient.redis.set(token, JSON.stringify({ verified: true }))
+	await redisClient.redis.set(user.id, token);
 
 	return token
 }

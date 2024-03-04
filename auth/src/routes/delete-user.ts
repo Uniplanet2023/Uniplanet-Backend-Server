@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from '../models/index'
-import { UserNotFoundError, auth, tokenValidation } from '@uniplanet-lib/common'
+import { UserNotFoundError, tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_USER_ROUTE } from './routes-def'
 
 const deleteUserRouter = express.Router()

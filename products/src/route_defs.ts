@@ -1,5 +1,0 @@
-export const GET_PRODUCT_ROUTE = '/api/products/get-products'
-export const UPLOAD_PRODUCT_ROUTE = '/api/products/upload-product'
-export const DELETE_PRODUCT_ROUTE = '/api/products/delete-product'
-export const UPDATE_PRODUCT_ROUTE = '/api/products/update-product/:productId'
-export const SEARCH_PRODUCT_ROUTE = '/api/products/search-product'

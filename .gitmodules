@@ -1,0 +1,3 @@
+[submodule "products"]
+	path = products
+	url = https://github.com/Uniplanet2023/products.git
