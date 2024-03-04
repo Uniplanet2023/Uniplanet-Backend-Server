@@ -17,7 +17,7 @@ import cookieSession from 'cookie-session'
 import { default as productRouter } from './routes'
 
 import { NotFoundError } from '@uniplanet-lib/common'
-
+console.log('test');
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 // middleware
