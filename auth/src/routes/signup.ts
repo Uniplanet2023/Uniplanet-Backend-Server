@@ -6,13 +6,14 @@ import {
 	emailValidation,
 	nameValidation,
 	passwordValidation,
-	profileImageValidation,
 	schoolValidation,
 	DuplicatedEmail,
 	validateRequest,
-	EmailSender,
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
+import { UserCreatedProducer } from '../events'
+import { kafkaClient } from '../kafka-client'
+import { userProducer } from '..'
 
 const signUpRouter = express.Router()
 
@@ -39,6 +40,12 @@ signUpRouter.post(
 		}
 		const newUser = User.build({ email, password, name, school })
 		await newUser.save()
+		console.log('sending message');
+		userProducer.sendMessage({
+				name: newUser.name,
+				email: newUser.email,
+				school: newUser.school,
+			});
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
 			// Create and save new user
 			return res.status(201).json({ newUser })

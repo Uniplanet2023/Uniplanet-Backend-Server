@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/GoogleContainerTools/skaffold/main/docs-v2/content/en/schemas/v3.json": "file:///Users/sijescomputer/Desktop/Uniplanet-Server/skaffold.yaml"
+  }
+}
