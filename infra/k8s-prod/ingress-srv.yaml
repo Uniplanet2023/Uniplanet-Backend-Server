@@ -29,8 +29,36 @@ spec:
                 name: products-srv
                 port:
                   number: 3001
-    - host: mongo.uniplanet-back.autos
-      
+    - host: account.uniplanet-back.autos
+      http:
+        paths:
+          - path: /api/account/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: account-srv
+                port:
+                  number: 3002
+    - host: chat.uniplanet-back.autos
+      http:
+        paths:
+          - path: /api/chat/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 3003
+    - host: message.uniplanet-back.autos
+      http:
+        paths:
+          - path: /api/message/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: message-srv
+                port:
+                  number: 3004
 ---
 apiVersion: v1
 kind: Service

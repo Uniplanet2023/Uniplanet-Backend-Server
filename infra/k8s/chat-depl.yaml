@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-depl
+  name: chat-depl
 spec:
   replicas: 1
   selector: # letting deployment know what app should dealing with
     matchLabels:
-      app: account
+      app: chat
   template: # specify exact configuration of the pod we want to deployment to create
     metadata:
       labels:
-        app: account
+        app: chat
     spec:
       containers:
-        - name: account
-          image: uniplanet/account
+        - name: chat
+          image: uniplanet/chat
           resources:
             limits:
               memory: 500Mi
@@ -24,12 +24,13 @@ spec:
                cpu: "150m"
           env:
             - name: MONGO_DB_HOST
-              value: "mongodb://account-mongo-srv:27017/account"
+              value: "mongodb://chat-mongo-srv:27017/chat"
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:
                   name: kafka
                   key: KAFKA_BROKER
+
             - name: JWT_TOKEN_SECRET
               valueFrom:
                 secretKeyRef:
@@ -39,12 +40,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-srv
+  name: chat-srv
 spec: 
   selector:
-    app: account
+    app: chat
   ports:
-    - name: account
+    - name: chat
       protocol: TCP
-      port: 3002
-      targetPort: 3002
+      port: 3003
+      targetPort: 3003

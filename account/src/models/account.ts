@@ -14,6 +14,7 @@ export type AccountDocument = Document & {
 }
 
 type AccountAttrs = {
+    _id: string
     name: string
     email: string
     school: string

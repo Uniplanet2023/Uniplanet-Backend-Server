@@ -38,3 +38,23 @@ spec:
                 name: account-srv
                 port:
                   number: 3002
+    - host: chat.uniplanet-back.autos
+      http:
+        paths:
+          - path: /api/chat/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 3003
+    - host: message.uniplanet-back.autos
+      http:
+        paths:
+          - path: /api/message/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: message-srv
+                port:
+                  number: 3004
