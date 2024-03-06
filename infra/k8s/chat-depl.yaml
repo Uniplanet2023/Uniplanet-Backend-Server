@@ -20,7 +20,7 @@ spec:
               memory: 250Mi
               cpu: "200m"
             requests:
-               memory: 100Mi
+               memory: 200Mi
                cpu: "150m"
           env:
             - name: MONGO_DB_HOST
