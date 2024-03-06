@@ -14,7 +14,8 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
         // Process the user:created message, e.g., send an email
         console.log(`user Created ${data.email} -- account server`);
         console.log(data)
-        const account = Account.build({ 
+        const account = Account.build({
+            _id: data.id,
             email: data.email,
             name: data.name,
             school: data.school

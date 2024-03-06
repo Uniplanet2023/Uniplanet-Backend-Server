@@ -2,17 +2,14 @@ import express, { Request, Response } from 'express'
 import { NotAuthorizedError, VerificationRequiredError, generateEmailVerificationToken, tokenValidation } from '@uniplanet-lib/common'
 import { TOKEN_LOGIN_ROUTE } from './routes-def'
 import { redisClient } from '../redis-client'
+import { User } from '../models'
 
 const tokenLoginRouter = express.Router()
 tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, res: Response) => {
-	console.log(req.user!)
-	if (!req.user!.verified) {
-		throw new VerificationRequiredError();
-	}
 
-	const result = await redisClient.redis.get(req.user!.id)
+	const result = await User.findOne({ email: req.user!.id })
 	
-	if (result != req.session!.jwt) {
+	if (!result && req.user!.verified === 'false') {
 		throw new NotAuthorizedError();
 	}
 

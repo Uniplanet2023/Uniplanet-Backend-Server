@@ -4,7 +4,7 @@ import { UserDeleteScheduler } from './scheduler'
 import { secretCheck } from './secret-check'
 import { kafkaClient } from './kafka-client'
 import { EmailSender, NodemailerEmailApi } from '@uniplanet-lib/common'
-import { redisClient } from './redis-client'
+// import { redisClient } from './redis-client'
 import { UserCreatedProducer } from './events'
 
 const {
@@ -36,12 +36,12 @@ app.listen(PORT, async () => {
 	if (process.env.NODE_ENV == 'production') {	
 		await userProducer.connect();
 	}
-	await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
-	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
-	await redisClient.redis.connect().then(() => {
-		console.log('Redis is connected')
-	})
-	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(() => {
+	// await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
+	// redisClient.redis.on('error', err => console.log('Redis Client Error', err))
+	// await redisClient.redis.connect().then(() => {
+	// 	console.log('Redis is connected')
+	// })
+	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()
 	})

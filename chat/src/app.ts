@@ -5,21 +5,22 @@ import cors from 'cors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
 
-// if (process.env.NODE_ENV! == 'development') {
-// 	dotenv.config({
-// 		path: '.env.dev',
-// 	})
-// }
+if (process.env.NODE_ENV! == 'development') {
+	dotenv.config({
+		path: '.env.dev',
+	})
+}
 
 // IMPORTS FROM OTHER FILES
-import userRouter from './routes'
+import chatRouter from './routes'
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 
 // middleware
 app.use(express.json())
 app.use(cors({
-	origin:['http://auth.uniplanet-back.autos','http://products.uniplanet-back.autos'],
+	origin:['http://auth.uniplanet-back.autos','http://products.uniplanet-back.autos',
+	'http://account.uniplanet-back.autos','http://chat.uniplanet-back.autos'],
 	credentials:true
 }))
 app.use(
@@ -30,8 +31,7 @@ app.use(
 		domain: '.uniplanet-back.autos'
 	}),
 )
-app.use(cors())
-app.use(userRouter)
+app.use(chatRouter)
 app.all('*', () => {
 	throw new NotFoundError()
 })
