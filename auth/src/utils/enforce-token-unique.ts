@@ -1,5 +1,4 @@
 import { UserDocument } from "../models"
-import { redisClient } from "../redis-client"
 import jwt from 'jsonwebtoken'
 export async function enforceTokenUniqueness(user: UserDocument) {
 	const token = jwt.sign(

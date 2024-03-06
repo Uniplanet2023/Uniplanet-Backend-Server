@@ -20,7 +20,7 @@ spec:
               memory: 250Mi
               cpu: "200m"
             requests:
-              memory: 250Mi
+              memory: 200Mi
               cpu: "150m"
 ---
 apiVersion: v1

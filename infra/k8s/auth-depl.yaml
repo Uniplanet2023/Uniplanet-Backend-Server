@@ -17,7 +17,7 @@ spec:
           image: uniplanet/auth
           resources:
             limits:
-              memory: 500Mi
+              memory: 250Mi
               cpu: "200m"
             requests:
                memory: 200Mi
