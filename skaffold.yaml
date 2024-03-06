@@ -26,6 +26,22 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
+    - image: uniplanet/chat
+      context: chat
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: uniplanet/message
+      context: message
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
   local:
     push: false
 manifests:

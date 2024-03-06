@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-redis-depl
+  name: message-redis-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-redis
+      app: message-redis
   template:
     metadata:
       labels:
-        app: auth-redis
+        app: message-redis
     spec:
       containers:
-        - name: auth-redis
+        - name: message-redis
           image: redis
           resources:
             limits:
@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-redis-srv
+  name: message-redis-srv
 spec:
   selector:
-    app: auth-redis
+    app: message-redis
   ports:
     - name: db
       protocol: TCP

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-depl
+  name: message-depl
 spec:
   replicas: 1
   selector: # letting deployment know what app should dealing with
     matchLabels:
-      app: account
+      app: message
   template: # specify exact configuration of the pod we want to deployment to create
     metadata:
       labels:
-        app: account
+        app: message
     spec:
       containers:
-        - name: account
-          image: uniplanet/account
+        - name: message
+          image: uniplanet/message
           resources:
             limits:
               memory: 500Mi
@@ -24,7 +24,7 @@ spec:
                cpu: "150m"
           env:
             - name: MONGO_DB_HOST
-              value: "mongodb://account-mongo-srv:27017/account"
+              value: "mongodb://message-mongo-srv:27017/message"
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:
@@ -39,12 +39,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-srv
+  name: message-srv
 spec: 
   selector:
-    app: account
+    app: message
   ports:
-    - name: account
+    - name: message
       protocol: TCP
-      port: 3002
-      targetPort: 3002
+      port: 3004
+      targetPort: 3004
