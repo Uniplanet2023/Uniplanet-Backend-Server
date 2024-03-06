@@ -17,10 +17,10 @@ spec:
           image: mongo
           resources:
             limits:
-              memory: 250Mi
+              memory: 100Mi
               cpu: "200m"
             requests:
-              memory: 250Mi
+              memory: 50Mi
               cpu: "150m"
 ---
 apiVersion: v1
