@@ -7,9 +7,6 @@ import UserCreatedConsumer from './event/consumer/UserCreatedConsumer'
 
 
 const PORT = process.env.PORT || 3002
-// const emailSender = EmailSender.getInstance()
-// emailSender.activate()
-// emailSender.setEmailApi(new NodemailerEmailApi())
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)

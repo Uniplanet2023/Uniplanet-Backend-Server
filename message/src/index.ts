@@ -43,9 +43,6 @@ io = new SocketIOServer(server,{
 		credentials: true,
 	}
 });
-// io.use((socket: Socket, next) => {
-// 	const { headers } = socket.handshake
-// });
 
 io.on('connection', (socket) => {
 	console.log('User connected')

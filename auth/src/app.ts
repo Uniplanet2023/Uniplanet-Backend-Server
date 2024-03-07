@@ -11,7 +11,6 @@ if (process.env.NODE_ENV! == 'development') {
 	})
 }
 
-// IMPORTS FROM OTHER FILES
 import userRouter from './routes'
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
