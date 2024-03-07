@@ -1,6 +1,4 @@
 export type EmailApiSendSignUpVerificationEmailArgs = {
-	name: string
-
 	toEmail: string
 }
 export type EmailApiSendResetPasswordEmailArgs = {
