@@ -34,15 +34,15 @@ export class NodemailerEmailApi implements EmailApi {
 	}
 
 	async sendSignUpVerificationEmail(args: EmailApiSendSignUpVerificationEmailArgs): Promise<EmailApiSendEmailResponse> {
-		const { name, toEmail } = args
+		const { toEmail } = args
 
 		const [otpCode, fullHash] = otpGenerate(toEmail)
 		console.log(`otpCode is ${otpCode}`)
 		console.log(`fullHash is ${fullHash}`)
 
-		const subject = buildSignUpVerificationEmailSubject(name)
-		const textBody = buildSignUpVerificationEmailTextBody({ name, otpCode })
-		const htmlBody = buildSignUpVerificationEmailHtmlBody({ name, otpCode })
+		const subject = buildSignUpVerificationEmailSubject()
+		const textBody = buildSignUpVerificationEmailTextBody({ otpCode })
+		const htmlBody = buildSignUpVerificationEmailHtmlBody({ otpCode })
 
 		await this.sendEmail({
 			toEmail,
