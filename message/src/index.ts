@@ -43,23 +43,55 @@ io = new SocketIOServer(server,{
 		credentials: true,
 	}
 });
-io.use((socket: Socket, next) => {
-	const { headers } = socket.handshake
-});
+// io.use((socket: Socket, next) => {
+// 	const { headers } = socket.handshake
+// });
 
 io.on('connection', (socket) => {
 	console.log('User connected')
+	socket.on('setup',(userId)=>{
+		socket.join(userId);
+		socket.broadcast.emit('online-user',userId)
+		console.log(userId);
+	})
+	socket.on('typing',(room)=>{
+		console.log('typing');
+		console.log('room');
+		socket.to(room).emit('typing',room)
+	})
+	socket.on('stop typing',(room)=>{
+		console.log('stop typing');
+		console.log('room');
+		socket.to(room).emit('stop typing',room)
+	})
+	socket.on('join chat', (room) => {
+		socket.join(room)
+		console.log('User joined :' + room);
+	})
+	socket.on('new message', (newMessageReceived) => {
+		var chat = newMessageReceived.chat;
+		var room = chat._id;
+		var sender = newMessageReceived.sender;
+		if(!sender || !sender._id){
+			console.log('Sender not found');
+			return;
+		}
+		var senderId = sender._id;
+		console.log(senderId + " sent message to " + room);
+		const users = chat.users;
+		if(!users){
+			console.log('User not found');
+			return;
+		}
+		socket.to(room).emit('message receive', newMessageReceived);
+		socket.to(room).emit('message sent', "New Message");
+	});
+
+	socket.off('setup',(userId) =>{
+		console.log('user offline');
+		socket.leave(userId);
+	})
 	socket.on('disconnect', () => {
 		console.log('User disconnected')
-	})
-	socket.on('join', (userId: string) => {
-		userSocketIds[userId] = socket.id
-	})
-	socket.on('message', (message) => {
-		const { to, from, text } = message
-		const toSocketId = userSocketIds[to]
-		if (toSocketId) {
-			io.to(toSocketId).emit('message', { from, text })
-		}
 	})
 });
