@@ -13,11 +13,6 @@ const {
 	MONGO_DB_HOST,
   } = process.env;
 
-const emailSender = EmailSender.getInstance()
-emailSender.activate()
-emailSender.setEmailApi(new NodemailerEmailApi())
-
-// Creating and configuring Kafka client
 if(NODE_ENV === 'production'){
 	if(!KAFKA_BROKER){
 		throw new Error('KAFKA_BROKER have to be define')
