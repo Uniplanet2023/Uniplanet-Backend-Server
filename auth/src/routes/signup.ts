@@ -40,13 +40,13 @@ signUpRouter.post(
 		}
 		const newUser = User.build({ email, password, name, school })
 		await newUser.save()
-		console.log('sending message');
 		userProducer.sendMessage({
 			id: newUser.id,
 			name: newUser.name,
 			email: newUser.email,
 			school: newUser.school,
 		});
+		
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
 			// Create and save new user
 			return res.status(201).json({ newUser })

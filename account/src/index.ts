@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3002
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-
+	
 	// secretCheck()
 	if (process.env.NODE_ENV == 'production') {
 		kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
