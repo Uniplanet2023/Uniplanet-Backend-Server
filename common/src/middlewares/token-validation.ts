@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
+import { redisClient } from '../redis-client'
 
 interface UserPayload {
 	id: string
@@ -26,3 +27,12 @@ export const tokenValidation = async (req: Request, res: Response, next: NextFun
 	next()
 }
 
+export const getingUserData = async (req: Request, res: Response, next: NextFunction) => {
+	const seller = await redisClient.redis.get(req.user?.id as string);
+	if (!seller) {
+		return res.status(404).send({ message: 'User in not found in Session Storage' })
+	}
+	const sellerObj = JSON.parse(seller); // Fallback to an empty object if seller is not found
+	req.user = { ...req.user, ...sellerObj }
+	next()
+}
