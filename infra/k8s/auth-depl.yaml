@@ -89,6 +89,7 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: REDIS_PORT
+            
 ---
 apiVersion: v1
 kind: Service

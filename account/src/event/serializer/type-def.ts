@@ -10,3 +10,10 @@ export type GetAccountRestPayload = {
     searchHistory: string[]
     recentViewHistory: string[]
 }
+export type UserRestPayload = {
+    id: string
+    name: string
+    email: string
+    school: string
+    profileImage: string
+}

@@ -2,10 +2,6 @@ import { model, Model, Schema } from 'mongoose'
 import { Document } from 'mongoose'
 
 export type AccountDocument = Document & {
-    name: string
-    email: string
-    school: string
-    profileImage: string
 	unreadNotification: number
     unreadMessage: number
     searchHistory: string[]
@@ -15,42 +11,22 @@ export type AccountDocument = Document & {
 
 type AccountAttrs = {
     _id: string
-    name: string
-    email: string
-    school: string
-    profileImage?: string
     unreadNotification?: number
     unreadMessage?: number
     searchHistory?: string[]
     recentViewHistory?: string[]
     advertisementAgreement?: boolean
 }
-
+//'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
 interface AccountModel extends Model<AccountDocument> {
 	build(attrs: AccountAttrs): AccountDocument
 }
 
 const accountSchema: Schema = new Schema(
 	{
-        name:{
+        _id: {
+            type: String,
             required: true,
-            type: String,
-            trim: true,
-        },
-        email: {
-            required: true,
-            type: String,
-            trim: true,
-            unique: true,
-            index: true,
-        },
-        profileImage: {
-            type: String,
-            default: 'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
-        },
-        school:{
-            required: true,
-            type: String,
         },
         unreadNotification: {
             type: Number,

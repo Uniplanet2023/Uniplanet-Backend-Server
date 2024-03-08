@@ -36,6 +36,16 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_TOKEN_SECRET
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_PORT
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: session-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: session-redis
+  template:
+    metadata:
+      labels:
+        app: session-redis
+    spec:
+      containers:
+        - name: session-redis
+          image: redis
+          resources:
+            limits:
+              memory: 50Mi
+              cpu: "100m"
+            requests:
+              memory: 30Mi
+              cpu: "50m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: session-redis-srv
+spec:
+  selector:
+    app: session-redis
+  ports:
+    - name: db
+      protocol: TCP
+      port: 6379

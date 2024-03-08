@@ -4,6 +4,7 @@ import app from './app'
 // import { secretCheck } from './secret-check'
 import { kafkaClient } from './kafka-client'
 import UserCreatedConsumer from './event/consumer/UserCreatedConsumer'
+import { redisClient } from './redis-client'
 
 
 const PORT = process.env.PORT || 3002
@@ -17,7 +18,12 @@ app.listen(PORT, async () => {
         const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka,"usercreated");
         await userCreatedConsumer.connect();
 	}
-	console.log(process.env.MONGO_DB_HOST);
+	await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
+	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
+	await redisClient.redis.connect().then(() => {
+		console.log('Redis is connected')
+	})
+	
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
 	})

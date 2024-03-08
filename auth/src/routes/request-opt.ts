@@ -5,9 +5,11 @@ import { SEND_OTP_ROUTE } from './routes-def'
 import { InvalidInput, DuplicatedEmail, emailValidation, validateRequest, UserNotFoundError } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
 
+
 const requestOTPRouter = express.Router()
 
 requestOTPRouter.post(SEND_OTP_ROUTE, [...emailValidation], validateRequest, async (req: Request, res: Response) => {
+
 	const errors = validationResult(req).array()
 	if (errors.length > 0) throw new InvalidInput(errors)
 
@@ -15,8 +17,8 @@ requestOTPRouter.post(SEND_OTP_ROUTE, [...emailValidation], validateRequest, asy
 	const user = await User.findOne({ email })
 	if (!user) throw new UserNotFoundError();
 	if (user.verified) throw new DuplicatedEmail()
-
-	const { hash } = await sendVerificationEmail(user.name, user.email)
+	
+	const { hash } = await sendVerificationEmail( user.email)
 
 	return res.status(201).json({ hash })
 })
