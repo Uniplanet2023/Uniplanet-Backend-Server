@@ -3,9 +3,12 @@ import { Topics } from "./topics";
 export interface MessageReceiveEvent{
     topic: Topics.MessageReceive;
     data: {
-      id: string;
-      message: string;
-      sender: string;
-      receiver: string;
+        sender: string;
+        receiver: string;
+        message: string;
+        messageType: string;
+        readBy: string;
+        chat: string;
+        readDate?: Date;
     };
   }
