@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
 import app from './app'
 import { secretCheck } from './secret-check'
-import { kafkaClient } from './kafka-client'
-import { EmailSender, NodemailerEmailApi } from '@uniplanet-lib/common'
+import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
 
 const {
 	PORT = 3003,

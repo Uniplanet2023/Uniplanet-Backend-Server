@@ -1,14 +1,15 @@
 import { BaseSerializeEvent } from "@uniplanet-lib/common"
 import { GetUserRestPayload } from "./type-def"
-import { UserDocument } from "../../models/user"
+import { UserModel } from "../../models/user"
+
 
 
 export default class GetUserInfo extends BaseSerializeEvent<GetUserRestPayload> {
-	private user: UserDocument
+	private user: UserModel
 
 	private statusCode = 201
 
-	constructor(user: UserDocument) {
+	constructor(user: UserModel) {
 		super()
 		this.user = user
 	}
@@ -19,7 +20,7 @@ export default class GetUserInfo extends BaseSerializeEvent<GetUserRestPayload> 
 
 	serializeRest(): GetUserRestPayload {
 		return {
-			id: this.user._id,
+			id: this.user.id,
 			name: this.user.name,
             email: this.user.email,
             profileImage: this.user.profileImage,

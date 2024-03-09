@@ -3,6 +3,7 @@ import { kafkaClient } from './kafka-client'
 import { redisClient } from './redis-client'
 import { Server as SocketIOServer, Socket } from 'socket.io'
 import app from './app';
+import { tokenValidation } from '@uniplanet-lib/common';
 
 app.use(morgan('tiny'));
 
@@ -43,7 +44,13 @@ io = new SocketIOServer(server,{
 		credentials: true,
 	}
 });
-
+io.use((socket, next) => {
+	const token = socket.handshake;
+	console.log(token);
+	if(!token){
+		return next(new Error('Authentication error'));
+	}
+});
 io.on('connection', (socket) => {
 	console.log('User connected')
 	socket.on('setup',(userId)=>{
