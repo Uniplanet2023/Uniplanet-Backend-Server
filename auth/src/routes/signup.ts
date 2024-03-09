@@ -14,6 +14,7 @@ import { sendVerificationEmail } from '../utils/send-verification-email'
 import { UserCreatedProducer } from '../events'
 import { kafkaClient } from '../kafka-client'
 import { userProducer } from '..'
+import { redisClient } from '../redis-client'
 
 const signUpRouter = express.Router()
 
@@ -22,7 +23,7 @@ signUpRouter.post(
 	[...emailValidation, nameValidation, schoolValidation, ...passwordValidation],
 	validateRequest,
 	async (req: Request, res: Response) => {
-		const { name, email, password, school } = req.body
+		const { name, email, password, school, profileImage } = req.body
 		const existingUser = await User.findOne({ email })
 
 		if (existingUser) {
@@ -33,26 +34,26 @@ signUpRouter.post(
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
 				// Create and save new user
 				return res.status(201).json({ existingUser })
+			}else{
+				const { hash } = await sendVerificationEmail( existingUser.email)
+				return res.status(201).json({ hash})
 			}
-			const { hash } = await sendVerificationEmail(existingUser.name, existingUser.email)
-			const userSerialized = new UserSerializer(existingUser)
-			return res.status(userSerialized.getStatusCode()).json({ hash, ...userSerialized.serializeRest() })
+			
 		}
-		const newUser = User.build({ email, password, name, school })
+		const newUser = User.build({ email, password, school })
 		await newUser.save()
 		userProducer.sendMessage({
 			id: newUser.id,
-			name: newUser.name,
-			email: newUser.email,
-			school: newUser.school,
-		});
-		
+			name: name,
+			email: email,
+			school: school,
+			profileImage: profileImage,
+		 });
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
-			// Create and save new user
 			return res.status(201).json({ newUser })
 		} else {
 			// Send verification email to new user
-			const { hash } = await sendVerificationEmail(newUser.name, newUser.email)
+			const { hash } = await sendVerificationEmail( newUser.email)
 			// const userSignedUp = new UserSerializer(newUser)
 			return res.status(201).json({ hash })
 		}

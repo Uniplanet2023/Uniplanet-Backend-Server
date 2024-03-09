@@ -5,7 +5,6 @@ export async function enforceTokenUniqueness(user: UserDocument) {
 		{
 			id: user.id,
 			email: user.email,
-			name: user.name,
 			school: user.school,
 		},
 		process.env.JWT_TOKEN_SECRET!,

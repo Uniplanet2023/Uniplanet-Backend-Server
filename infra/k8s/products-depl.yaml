@@ -79,7 +79,15 @@ spec:
                   name: utils
                   key: OTP_KEY
             - name: REDIS_HOST
-              value: auth-redis-srv
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_PORT
             - name: MONGO_DB
               value: mongodb://products-mongo-srv:27017/products
 ---

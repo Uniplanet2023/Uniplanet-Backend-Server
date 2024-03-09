@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express'
 import { User } from '../models'
 import { VERIFY_OTP_ROUTE } from './routes-def'
 import { OTPExpiredError, OTPInvalidNumberError, Signup, UserNotFoundError, verifyOtp } from '@uniplanet-lib/common'
-import { userProducer } from '..'
+import { redisClient } from '../redis-client'
+import UserSerializer from '../events/serializer/UserSerializer'
 const otpValidationRouter = express.Router()
 
 otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
@@ -17,12 +18,6 @@ otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) =
 			case 'Success':
 				const user = await User.findOne({ email })
 				if (!user) throw new UserNotFoundError();
-				userProducer.sendMessage({
-					id: user.id,
-					name: user.name,
-					email: user.email,
-					school: user.school,
-				});
 				await User.findByIdAndUpdate(user.id, { verified: true })
 				return res.status(200).json({ message: result })
 			case Signup.OTP_EXPIRED:
