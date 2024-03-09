@@ -9,6 +9,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 	private chat: ChatDocument
 	private seller: UserModel
 	private buyer: UserModel
+
 	private statusCode = 201
 
 	constructor(chat: ChatDocument, seller: UserModel, buyer: UserModel) {

@@ -9,7 +9,7 @@ import GetMessageInfo from '../event/serializer/get-message';
 
 const getMessagesRouter = express.Router()
 getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
-    console.log('here');
+    
     const {chatId, page} = req.query;
     const chat = await Chat.findById(chatId);
     if (!chat) {
@@ -18,7 +18,7 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
     if(!chat.buyer.equals(req.user!.id) && !chat.seller.equals(req.user!.id)){
         return res.status(401).send('Unauthorized');
     }
-    
+
     console.log('received chatId:', chatId, 'page:', page)
     const pageNumber = parseInt(page as string) || 1;
     const limit = 20;

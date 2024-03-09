@@ -8,7 +8,6 @@ export type MessageDocument = mongoose.Document & {
     messageType: String;
     readBy: mongoose.Types.ObjectId;
     chat: mongoose.Types.ObjectId;
-    readDate?: Date;
     createdAt: Date;
 };
 
@@ -17,9 +16,7 @@ type MessageAttrs = {
     receiver: String;
     message: String;
     messageType: String;
-    readBy: String;
     chat: String;
-    readDate?: Date;
 };
 
 interface MessageModel extends mongoose.Model<MessageDocument> {
@@ -32,7 +29,6 @@ const messageModel = new mongoose.Schema({
     messageType: { type: String, required: true, default: "text"},
     receiver: { type: mongoose.Schema.Types.ObjectId, required: true},
     chat:{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Chat", index: true},
-    readBy: { type: mongoose.Schema.Types.ObjectId},
     readDate: { type: Date },
 },{ timestamps: true });
 

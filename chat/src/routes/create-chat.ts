@@ -2,7 +2,6 @@ import express from 'express';
 import Chat from '../models/chat';
 import { tokenValidation } from '@uniplanet-lib/common';
 import { CREATE_CHAT } from './routes-def';
-import User from '../models/user';
 import GetChatInfo from '../event/serializer/get-chat';
 import { redisClient } from '../redis-client';
 
@@ -18,41 +17,19 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
             { buyer: req.user!.id, seller: sellerId }
         ],
     });
+    const sellerData = await redisClient.redis.get(sellerId);
+    const buyerData = await redisClient.redis.get(req.user!.id);
+    if (!sellerData || !buyerData) {
+        return res.status(404).send('User not found');
+    }
+    const seller = JSON.parse(sellerData);
+    const buyer = JSON.parse(buyerData);
 
     if (existingChat) {
-        redisClient.redis.get(existingChat.seller, (err, reply) => {
-            if (err) {
-                console.log('Redis Error', err);
-            } else {
-                console.log('Redis Reply', reply);
-            }
-        });
-        existingChat.seller
-        const chatInfo = new GetChatInfo(existingChat);
+        const chatInfo = new GetChatInfo(existingChat, seller, buyer);
         return res.status(chatInfo.getStatusCode()).json(chatInfo.serializeRest());
     }
-    let seller = await User.findById(sellerId);
-    if (!seller) {
-        seller = User.build({
-            _id: sellerId,
-            email: sellerEmail,
-            name: sellerName,
-            school: sellerSchool,
-            profileImage: sellerProfile,
-        });
-        await seller.save();
-    }
-    let buyer = await User.findById(req.user!.id);
-    if (!buyer) {
-        buyer = User.build({
-            _id: req.user!.id,
-            email: req.user!.email,
-            name: req.user!.name,
-            school: req.user!.school,
-            profileImage: req.user!.profileImage,
-        });
-        await buyer.save();
-    }
+    
     // Create and save the chat
     const chat = Chat.build({
         productId: productId,
@@ -60,7 +37,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
         seller: sellerId,
     });
     await chat.save();
-    const chatInfo = new GetChatInfo(chat);
+    const chatInfo = new GetChatInfo(chat,seller,buyer);
     // Include serialized buyer and seller data in the response
     return res.status(chatInfo.getStatusCode()).json(chatInfo.serializeRest());
 });

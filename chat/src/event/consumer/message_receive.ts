@@ -21,9 +21,7 @@ export default class MessageReceiveConsumer extends BaseConsumer<MessageReceiveE
             receiver: data.receiver,
             message: data.message,
             messageType: data.messageType,
-            readBy: data.readBy,
             chat: data.chat,
-        
         })
         const msg = await msgModel.save();
         await Chat.findByIdAndUpdate(data.chat, { lastMessage: msg._id});

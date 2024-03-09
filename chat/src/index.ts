@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
 import app from './app'
 import { secretCheck } from './secret-check'
-import { kafkaClient } from './kafka-client'
-import { EmailSender, NodemailerEmailApi } from '@uniplanet-lib/common'
+import { EmailSender, NodemailerEmailApi, kafkaClient } from '@uniplanet-lib/common'
 import { redisClient } from './redis-client'
 
 const {
