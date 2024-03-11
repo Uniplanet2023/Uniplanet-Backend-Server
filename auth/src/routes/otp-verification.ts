@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express'
 import { User } from '../models'
 import { VERIFY_OTP_ROUTE } from './routes-def'
 import { OTPExpiredError, OTPInvalidNumberError, Signup, UserNotFoundError, verifyOtp } from '@uniplanet-lib/common'
-import { redisClient } from '../redis-client'
 import UserSerializer from '../events/serializer/UserSerializer'
 const otpValidationRouter = express.Router()
 

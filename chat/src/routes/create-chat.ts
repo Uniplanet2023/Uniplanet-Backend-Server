@@ -8,15 +8,16 @@ import { redisClient } from '../redis-client';
 const createChatRouter = express.Router();
 
 createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-    const { productId, sellerId, sellerName, sellerEmail,sellerProfile, sellerSchool } = req.body;
+    const { productId, sellerId} = req.body;
 
     // Check if a chat already exists between these two users for this product
     const existingChat = await Chat.findOne({
-        product: productId,
-        $and: [
-            { buyer: req.user!.id, seller: sellerId }
-        ],
+        productId: productId,
+        buyer: req.user!.id,
+        seller: sellerId,
     });
+    console.log('existing chat:', existingChat);
+
     const sellerData = await redisClient.redis.get(sellerId);
     const buyerData = await redisClient.redis.get(req.user!.id);
     if (!sellerData || !buyerData) {

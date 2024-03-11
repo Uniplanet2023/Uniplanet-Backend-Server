@@ -25,21 +25,13 @@
 	"author": "Sije Park",
 	"license": "ISC",
 	"dependencies": {
-		"@uniplanet-lib/common": "^1.0.55",
+		"@uniplanet-lib/common": "^1.0.61",
 		"bull": "4.12.2",
-		"cookie-session": "2.1.0",
 		"cors": "2.8.5",
-		"crypto-ts": "1.0.2",
 		"dotenv-safe": "9.0.0",
-		"express": "4.18.2",
 		"express-async-errors": "3.1.1",
 		"express-validator": "7.0.1",
-		"kafkajs": "2.2.4",
-		"mongoose": "8.1.2",
-		"mongoose-update-if-current": "1.4.0",
-		"node-cron": "3.0.3",
-		"redis": "^4.6.13",
-		"ts-node": "10.9.2"
+		"mongoose-update-if-current": "1.4.0"
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "2.4.6",

@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express'
 import { User } from '../models'
-import UserSerializer from '../events/serializer/UserSerializer'
 import { SIGNUP_ROUTE } from './routes-def'
 import {
 	emailValidation,
@@ -12,9 +11,7 @@ import {
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
 import { UserCreatedProducer } from '../events'
-import { kafkaClient } from '../kafka-client'
 import { userProducer } from '..'
-import { redisClient } from '../redis-client'
 
 const signUpRouter = express.Router()
 

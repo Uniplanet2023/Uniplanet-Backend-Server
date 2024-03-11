@@ -2,9 +2,8 @@ import mongoose from 'mongoose'
 import app from './app'
 
 // import { secretCheck } from './secret-check'
-import { kafkaClient } from './kafka-client'
 import UserCreatedConsumer from './event/consumer/UserCreatedConsumer'
-import { redisClient } from './redis-client'
+import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 
 
 const PORT = process.env.PORT || 3002

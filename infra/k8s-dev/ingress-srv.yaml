@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$client_ip"
 spec:
   ingressClassName: nginx
   rules:
@@ -51,7 +52,7 @@ spec:
     - host: message.uniplanet-back.autos
       http:
         paths:
-          - path: /api/message/?(.*)
+          - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
               service:

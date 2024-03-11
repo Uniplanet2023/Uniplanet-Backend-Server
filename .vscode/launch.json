@@ -33,5 +33,12 @@
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/products"
         },
+        {
+            "command": "npm run dev",
+            "name": "Run message server",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/message"
+        },
     ]
 }

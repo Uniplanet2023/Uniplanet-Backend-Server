@@ -3,7 +3,6 @@ import { User } from '../models/index'
 import { validateRequest, PasswordHash, emailValidation, passwordValidation, UserNotFoundError, PasswordMismatchError, VerificationRequiredError } from '@uniplanet-lib/common'
 import { SIGNIN_ROUTE } from './routes-def'
 import { enforceTokenUniqueness } from '../utils/enforce-token-unique'
-import { redisClient } from '../redis-client'
 
 const signInRouter = express.Router()
 signInRouter.post(
