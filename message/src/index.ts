@@ -4,7 +4,7 @@ import { redisClient } from './redis-client'
 import { Server as SocketIOServer, Socket } from 'socket.io'
 import app from './app';
 import { tokenValidation } from '@uniplanet-lib/common';
-
+import jwt, { JwtPayload } from 'jsonwebtoken'
 app.use(morgan('tiny'));
 
 const {
@@ -41,15 +41,24 @@ io = new SocketIOServer(server,{
 			'http://chat.uniplanet-back.autos',
 			'http://message.uniplanet-back.autos'
 		],
+		methods: ['GET', 'POST'],
 		credentials: true,
 	}
 });
+declare module 'socket.io' {
+	interface Socket {
+		user: JwtPayload;
+	}
+}
+
 io.use((socket, next) => {
-	const token = socket.handshake;
-	console.log(token);
-	if(!token){
+	const token = socket.handshake.query.session_token;
+	const payload = jwt.verify(token as string, process.env.JWT_TOKEN_SECRET as string);
+	socket.user = payload as JwtPayload;
+	if(!socket.user){
 		return next(new Error('Authentication error'));
 	}
+	next();
 });
 io.on('connection', (socket) => {
 	console.log('User connected')
@@ -99,3 +108,8 @@ io.on('connection', (socket) => {
 		console.log('User disconnected')
 	})
 });
+io.on('disconnect', (socket) => {
+	console.log('User disconnected')
+	socket.user = null;
+}
+)

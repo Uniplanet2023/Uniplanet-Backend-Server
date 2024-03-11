@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express'
 import { GET_ACCOUNT_INFO } from './routes-def'
-import { tokenValidation } from '@uniplanet-lib/common'
+import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
-import { redisClient } from '../redis-client'
 
 const accountInfoRouter = express.Router()
 

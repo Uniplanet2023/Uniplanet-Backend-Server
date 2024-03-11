@@ -6,9 +6,8 @@ export type MessageDocument = mongoose.Document & {
     receiver: mongoose.Types.ObjectId;
     message: String;
     messageType: String;
-    readBy: mongoose.Types.ObjectId;
+    readDate: Date;
     chat: mongoose.Types.ObjectId;
-    createdAt: Date;
 };
 
 type MessageAttrs = {

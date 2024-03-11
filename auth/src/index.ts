@@ -2,9 +2,7 @@ import mongoose from 'mongoose'
 import app from './app'
 import { UserDeleteScheduler } from './scheduler'
 import { secretCheck } from './secret-check'
-import { kafkaClient } from './kafka-client'
-import { EmailSender, NodemailerEmailApi } from '@uniplanet-lib/common'
-import { redisClient } from './redis-client'
+import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
 import { UserCreatedProducer } from './events'
 
 const {
