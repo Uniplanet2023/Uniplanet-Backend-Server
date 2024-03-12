@@ -1,4 +1,4 @@
-import { EmailSender } from "@uniplanet-lib/common"
+import { EmailSender } from '@uniplanet-lib/common'
 
 // Function to send the sign-up verification email
 export async function sendVerificationEmail(email: string) {

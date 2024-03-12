@@ -31,11 +31,10 @@ signUpRouter.post(
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
 				// Create and save new user
 				return res.status(201).json({ existingUser })
-			}else{
-				const { hash } = await sendVerificationEmail( existingUser.email)
-				return res.status(201).json({ hash})
+			} else {
+				const { hash } = await sendVerificationEmail(existingUser.email)
+				return res.status(201).json({ hash })
 			}
-			
 		}
 		const newUser = User.build({ email, password, school })
 		await newUser.save()
@@ -45,12 +44,12 @@ signUpRouter.post(
 			email: email,
 			school: school,
 			profileImage: profileImage,
-		 });
+		})
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
 			return res.status(201).json({ newUser })
 		} else {
 			// Send verification email to new user
-			const { hash } = await sendVerificationEmail( newUser.email)
+			const { hash } = await sendVerificationEmail(newUser.email)
 			// const userSignedUp = new UserSerializer(newUser)
 			return res.status(201).json({ hash })
 		}

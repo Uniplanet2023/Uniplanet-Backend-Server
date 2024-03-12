@@ -7,7 +7,7 @@ const deleteUserRouter = express.Router()
 deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => {
 	const user = await User.findOne({ email: req.user?.email })
 	if (!user) {
-		throw new UserNotFoundError();
+		throw new UserNotFoundError()
 	}
 	// Delete User 7 days after
 	await User.findByIdAndUpdate(

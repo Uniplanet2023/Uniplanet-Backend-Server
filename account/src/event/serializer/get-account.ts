@@ -1,7 +1,6 @@
-import { BaseSerializeEvent } from "@uniplanet-lib/common"
-import { GetAccountRestPayload, UserRestPayload } from "./type-def"
-import { AccountDocument } from "../../models/account"
-
+import { BaseSerializeEvent } from '@uniplanet-lib/common'
+import { GetAccountRestPayload, UserRestPayload } from './type-def'
+import { AccountDocument } from '../../models/account'
 
 export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPayload> {
 	private account: AccountDocument
@@ -9,7 +8,7 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 
 	private statusCode = 201
 
-	constructor(account: AccountDocument, user:UserRestPayload) {
+	constructor(account: AccountDocument, user: UserRestPayload) {
 		super()
 		this.user = user
 		this.account = account
@@ -23,13 +22,13 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 		return {
 			id: this.account._id,
 			name: this.user.name,
-            email: this.user.email,
-            profileImage: this.user.profileImage,
-            school: this.user.school,
-            unreadNotification: this.account.unreadNotification,
-            unreadMessage: this.account.unreadMessage,
-            searchHistory: this.account.searchHistory,
-            recentViewHistory: this.account.recentViewHistory,
+			email: this.user.email,
+			profileImage: this.user.profileImage,
+			school: this.user.school,
+			unreadNotification: this.account.unreadNotification,
+			unreadMessage: this.account.unreadMessage,
+			searchHistory: this.account.searchHistory,
+			recentViewHistory: this.account.recentViewHistory,
 		}
 	}
 }

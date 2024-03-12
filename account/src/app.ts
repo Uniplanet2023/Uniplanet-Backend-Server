@@ -18,20 +18,22 @@ app.set('trust proxy', true) // proxy ingress nginx
 
 // middleware
 app.use(express.json())
-app.use(cors({
-	origin:[
-        'http://auth.uniplanet-back.autos',
-        'http://products.uniplanet-back.autos',
-        'http://account.uniplanet-back.autos',
-    ],
-	credentials:true
-}))
+app.use(
+	cors({
+		origin: [
+			'http://auth.uniplanet-back.autos',
+			'http://products.uniplanet-back.autos',
+			'http://account.uniplanet-back.autos',
+		],
+		credentials: true,
+	}),
+)
 app.use(
 	cookieSession({
 		signed: false,
 		secure: false,
-		sameSite:'lax',
-		domain: '.uniplanet-back.autos'
+		sameSite: 'lax',
+		domain: '.uniplanet-back.autos',
 	}),
 )
 app.use(cors())

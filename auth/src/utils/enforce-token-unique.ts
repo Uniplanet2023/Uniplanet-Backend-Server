@@ -1,4 +1,4 @@
-import { UserDocument } from "../models"
+import { UserDocument } from '../models'
 import jwt from 'jsonwebtoken'
 export async function enforceTokenUniqueness(user: UserDocument) {
 	const token = jwt.sign(

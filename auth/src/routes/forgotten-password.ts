@@ -11,7 +11,7 @@ forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, tokenValidation, async (r
 	const existingUser = await User.findOne({ email })
 
 	if (!existingUser) {
-		throw new UserNotFoundError();
+		throw new UserNotFoundError()
 	}
 
 	const emailSender = EmailSender.getInstance()

@@ -1,6 +1,14 @@
 import express, { Request, Response } from 'express'
 import { User } from '../models/index'
-import { validateRequest, PasswordHash, emailValidation, passwordValidation, UserNotFoundError, PasswordMismatchError, VerificationRequiredError } from '@uniplanet-lib/common'
+import {
+	validateRequest,
+	PasswordHash,
+	emailValidation,
+	passwordValidation,
+	UserNotFoundError,
+	PasswordMismatchError,
+	VerificationRequiredError,
+} from '@uniplanet-lib/common'
 import { SIGNIN_ROUTE } from './routes-def'
 import { enforceTokenUniqueness } from '../utils/enforce-token-unique'
 
@@ -15,9 +23,9 @@ signInRouter.post(
 		const user = await User.findOne({ email })
 
 		// Check if user exists
-		if (!user) throw new UserNotFoundError();
-		if (!user.verified) throw new VerificationRequiredError();
-		
+		if (!user) throw new UserNotFoundError()
+		if (!user.verified) throw new VerificationRequiredError()
+
 		// Compare passwords
 		const isMatch = PasswordHash.compareSync({ providedPassword: password, storedPassword: user.password })
 		if (!isMatch) throw new PasswordMismatchError()
@@ -27,7 +35,7 @@ signInRouter.post(
 
 		// Store it on session object
 		req.session = { jwt: userJwt }
-		return res.status(202).send({ access: true, })
+		return res.status(202).send({ access: true })
 	},
 )
 

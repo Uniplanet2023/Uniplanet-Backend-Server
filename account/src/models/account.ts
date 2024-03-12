@@ -3,19 +3,19 @@ import { Document } from 'mongoose'
 
 export type AccountDocument = Document & {
 	unreadNotification: number
-    unreadMessage: number
-    searchHistory: string[]
-    recentViewHistory: string[]
-    advertisementAgreement: boolean
+	unreadMessage: number
+	searchHistory: string[]
+	recentViewHistory: string[]
+	advertisementAgreement: boolean
 }
 
 type AccountAttrs = {
-    _id: string
-    unreadNotification?: number
-    unreadMessage?: number
-    searchHistory?: string[]
-    recentViewHistory?: string[]
-    advertisementAgreement?: boolean
+	_id: string
+	unreadNotification?: number
+	unreadMessage?: number
+	searchHistory?: string[]
+	recentViewHistory?: string[]
+	advertisementAgreement?: boolean
 }
 //'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
 interface AccountModel extends Model<AccountDocument> {
@@ -24,24 +24,24 @@ interface AccountModel extends Model<AccountDocument> {
 
 const accountSchema: Schema = new Schema(
 	{
-        _id: {
-            type: String,
-            required: true,
-        },
-        unreadNotification: {
-            type: Number,
-            default: 0,
-        },
-        unreadMessage: {
-            type: Number,
-            default: 0,
-        },
-        searchHistory: [{ type: String}],
-		recentViewHistory: [{ type: Schema.Types.ObjectId}],
-        advertisementAgreement: {
-            type: Boolean,
-            default: false,
-        },
+		_id: {
+			type: String,
+			required: true,
+		},
+		unreadNotification: {
+			type: Number,
+			default: 0,
+		},
+		unreadMessage: {
+			type: Number,
+			default: 0,
+		},
+		searchHistory: [{ type: String }],
+		recentViewHistory: [{ type: Schema.Types.ObjectId }],
+		advertisementAgreement: {
+			type: Boolean,
+			default: false,
+		},
 		deletionDate: { type: Date, default: null },
 	},
 	{
