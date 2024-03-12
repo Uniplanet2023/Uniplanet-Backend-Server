@@ -3,13 +3,13 @@ import 'express-async-errors'
 import { errorHandler, NotFoundError } from '@uniplanet-lib/common'
 import cors from 'cors'
 import cookieSession from 'cookie-session'
-import dotenv from 'dotenv-safe'
+// import dotenv from 'dotenv-safe'
 
-if (process.env.NODE_ENV! == 'development') {
-	dotenv.config({
-		path: '.env.dev',
-	})
-}
+// if (process.env.NODE_ENV! == 'development') {
+// 	dotenv.config({
+// 		path: '.env.dev',
+// 	})
+// }
 
 // IMPORTS FROM OTHER FILES
 import chatRouter from './routes'
