@@ -46,6 +46,8 @@ declare module 'socket.io' {
 
 io.use((socket, next) => {
 	const token = socket.handshake.query.session_token
+	console.log("token", token)
+	console.log("process.env.JWT_TOKEN_SECRET", process.env.JWT_TOKEN_SECRET);
 	const payload = jwt.verify(token as string, process.env.JWT_TOKEN_SECRET as string)
 	socket.user = payload as JwtPayload
 	console.log('session_token', token)
