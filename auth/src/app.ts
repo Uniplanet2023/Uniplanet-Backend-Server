@@ -14,7 +14,7 @@ import cookieSession from 'cookie-session'
 
 import userRouter from './routes'
 const app = express()
-app.set('trust proxy', true) // proxy ingress nginx
+app.set('trust proxy', true) // proxy ingress nginx  
 
 // middleware
 app.use(express.json())

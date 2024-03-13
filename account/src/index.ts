@@ -12,6 +12,7 @@ app.listen(PORT, async () => {
 
 	// secretCheck()
 	if (process.env.NODE_ENV == 'production') {
+		console.log('Kafka Broker', process.env.KAFKA_BROKER!)
 		kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
 		await userCreatedConsumer.connect()
