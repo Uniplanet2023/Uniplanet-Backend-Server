@@ -49,3 +49,4 @@ spec:
 #kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
 #kubectl -n kafka delete $(kubectl get strimzi -o name -n kafka)
 #kubectl -n kafka delete -f 'https://strimzi.io/install/latest?namespace=kafka'
+#kubectl create secret generic kafka --from-literal=KAFKA_BROKER=kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092

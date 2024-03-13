@@ -26,8 +26,8 @@ app.use(
 )
 app.use(
 	cookieSession({
-		signed: false,
-		secure: false,
+		signed: true,
+		secure: true,
 		sameSite: 'lax',
 		domain: '.uniplanet-back.autos',
 	}),
