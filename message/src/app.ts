@@ -23,6 +23,7 @@ app.use(
 	cookieSession({
 		signed: true,
 		secure: true,
+		keys: [process.env.COOKIE_SESSION_KEY!],
 		sameSite:'lax',
 		domain: '.uniplanet-back.autos'
 	}),
