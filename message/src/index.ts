@@ -28,11 +28,11 @@ io = new SocketIOServer(server, {
 	cookie: false,
 	cors: {
 		origin: [
-			'http://auth.uniplanet-back.autos',
-			'http://products.uniplanet-back.autos',
-			'http://account.uniplanet-back.autos',
-			'http://chat.uniplanet-back.autos',
-			'http://message.uniplanet-back.autos',
+			'https://auth.uniplanet-back.autos',
+			'https://products.uniplanet-back.autos',
+			'https://account.uniplanet-back.autos',
+			'https://chat.uniplanet-back.autos',
+			'https://message.uniplanet-back.autos',
 		],
 		methods: ['GET', 'POST'],
 		credentials: true,
@@ -48,6 +48,7 @@ io.use((socket, next) => {
 	const token = socket.handshake.query.session_token
 	const payload = jwt.verify(token as string, process.env.JWT_TOKEN_SECRET as string)
 	socket.user = payload as JwtPayload
+	console.log('session_token', token)
 	if (!socket.user) {
 		return next(new Error('Authentication error'))
 	}
