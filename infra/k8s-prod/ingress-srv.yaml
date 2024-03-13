@@ -61,7 +61,7 @@ spec:
     - host: message.uniplanet-back.autos
       http:
         paths:
-          - path: /api/message/?(.*)
+          - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
               service:

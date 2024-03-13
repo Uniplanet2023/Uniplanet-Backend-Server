@@ -25,6 +25,11 @@ spec:
           env:
             - name: MONGO_DB_HOST
               value: "mongodb://chat-mongo-srv:27017/chat"
+            - name: COOKIE_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret
+                  key: COOKIE_SESSION_KEY
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:

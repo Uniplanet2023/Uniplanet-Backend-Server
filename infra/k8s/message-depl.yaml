@@ -23,8 +23,11 @@ spec:
                memory: 200Mi
                cpu: "150m"
           env:
-            - name: MONGO_DB_HOST
-              value: "mongodb://message-mongo-srv:27017/message"
+            - name: COOKIE_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret
+                  key: COOKIE_SESSION_KEY
             - name: KAFKA_BROKER
               valueFrom:
                 secretKeyRef:
