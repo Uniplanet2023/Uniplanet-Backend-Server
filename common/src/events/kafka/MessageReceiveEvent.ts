@@ -1,7 +1,7 @@
 import { Topics } from "./topics";
 
 export interface MessageCreatedEvent{
-    topic: Topics.MessageReceive;
+    topic: Topics.MessageCreated;
     data: {
         sender: string;
         receiver: string;
