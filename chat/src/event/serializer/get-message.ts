@@ -24,7 +24,8 @@ export default class GetMessageInfo extends BaseSerializeEvent<GetMessageRestPay
             receiver: this.message.receiver.toString(),
             message: this.message.message,
             messageType: this.message.messageType,
-            readBy: this.message.readBy ? this.message.readBy.toString() : undefined,
+            chat: this.message.chat.toString(),
+			readDate: this.message.readDate ? new Date(this.message.readDate) : undefined,
             createdAt: new Date(this.message.createdAt),
 		}
 	}

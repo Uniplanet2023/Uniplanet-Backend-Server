@@ -1,9 +1,8 @@
 import express from 'express';
 import Chat from '../models/chat';
-import { tokenValidation } from '@uniplanet-lib/common';
+import { redisClient, tokenValidation } from '@uniplanet-lib/common';
 import { CREATE_CHAT } from './routes-def';
 import GetChatInfo from '../event/serializer/get-chat';
-import { redisClient } from '../redis-client';
 
 const createChatRouter = express.Router();
 

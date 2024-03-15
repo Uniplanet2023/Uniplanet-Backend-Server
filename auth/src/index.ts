@@ -17,6 +17,7 @@ if (NODE_ENV === 'production') {
 		throw new Error('KAFKA_BROKER have to be define')
 	}
 }
+console.log(process.env.SMTP_HOST);
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 export const userProducer = new UserCreatedProducer(kafkaClient.kafka)
 
@@ -27,7 +28,7 @@ app.listen(PORT, async () => {
 	if (process.env.NODE_ENV == 'production') {
 		await userProducer.connect()
 	}
-	await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
+	await redisClient.create(REDIS_HOST!, parseInt(REDIS_PORT!))
 	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 	await redisClient.redis.connect().then(() => {
 		console.log('Redis is connected')

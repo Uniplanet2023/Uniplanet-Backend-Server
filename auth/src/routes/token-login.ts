@@ -11,7 +11,7 @@ import { User } from '../models'
 const tokenLoginRouter = express.Router()
 tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, res: Response) => {
 	const result = await User.findOne({ email: req.user!.id })
-
+	console.log('triggered');
 	if (!result && req.user!.verified === 'false') {
 		throw new NotAuthorizedError()
 	}

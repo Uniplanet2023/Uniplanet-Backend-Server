@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import { MessageDocument } from "./message";
 
 export type ChatDocument = mongoose.Document & {
     productId: mongoose.Types.ObjectId;
     buyer: mongoose.Types.ObjectId;
     seller: mongoose.Types.ObjectId;
-    lastMessage: mongoose.Types.ObjectId;
+    lastMessage: MessageDocument;
 };
 
 type ChatAttrs = {

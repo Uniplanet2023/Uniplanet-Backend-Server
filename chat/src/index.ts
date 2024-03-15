@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 import app from './app'
 import { secretCheck } from './secret-check'
-import { EmailSender, NodemailerEmailApi, kafkaClient } from '@uniplanet-lib/common'
-import { redisClient } from './redis-client'
+import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
+
+import MessageCreatedConsumer from './event/consumer/message_receive'
 
 const {
 	PORT = 3003,
@@ -27,6 +28,9 @@ app.listen(PORT, async () => {
 	await redisClient.redis.connect().then(() => {
 		console.log('Redis is connected')
 	})
+	const messageCreatedConsumer = new MessageCreatedConsumer(kafkaClient.kafka, 'messagecreated');
+	await messageCreatedConsumer.connect()
+	
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
 		

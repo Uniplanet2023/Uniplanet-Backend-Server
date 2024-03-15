@@ -3,6 +3,8 @@ import { GetChatRestPayload } from "./type-def"
 import { ChatDocument } from "../../models/chat"
 import GetUserInfo from "./get-user"
 import { UserModel } from "../../models/user"
+import GetMessageInfo from "./get-message"
+import { MessageDocument } from "../../models/message"
 
 
 export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> {
@@ -10,7 +12,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 	private seller: UserModel
 	private buyer: UserModel
 
-	private statusCode = 201
+	private statusCode = 200
 
 	constructor(chat: ChatDocument, seller: UserModel, buyer: UserModel) {
 		super()
@@ -29,6 +31,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 			seller: new GetUserInfo(this.seller).serializeRest(),
 			buyer: new GetUserInfo(this.buyer).serializeRest(),
 			productId: this.chat.productId.toString(),
+			lastMessage: this.chat.lastMessage ? new GetMessageInfo(this.chat.lastMessage).serializeRest(): undefined,
 		}
 	}
 }

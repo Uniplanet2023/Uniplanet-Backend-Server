@@ -14,7 +14,7 @@ export type GetChatRestPayload = {
     seller: GetUserRestPayload
     buyer: GetUserRestPayload
     productId: String
-    latestMessage?: GetMessageRestPayload
+    lastMessage?: GetMessageRestPayload
 }
 
 export type GetMessageRestPayload = {
@@ -22,6 +22,7 @@ export type GetMessageRestPayload = {
     receiver: String
     message: String
     messageType: String
-    readBy?: String
+    chat: String
+    readDate?: Date
     createdAt: Date
 }

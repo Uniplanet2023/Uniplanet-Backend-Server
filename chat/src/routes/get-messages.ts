@@ -24,17 +24,17 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
     const limit = 20;
     const skip = (pageNumber - 1) * limit;
     
-    const messages = await Message.find({ chat: chatId }).skip(skip).limit(limit);
+    const messages = await Message.find({ chat: chatId }).sort({ createdAt: -1 }).limit(limit).skip(skip);
     if (!messages) {
         return res.status(404).send('No messages found');
     }
 
-    const messageList:GetMessageRestPayload[] = [];
+    const messageList:String[] = [];
     messages.forEach(async (message) => {
         const messageInfo: GetMessageRestPayload = new GetMessageInfo(message).serializeRest()
-        messageList.push(messageInfo);
+        messageList.push(JSON.stringify(messageInfo));
     });
 
-    return res.status(201).send(messageList);
+    return res.status(201).json(messageList);
 })
 export default getMessagesRouter

@@ -8,6 +8,7 @@ export type MessageDocument = mongoose.Document & {
     messageType: String;
     readDate: Date;
     chat: mongoose.Types.ObjectId;
+    createdAt: Date;
 };
 
 type MessageAttrs = {
@@ -16,6 +17,7 @@ type MessageAttrs = {
     message: String;
     messageType: String;
     chat: String;
+    createdAt: Date;
 };
 
 interface MessageModel extends mongoose.Model<MessageDocument> {

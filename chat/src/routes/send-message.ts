@@ -9,14 +9,15 @@ import GetMessageInfo from '../event/serializer/get-message';
 
 const sendMessagesRouter = express.Router()
 sendMessagesRouter.post(SEND_MESSAGE, tokenValidation, async (req, res) => {
-    const {message, messageType, receiver, chat} = req.body;
+    const {message, messageType, receiver, chat, createdAt} = req.body;
     console.log('received chatId:', chat);
     const msg = await Message.build({
         sender: req.user!.id,
         chat,
         message,
         messageType,
-        receiver
+        receiver,
+        createdAt
     }).save();
 
     return res.status(201).send(msg);
