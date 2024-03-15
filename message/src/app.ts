@@ -18,15 +18,7 @@ app.use(cors({
 	origin: URL_LIST_PROD,
 	credentials:true
 }))
-app.use(
-	cookieSession({
-		signed: process.env.SMTP_MODE == 'google',
-		keys: [process.env.COOKIE_SESSION_KEY!],
-		secure: process.env.SMTP_MODE == 'google',
-		sameSite:'lax',
-		domain: '.uniplanet-back.autos'
-	}),
-)
+
 app.all('*', () => {
 	throw new NotFoundError()
 })
