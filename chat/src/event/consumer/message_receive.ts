@@ -15,19 +15,24 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
     }
     // Implement the onMessage method
     async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
-        console.log('Message Received');
-        console.log(data);
+        try{
+            console.log('Message Received');
+            console.log(data);
     
-        const msgModel = Message.build({
-            sender: data.sender,
-            receiver: data.receiver,
-            message: data.message,
-            messageType: data.messageType,
-            chat: data.chat,
-            createdAt: data.createdAt
-        })
-        const msg = await msgModel.save();
-        await Chat.findByIdAndUpdate(data.chat, { lastMessage: msg._id});
+            const msgModel = Message.build({
+                sender: data.sender,
+                receiver: data.receiver,
+                message: data.message,
+                messageType: data.messageType,
+                chat: data.chat,
+                createdAt: data.createdAt
+            })
+            const msg = await msgModel.save();
+            await Chat.findByIdAndUpdate(data.chat, { lastMessage: msg._id});
+        }catch(err){
+            console.log(err);
+        }
+        
     }
 
 }
