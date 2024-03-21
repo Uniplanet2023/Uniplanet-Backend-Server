@@ -36,8 +36,13 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
         buyer: req.user!.id,
         seller: sellerId,
     });
+    // Save the online status of the buyer in Redis
+
     await chat.save();
     const chatInfo = new GetChatInfo(chat,seller,buyer);
+    
+    await redisClient.redis.set(chatInfo.serializeRest().id.toString(), buyer.id);
+
     // Include serialized buyer and seller data in the response
     return res.status(chatInfo.getStatusCode()).json(chatInfo.serializeRest());
 });

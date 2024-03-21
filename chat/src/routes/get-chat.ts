@@ -15,7 +15,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
     .sort({ updatedAt: -1 });
 
     if (!chats || chats.length === 0) {
-        return res.status(404).send('No chats found');
+        return res.status(200).json([]);
     }
 
     for (const chat of chats) {
@@ -29,7 +29,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
             // You might want to just skip this iteration and continue with the next one.
             // or use some form of error handling/logic that fits your needs.
         }
-        console.log('trigger');
+        
         const seller = JSON.parse(sellerData);
         const buyer = JSON.parse(buyerData);
 

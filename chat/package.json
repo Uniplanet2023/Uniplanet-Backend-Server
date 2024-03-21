@@ -33,7 +33,6 @@
 		"nodemon": "3.0.2"
 	},
 	"devDependencies": {
-		"nodemon": "3.0.2",
 		"@types/bcryptjs": "2.4.6",
 		"@types/cookie-session": "2.0.48",
 		"@types/cors": "^2.8.17",

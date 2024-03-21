@@ -13,9 +13,9 @@ export type MessageDocument = mongoose.Document & {
 
 type MessageAttrs = {
     sender: String;
-    receiver: String;
     message: String;
     messageType: String;
+    receiver: String;
     chat: String;
     createdAt: Date;
 };

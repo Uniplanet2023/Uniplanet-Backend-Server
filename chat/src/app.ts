@@ -1,6 +1,6 @@
 import express from 'express'
 import 'express-async-errors'
-import { errorHandler, NotFoundError, URL_LIST_PROD } from '@uniplanet-lib/common'
+import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
 import cors from 'cors'
 import cookieSession from 'cookie-session'
 // import dotenv from 'dotenv-safe'
@@ -19,7 +19,7 @@ app.set('trust proxy', true) // proxy ingress nginx
 // middleware
 app.use(express.json())
 app.use(cors({
-	origin: URL_LIST_PROD,
+	origin: process.env.SMTP_MODE == 'google' ? URL_LIST_PROD : URL_LIST_DEV,
 	credentials:true
 }))
 app.use(

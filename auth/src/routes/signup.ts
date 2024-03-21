@@ -12,6 +12,7 @@ import {
 import { sendVerificationEmail } from '../utils/send-verification-email'
 import { UserCreatedProducer } from '../events'
 import { userProducer } from '..'
+import e from 'express'
 
 const signUpRouter = express.Router()
 
@@ -27,6 +28,7 @@ signUpRouter.post(
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
 			}
+			await existingUser.updateOne({ password, school });
 			// User exists but not verified, resend verification email
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
 				// Create and save new user

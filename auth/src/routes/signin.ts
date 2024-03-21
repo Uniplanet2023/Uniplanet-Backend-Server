@@ -11,6 +11,7 @@ import {
 } from '@uniplanet-lib/common'
 import { SIGNIN_ROUTE } from './routes-def'
 import { enforceTokenUniqueness } from '../utils/enforce-token-unique'
+import UserSerializer from '../events/serializer/UserSerializer'
 
 const signInRouter = express.Router()
 signInRouter.post(
@@ -32,10 +33,10 @@ signInRouter.post(
 
 		// Generate JWT
 		const userJwt = await enforceTokenUniqueness(user)
-
+		
 		// Store it on session object
 		req.session = { jwt: userJwt }
-		return res.status(202).send({ access: true })
+		return res.status(202).send({ userId: user._id, access: true })
 	},
 )
 

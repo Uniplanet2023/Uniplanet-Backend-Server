@@ -17,6 +17,7 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
     async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
         console.log('Message Received');
         console.log(data);
+    
         const msgModel = Message.build({
             sender: data.sender,
             receiver: data.receiver,

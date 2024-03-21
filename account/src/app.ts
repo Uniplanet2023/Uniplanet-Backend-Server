@@ -1,6 +1,6 @@
 import express from 'express'
 import 'express-async-errors'
-import { errorHandler, NotFoundError } from '@uniplanet-lib/common'
+import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
 import cors from 'cors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
@@ -20,18 +20,15 @@ app.set('trust proxy', true) // proxy ingress nginx
 app.use(express.json())
 app.use(
 	cors({
-		origin: [
-			'http://auth.uniplanet-back.autos',
-			'http://products.uniplanet-back.autos',
-			'http://account.uniplanet-back.autos',
-		],
+		origin: process.env.SMTP_MODE == 'google' ? URL_LIST_PROD : URL_LIST_DEV,
 		credentials: true,
 	}),
 )
 app.use(
 	cookieSession({
-		signed: false,
-		secure: false,
+		signed: process.env.SMTP_MODE == 'google',
+		keys: [process.env.COOKIE_SESSION_KEY!],
+		secure: process.env.SMTP_MODE == 'google',
 		sameSite: 'lax',
 		domain: '.uniplanet-back.autos',
 	}),

@@ -20,7 +20,7 @@ app.set('trust proxy', true) // proxy ingress nginx
 app.use(express.json())
 app.use(
 	cors({
-		origin: URL_LIST_PROD,
+		origin: process.env.SMTP_MODE == 'google' ? URL_LIST_PROD : URL_LIST_DEV,
 		credentials: true,
 	}),
 )
