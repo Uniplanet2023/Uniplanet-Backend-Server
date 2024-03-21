@@ -61,11 +61,11 @@ io.on('connection', socket => {
 	socket.on('setup', async (jsonRoom, callback) => {
 		const chatRooms = JSON.parse(jsonRoom);
 		console.log('my id ' + socket.userId);
-		redisClient.redis.sAdd('onlineUsers', socket.userId);
 		chatRooms.forEach((room: string) => {
 			console.log(room);
 			const roomObj:Room = JSON.parse(room);
 			socket.roomIds.push(roomObj.id);
+			redisClient.redis.sAdd('onlineUsers', socket.userId);
 			io.to(roomObj.id).emit('online user', socket.userId);
 			socket.join(roomObj.id)
 			if(roomObj.buyer.id != socket.userId) {
