@@ -43,18 +43,20 @@ io = new SocketIOServer(server, {
 declare module 'socket.io' {
 	interface Socket {
 		userId: string
+		school: string
 		roomIds: string[]
 	}
 }
 
 io.use((socket, next) => {
-	const userId = socket.handshake.query.userId
-	if (!userId) {
+	const {userId, school} = socket.handshake.query
+	if (!userId || !school) {
 		return next(new Error('Authentication error'))
 	}
 	socket.userId = userId as string;
+	socket.school = school as string;
 	socket.roomIds = [];
-	console.log(socket.userId);
+
 	next()
 })
 io.on('connection', socket => {
@@ -63,21 +65,19 @@ io.on('connection', socket => {
 
 	socket.on('setup', async (jsonRoom, callback) => {
 		const chatRooms = JSON.parse(jsonRoom);
-		console.log('my id ' + socket.userId);
 		chatRooms.forEach((room: string) => {
-			console.log(room);
 			const roomObj:Room = JSON.parse(room);
 			socket.roomIds.push(roomObj.id);
-			redisClient.redis.sAdd('onlineUsers', socket.userId);
+			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 			io.to(roomObj.id).emit('online user', socket.userId);
 			socket.join(roomObj.id)
 			if(roomObj.buyer.id != socket.userId) {
-				redisClient.redis.sIsMember('onlineUsers',roomObj.buyer.id ).then(isOnline => {
+				redisClient.redis.sIsMember(`${socket.school} Online User`,roomObj.buyer.id ).then(isOnline => {
 					callback(roomObj.buyer.id, isOnline); // Respond back to the requester with the online status
 				});
 				console.log('target user id ' + roomObj.buyer.id);
 			}else{
-				redisClient.redis.sIsMember('onlineUsers',roomObj.seller.id ).then(isOnline => {
+				redisClient.redis.sIsMember(`${socket.school} Online User`,roomObj.seller.id ).then(isOnline => {
 					callback(roomObj.seller.id, isOnline); // Respond back to the requester with the online status
 				});
 				console.log('target user id ' + roomObj.seller.id);
@@ -117,7 +117,7 @@ io.on('connection', socket => {
 	})
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
-		redisClient.redis.sIsMember('onlineUsers', checkUserId).then(isOnline => {
+		redisClient.redis.sIsMember(`${socket.school} Online User`, checkUserId).then(isOnline => {
 			callback(isOnline); // Respond back to the requester with the online status
 		});
 	});

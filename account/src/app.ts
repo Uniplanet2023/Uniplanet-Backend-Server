@@ -20,15 +20,15 @@ app.set('trust proxy', true) // proxy ingress nginx
 app.use(express.json())
 app.use(
 	cors({
-		origin: process.env.SMTP_MODE == 'google' ? URL_LIST_PROD : URL_LIST_DEV,
+		origin: process.env.DEVELOPMENT_MODE == 'production' ? URL_LIST_PROD : URL_LIST_DEV,
 		credentials: true,
 	}),
 )
 app.use(
 	cookieSession({
-		signed: process.env.SMTP_MODE == 'google',
+		signed: process.env.DEVELOPMENT_MODE == 'production',
 		keys: [process.env.COOKIE_SESSION_KEY!],
-		secure: process.env.SMTP_MODE == 'google',
+		secure: process.env.DEVELOPMENT_MODE == 'production',
 		sameSite: 'lax',
 		domain: '.uniplanet-back.autos',
 	}),

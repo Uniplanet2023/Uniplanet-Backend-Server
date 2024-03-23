@@ -50,6 +50,11 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: REDIS_PORT
+            - name: DEVELOPMENT_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: development-mode
+                  key: DEVELOPMENT_MODE
 ---
 apiVersion: v1
 kind: Service

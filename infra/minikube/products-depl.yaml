@@ -56,7 +56,6 @@ spec:
                 secretKeyRef:
                   name: smtp-config
                   key: SMTP_MODE
-
             - name: CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -77,7 +76,6 @@ spec:
                 secretKeyRef:
                   name: google-oauth
                   key: REFRESH_TOKEN
-
             - name: OTP_KEY
               valueFrom:
                 secretKeyRef:
@@ -93,8 +91,11 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: REDIS_PORT
-            - name: MONGO_DB
-              value: mongodb://products-mongo-srv:27017/products
+            - name: DEVELOPMENT_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: development-mode
+                  key: DEVELOPMENT_MODE
 ---
 apiVersion: v1
 kind: Service

@@ -17,7 +17,7 @@ tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, r
 	
 	if (!user) throw new UserNotFoundError()
 	if (!user.verified) throw new VerificationRequiredError()
-	return res.status(201).send({ userId:user._id, access: true })
+	return res.status(201).send({ userId:user._id, school:user.school, access: true })
 })
 
 export default tokenLoginRouter

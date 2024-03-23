@@ -36,7 +36,7 @@ signInRouter.post(
 		
 		// Store it on session object
 		req.session = { jwt: userJwt }
-		return res.status(202).send({ userId: user._id, access: true })
+		return res.status(202).send({ userId: user._id, school:user.school, access: true })
 	},
 )
 

@@ -10,9 +10,7 @@ import {
 	validateRequest,
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
-import { UserCreatedProducer } from '../events'
 import { userProducer } from '..'
-import e from 'express'
 
 const signUpRouter = express.Router()
 
