@@ -10,7 +10,9 @@ export const emailValidation = [
 			}
 		})
 		.withMessage('Email is not normalized')
-		.normalizeEmail(),
+		.normalizeEmail({
+			gmail_remove_dots: false,
+		}),
 	body('email')
 		.custom(async value => {
 			const info = urlInfo(value)
