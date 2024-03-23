@@ -67,8 +67,8 @@ export default class NodemailerSmtpServer implements SmtpServer {
 			port: this.port,
 		}
 		config.auth = this.configAuth
-		if (process.env.SMTP_PORT == '465') {
-			config.secure = true
+		if (process.env.SMTP_MODE == 'gmail') {
+			config.secure = process.env.SMTP_PORT == '465'
 		}
 		return config
 	}
