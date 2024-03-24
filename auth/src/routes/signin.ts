@@ -33,10 +33,10 @@ signInRouter.post(
 
 		// Generate JWT
 		const userJwt = await enforceTokenUniqueness(user)
-		
+
 		// Store it on session object
 		req.session = { jwt: userJwt }
-		return res.status(202).send({ userId: user._id, school:user.school, access: true })
+		return res.status(202).send({ userId: user._id, school: user.school, access: true })
 	},
 )
 

@@ -5,6 +5,7 @@ import { URL_LIST_PROD, kafkaClient, redisClient, tokenValidation } from '@unipl
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { MessageCreatedProducer } from './event/producer/MessageCreatedProducer'
 import { MessageReadProducer } from './event/producer/MessageReadProducer'
+import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
 app.use(morgan('tiny'))
 
 const { PORT = 3004, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
@@ -17,12 +18,15 @@ if (NODE_ENV === 'production') {
 }
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 const messageCreateProvider = new MessageCreatedProducer(kafkaClient.kafka);
+const messageReadAllProvider = new MessageReadAllProducer(kafkaClient.kafka);
 const messageReadProvider = new MessageReadProducer(kafkaClient.kafka);
 
 const server = app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
 	await messageCreateProvider.connect();
+	await messageReadAllProvider.connect();
 	await messageReadProvider.connect();
+	
 	await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
 	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 	await redisClient.redis.connect().then(() => {
@@ -110,11 +114,17 @@ io.on('connection', socket => {
 
 		io.to(msg.chat).emit('message received', newMessageReceived)
 	})
-	socket.on('mark seen message', (chatId) => {
+	socket.on('read all message', (chatId) => {
 		const readMessageTime = new Date();
-		io.to(chatId).emit('mark seen message', {chatId, readMessageTime});
-		messageReadProvider.sendMessage({sender: socket.userId, chat: chatId, readDate: readMessageTime});
+		io.to(chatId).emit('read all message', {chatId, readMessageTime});
+		messageReadAllProvider.sendMessage({sender: socket.userId, chat: chatId, readDate: readMessageTime});
 	})
+	socket.on('read message', (chatId, messageId) => {
+		console.log('read message');
+		const readMessageTime = new Date();
+		io.to(chatId).emit('read message', {chatId, messageId, readMessageTime});
+		messageReadProvider.sendMessage({messageId: messageId,readDate: readMessageTime});
+	});
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
 		redisClient.redis.sIsMember(`${socket.school} Online User`, checkUserId).then(isOnline => {

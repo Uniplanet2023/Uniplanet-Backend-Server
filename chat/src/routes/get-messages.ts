@@ -28,6 +28,7 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
     if (!messages) {
         return res.status(404).send('No messages found');
     }
+    console.log(messages);
 
     const messageList:String[] = [];
     messages.forEach(async (message) => {

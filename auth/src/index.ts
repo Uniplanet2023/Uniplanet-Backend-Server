@@ -29,12 +29,12 @@ app.listen(PORT, async () => {
 		await userProducer.connect()
 	}
 	if (NODE_ENV === 'production') {
-	await redisClient.create(REDIS_HOST!, parseInt(REDIS_PORT!))
-	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
-	await redisClient.redis.connect().then(() => {
-		console.log('Redis is connected')
-	})
-}
+		await redisClient.create(REDIS_HOST!, parseInt(REDIS_PORT!))
+		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
+		await redisClient.redis.connect().then(() => {
+			console.log('Redis is connected')
+		})
+	}
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()

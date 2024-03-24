@@ -26,7 +26,7 @@ signUpRouter.post(
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
 			}
-			await existingUser.updateOne({ password, school });
+			await existingUser.updateOne({ password, school })
 			// User exists but not verified, resend verification email
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
 				// Create and save new user

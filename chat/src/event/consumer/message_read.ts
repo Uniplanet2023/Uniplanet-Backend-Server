@@ -18,7 +18,7 @@ export default class MessageReadConsumer extends BaseConsumer<MessageReadEvent> 
         try{
             console.log('Message Read Kafka');
             console.log(data);
-            await Message.find({chat: data.chat, receiver: data.sender}).updateMany({readDate: data.readDate});
+            await Message.findByIdAndUpdate(data.messageId,{readDate: data.readDate})
         }catch(err){
             console.log(err);
         }

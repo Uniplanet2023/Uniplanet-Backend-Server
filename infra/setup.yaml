@@ -1,0 +1,13 @@
+
+# 1.kubernetes secrets
+# kubectl create secret generic smtp-config --from-literal=SMTP_MODE=gmail --from-literal=SMTP_HOST=smtp.gmail.com --from-literal=SMTP_PORT=465 
+# kubectl create secret generic google-oauth --from-literal=CLIENT_ID=885368228482-2ic8dfljr94ltfji95si1itsddtholqe.apps.googleusercontent.com --from-literal=CLIENT_SECRET=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 --from-literal=REDIRECT_URI=https://developers.google.com/oauthplayground --from-literal=REFRESH_TOKEN=1//04Z-Mm3DfCtd-CgYIARAAGAQSNwF-L9IrUi5xYOy0zIBjI3scugoTyfOvAa6F74vRme7PiY4CFmgg4CBGtsvVFqui8HSrMut3gEQ
+# kubectl create secret generic utils --from-literal=OTP_KEY=uniplanetLLC123
+# kubectl create secret generic jwt-secret  --from-literal=JWT_TOKEN_SECRET=SeCrEtKeYfOrHaShInG
+# kubectl create secret generic development-mode --from-literal=DEVELOPMENT_MODE=local_kubernetes
+# kubectl create secret generic cookie-secret --from-literal=COOKIE_SESSION_KEY=fsaeklrjxvsalfjrsrew32rewf!
+# kubectl create secret generic kafka --from-literal=KAFKA_BROKER=my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+# kubectl create secret generic redis --from-literal=REDIS_HOST=session-redis-srv.session.svc.cluster.local --from-literal=REDIS_PORT=6379
+
+# 2.Ingress setup
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml

@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: auth.uniplanet-back.autos
+    - host: auth.uniplanet-back.auto
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -19,7 +19,7 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: products.uniplanet-back.autos
+    - host: products.uniplanet-back.auto
       http:
         paths:
           - path: /api/products/?(.*)
@@ -29,7 +29,7 @@ spec:
                 name: products-srv
                 port:
                   number: 3001
-    - host: account.uniplanet-back.autos
+    - host: account.uniplanet-back.auto
       http:
         paths:
           - path: /api/account/?(.*)
@@ -39,7 +39,7 @@ spec:
                 name: account-srv
                 port:
                   number: 3002
-    - host: chat.uniplanet-back.autos
+    - host: chat.uniplanet-back.auto
       http:
         paths:
           - path: /api/chat/?(.*)
@@ -49,7 +49,7 @@ spec:
                 name: chat-srv
                 port:
                   number: 3003
-    - host: message.uniplanet-back.autos
+    - host: message.uniplanet-back.auto
       http:
         paths:
           - path: /?(.*)

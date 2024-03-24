@@ -28,7 +28,7 @@ app.use(
 		keys: [process.env.COOKIE_SESSION_KEY!],
 		secure: process.env.DEVELOPMENT_MODE == 'production',
 		sameSite:'lax',
-		domain: '.uniplanet-back.autos'
+		domain: process.env.DEVELOPMENT_MODE == 'production' ? '.uniplanet-back.autos' : '.uniplanet-back.auto',
 	}),
 )
 app.use(chatRouter)

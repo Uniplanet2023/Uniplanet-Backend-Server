@@ -14,7 +14,7 @@ if (process.env.NODE_ENV! == 'development') {
 
 import userRouter from './routes'
 const app = express()
-app.set('trust proxy', true) // proxy ingress nginx  
+app.set('trust proxy', true) // proxy ingress nginx
 
 // middleware
 app.use(express.json())
@@ -30,7 +30,7 @@ app.use(
 		keys: [process.env.COOKIE_SESSION_KEY!],
 		secure: process.env.DEVELOPMENT_MODE == 'production',
 		sameSite: 'lax',
-		domain: '.uniplanet-back.autos',
+		domain: process.env.DEVELOPMENT_MODE == 'production' ? '.uniplanet-back.autos' : '.uniplanet-back.auto',
 	}),
 )
 app.use(cors())
