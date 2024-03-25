@@ -18,7 +18,10 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
         try{
             console.log('Message Read All Kafka');
             console.log(data);
-            await Message.find({chat: data.chat, receiver: data.sender, readDate:null}).updateMany({readDate: data.readDate});
+            await Message.find({chat: data.chat, receiver: data.sender, readDate:null})
+            .sort({ createdAt: -1 })
+            .limit(20)
+            .updateMany({readDate: data.readDate});
         }catch(err){
             console.log(err);
         }

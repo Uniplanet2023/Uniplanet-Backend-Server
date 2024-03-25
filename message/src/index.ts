@@ -116,15 +116,15 @@ io.on('connection', socket => {
 	})
 	socket.on('read all message', (chatId) => {
 		const readMessageTime = new Date();
-		io.to(chatId).emit('read all message', {chatId, readMessageTime});
+		io.to(chatId).emit('read all message', {sender: socket.userId,chatId, readMessageTime});
 		messageReadAllProvider.sendMessage({sender: socket.userId, chat: chatId, readDate: readMessageTime});
 	})
-	socket.on('read message', (chatId, messageId) => {
-		console.log('read message');
-		const readMessageTime = new Date();
-		io.to(chatId).emit('read message', {chatId, messageId, readMessageTime});
-		messageReadProvider.sendMessage({messageId: messageId,readDate: readMessageTime});
-	});
+	// socket.on('read message', (chatId, messageId) => {
+	// 	console.log('read message');
+	// 	const readMessageTime = new Date();
+	// 	io.to(chatId).emit('read message', {chatId, messageId, readMessageTime});
+	// 	messageReadProvider.sendMessage({messageId: messageId,readDate: readMessageTime});
+	// });
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
 		redisClient.redis.sIsMember(`${socket.school} Online User`, checkUserId).then(isOnline => {

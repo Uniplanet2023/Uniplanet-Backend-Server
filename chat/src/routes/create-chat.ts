@@ -27,7 +27,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 
     if (existingChat) {
         const chatInfo = new GetChatInfo(existingChat, seller, buyer);
-        return res.status(chatInfo.getStatusCode()).json(chatInfo.serializeRest());
+        return res.status(chatInfo.getStatusCode()).json({chat:chatInfo.serializeRest()});
     }
     
     // Create and save the chat
