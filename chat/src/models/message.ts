@@ -30,7 +30,7 @@ const messageModel = new mongoose.Schema({
     messageType: { type: String, required: true, default: "text"},
     receiver: { type: mongoose.Schema.Types.ObjectId, required: true},
     chat:{ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Chat", index: true},
-    readDate: { type: Date },
+    readDate: { type: Date,index: true},
 },{ timestamps: true });
 
 messageModel.statics.build = (attrs: MessageAttrs) => {

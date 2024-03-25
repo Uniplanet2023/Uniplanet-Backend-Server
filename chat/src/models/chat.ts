@@ -5,8 +5,7 @@ export type ChatDocument = mongoose.Document & {
     productId: mongoose.Types.ObjectId;
     buyer: mongoose.Types.ObjectId;
     seller: mongoose.Types.ObjectId;
-    lastMessage: MessageDocument;
-    unreadCount: Number;
+    lastMessage: MessageDocument;    
 };
 
 type ChatAttrs = {
@@ -25,7 +24,6 @@ const chatModel = new mongoose.Schema({
     seller: { type: mongoose.Schema.Types.ObjectId, required: true},
     buyer: { type: mongoose.Schema.Types.ObjectId, required: true},
     lastMessage: { type: mongoose.Schema.Types.ObjectId, ref:"Message", default: null },
-    unreadCount: { type: Number, default: 0 },
     deletionDate: { type: Date, default: null },
 },{ timestamps: true });
 

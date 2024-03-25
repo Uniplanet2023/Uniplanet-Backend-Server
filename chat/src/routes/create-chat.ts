@@ -44,7 +44,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
     await redisClient.redis.set(chatInfo.serializeRest().id.toString(), buyer.id);
 
     // Include serialized buyer and seller data in the response
-    return res.status(chatInfo.getStatusCode()).json(chatInfo.serializeRest());
+    return res.status(chatInfo.getStatusCode()).json({chat:chatInfo.serializeRest()});
 });
 
 export default createChatRouter;
