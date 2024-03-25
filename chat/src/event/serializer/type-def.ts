@@ -10,7 +10,7 @@ export type GetUserRestPayload = {
 
 
 export type GetChatRestPayload = {
-    id: ObjectId
+    id: String
     seller: GetUserRestPayload
     buyer: GetUserRestPayload
     productId: String
