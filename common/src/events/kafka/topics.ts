@@ -7,4 +7,5 @@ export enum Topics{
     MessageRead = 'message-read',
     MessageDelete = 'message-delete',
     MessageUpdate = 'message-update',
+    LikeCreate = 'like-create',
 }
