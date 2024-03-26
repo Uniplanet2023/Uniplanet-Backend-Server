@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: like-depl
+spec:
+  replicas: 1
+  selector: # letting deployment know what app should dealing with
+    matchLabels:
+      app: like
+  template: # specify exact configuration of the pod we want to deployment to create
+    metadata:
+      labels:
+        app: like
+    spec:
+      containers:
+        - name: like
+          image: uniplanet/like
+          resources:
+            limits:
+              memory: 250Mi
+              cpu: "200m"
+            requests:
+               memory: 200Mi
+               cpu: "150m"
+          env:
+            - name: MONGO_DB_HOST
+              value: "mongodb://like-mongo-srv:27017/like"
+            - name: COOKIE_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret
+                  key: COOKIE_SESSION_KEY
+            - name: KAFKA_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: kafka
+                  key: KAFKA_BROKER
+
+            - name: JWT_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_TOKEN_SECRET
+
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_HOST
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_PORT
+            - name: SMTP_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_MODE
+
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth
+                  key: CLIENT_SECRET
+            - name: REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth
+                  key: REDIRECT_URI
+            - name: REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth
+                  key: REFRESH_TOKEN
+
+            - name: OTP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: utils
+                  key: OTP_KEY
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_PORT
+            - name: DEVELOPMENT_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: development-mode
+                  key: DEVELOPMENT_MODE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: like-srv
+spec: 
+  selector:
+    app: like
+  ports:
+    - name: like
+      protocol: TCP
+      port: 3005
+      targetPort: 3005

@@ -40,8 +40,6 @@ build:
         manual:
           - src: src/**/*.ts
             dest: .
-      docker:
-        dockerfile: Dockerfile
   local:
     push: false
 manifests:

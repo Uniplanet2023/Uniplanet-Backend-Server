@@ -4,13 +4,11 @@ import { AccountDocument } from '../../models/account'
 
 export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPayload> {
 	private account: AccountDocument
-	private user: UserRestPayload
 
 	private statusCode = 201
 
-	constructor(account: AccountDocument, user: UserRestPayload) {
+	constructor(account: AccountDocument) {
 		super()
-		this.user = user
 		this.account = account
 	}
 
@@ -21,10 +19,10 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 	serializeRest(): GetAccountRestPayload {
 		return {
 			id: this.account._id,
-			name: this.user.name,
-			email: this.user.email,
-			profileImage: this.user.profileImage,
-			school: this.user.school,
+			name: this.account.name,
+			email: this.account.email,
+			profileImage: this.account.profileImage,
+			school: this.account.school,
 			unreadNotification: this.account.unreadNotification,
 			unreadMessage: this.account.unreadMessage,
 			searchHistory: this.account.searchHistory,

@@ -59,3 +59,13 @@ spec:
                 name: message-srv
                 port:
                   number: 3004
+    - host: like.uniplanet-back.auto
+      http:
+        paths:
+          - path: /api/like/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 3005

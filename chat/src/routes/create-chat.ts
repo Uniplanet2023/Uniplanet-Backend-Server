@@ -1,50 +1,58 @@
-import express from 'express';
-import Chat from '../models/chat';
-import { redisClient, tokenValidation } from '@uniplanet-lib/common';
-import { CREATE_CHAT } from './routes-def';
-import GetChatInfo from '../event/serializer/get-chat';
+import express from 'express'
+import Chat from '../models/chat'
+import { redisClient, tokenValidation } from '@uniplanet-lib/common'
+import { CREATE_CHAT } from './routes-def'
+import GetChatInfo from '../event/serializer/get-chat'
+import User from '../models/user'
 
-const createChatRouter = express.Router();
+const createChatRouter = express.Router()
 
 createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-    const { productId, sellerId} = req.body;
+	const { productId, seller, buyer } = req.body
 
-    // Check if a chat already exists between these two users for this product
-    const existingChat = await Chat.findOne({
-        productId: productId,
-        buyer: req.user!.id,
-        seller: sellerId,
-    });
-    console.log('existing chat:', existingChat);
+	const sellerParsed = JSON.parse(seller)
+	const buyerParsed = JSON.parse(buyer)
+	var sellerObj = await User.findById(sellerParsed.id)
+	var buyerObj = await User.findById(buyerParsed.id)
+	if (!sellerObj) {
+		sellerObj = User.build(sellerParsed)
+		sellerObj.save()
+	}
+	if (!buyerObj) {
+		buyerObj = User.build(buyerParsed)
+		buyerObj.save()
+	}
 
-    const sellerData = await redisClient.redis.get(sellerId);
-    const buyerData = await redisClient.redis.get(req.user!.id);
-    if (!sellerData || !buyerData) {
-        return res.status(404).send('User not found');
-    }
-    const seller = JSON.parse(sellerData);
-    const buyer = JSON.parse(buyerData);
+	// Check if a chat already exists between these two users for this product
+	const existingChat = await Chat.findOne({
+		productId: productId,
+		buyer: buyerObj,
+		seller: sellerObj,
+	})
+		.populate('buyer')
+		.populate('seller')
 
-    if (existingChat) {
-        const chatInfo = new GetChatInfo(existingChat, seller, buyer);
-        return res.status(chatInfo.getStatusCode()).json({chat:chatInfo.serializeRest()});
-    }
-    
-    // Create and save the chat
-    const chat = Chat.build({
-        productId: productId,
-        buyer: req.user!.id,
-        seller: sellerId,
-    });
-    // Save the online status of the buyer in Redis
+	console.log('existing chat:', existingChat)
 
-    await chat.save();
-    const chatInfo = new GetChatInfo(chat,seller,buyer);
-    
-    await redisClient.redis.set(chatInfo.serializeRest().id.toString(), buyer.id);
+	if (existingChat) {
+		const chatInfo = new GetChatInfo(existingChat)
+		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
+	}
 
-    // Include serialized buyer and seller data in the response
-    return res.status(chatInfo.getStatusCode()).json({chat:chatInfo.serializeRest()});
-});
+	// Create and save the chat
+	const chat = Chat.build({
+		productId: productId,
+		buyer: buyerObj.id,
+		seller: sellerObj.id,
+	})
+	// Save the online status of the buyer in Redis
 
-export default createChatRouter;
+	const chatObj = await (await chat.save())
+    .populate('seller buyer');
+	const chatInfo = new GetChatInfo(chatObj)
+
+	// Include serialized buyer and seller data in the response
+	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
+})
+
+export default createChatRouter

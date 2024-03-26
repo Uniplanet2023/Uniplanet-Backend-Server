@@ -18,9 +18,12 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
 
 		const account = Account.build({
 			_id: data.id,
+			name: data.name,
+			email: data.email,
+			profileImage: data.profileImage,
+			school: data.school,
 		})
 		await account.save()
-		await redisClient.redis.set(data.id, JSON.stringify(data))
 		console.log('account created successfully')
 	}
 }

@@ -15,7 +15,7 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
     if (!chat) {
         return res.status(404).send('Chat not found');
     }
-    if(!chat.buyer.equals(req.user!.id) && !chat.seller.equals(req.user!.id)){
+    if(!chat.buyer._id.equals(req.user!.id) && !chat.seller._id.equals(req.user!.id)){
         return res.status(401).send('Unauthorized');
     }
 

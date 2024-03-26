@@ -11,10 +11,8 @@ accountInfoRouter.get(GET_ACCOUNT_INFO, tokenValidation, async (req: Request, re
 	if (!accountData) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
-	const user = await redisClient.redis.get(req.user!.id)
-	if (!user) return res.status(404).send({ message: 'User not found' })
-	const userObj = JSON.parse(user!)
-	const accountInfo = new GetAccountInfo(accountData, userObj)
+	
+	const accountInfo = new GetAccountInfo(accountData)
 
 	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
 })

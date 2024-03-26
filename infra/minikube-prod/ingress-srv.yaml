@@ -16,6 +16,7 @@ spec:
         - account.uniplanet-back.autos
         - chat.uniplanet-back.autos
         - message.uniplanet-back.autos
+        - like.uniplanet-back.autos
       secretName: letsencrypt-nginx
   rules:
     - host: auth.uniplanet-back.autos
@@ -68,6 +69,16 @@ spec:
                 name: message-srv
                 port:
                   number: 3004
+    - host: like.uniplanet-back.auto
+      http:
+        paths:
+          - path: /api/like/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 3005
 ---
 apiVersion: v1
 kind: Service

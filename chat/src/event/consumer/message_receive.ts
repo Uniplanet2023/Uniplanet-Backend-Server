@@ -1,38 +1,43 @@
-import { Kafka, EachMessagePayload } from 'kafkajs';
-import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common';
-import { profile } from 'console';
-import Message from '../../models/message';
-import Chat from '../../models/chat';
-
-
+import { Kafka, EachMessagePayload } from 'kafkajs'
+import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common'
+import { profile } from 'console'
+import Message from '../../models/message'
+import Chat from '../../models/chat'
+import User from '../../models/user'
 
 // Extend the BaseConsumer for the user:created event
 export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
-    topic:Topics.MessageCreated = Topics.MessageCreated;
+	topic: Topics.MessageCreated = Topics.MessageCreated
 
-    constructor(kafka:Kafka, groupId:string){
-        super(kafka,groupId);
-    }
-    // Implement the onMessage method
-    async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
-        try{
-            console.log('Message Received');
-            console.log(data);
-    
-            const msgModel = Message.build({
-                sender: data.sender,
-                receiver: data.receiver,
-                message: data.message,
-                messageType: data.messageType,
-                chat: data.chat,
-                createdAt: data.createdAt
-            })
-            const msg = await msgModel.save();
-            await Chat.findByIdAndUpdate(data.chat, { lastMessage: msg._id});
-        }catch(err){
-            console.log(err);
-        }
-        
-    }
-
+	constructor(kafka: Kafka, groupId: string) {
+		super(kafka, groupId)
+	}
+	// Implement the onMessage method
+	async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
+		try {
+			console.log('Message Received')
+			console.log(data)
+			const receiver = await User.findById(data.receiver)
+			const sender = await User.findById(data.sender)
+			const chat = await Chat.findById(data.chat)
+			if (!sender || !receiver) {
+				throw new Error('User not found')
+			}
+			if (!chat) {
+				throw new Error('Chat not found')
+			}
+			const msgModel = Message.build({
+				sender: sender._id,
+				receiver: receiver._id,
+				message: data.message,
+				messageType: data.messageType,
+				chat: chat._id,
+				createdAt: data.createdAt,
+			})
+			const msg = await msgModel.save()
+			await chat.updateOne({ lastMessage: msg._id })
+		} catch (err) {
+			console.log(err)
+		}
+	}
 }
