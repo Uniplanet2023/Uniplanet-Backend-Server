@@ -1,1 +1,0 @@
-export const LIKE_PRODUCT = '/api/like/like-product';
