@@ -5,10 +5,13 @@ import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@unip
 
 import MessageCreatedConsumer from './event/consumer/message_receive'
 import MessageReadAllConsumer from './event/consumer/message_read_all'
-import MessageReadConsumer from './event/consumer/message_read'
+import { CreateChatProducer } from './event/producer/create_chat'
+
 const { PORT = 3003, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST } = process.env
 
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
+
+export const createChatProducer = new CreateChatProducer(kafkaClient.kafka);		
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -18,11 +21,13 @@ app.listen(PORT, async () => {
 		}
 		const messageCreatedConsumer = new MessageCreatedConsumer(kafkaClient.kafka, 'messagecreated')
 		const messageReadAllConsumer = new MessageReadAllConsumer(kafkaClient.kafka, 'messageread')
-		const messageReadConsumer = new MessageReadConsumer(kafkaClient.kafka, 'messagereadall')
+		
 
-		await messageReadConsumer.connect()
+		// Consumer
 		await messageReadAllConsumer.connect()
 		await messageCreatedConsumer.connect()
+		// Producer
+		await createChatProducer.connect()
 	}
 
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(() => {

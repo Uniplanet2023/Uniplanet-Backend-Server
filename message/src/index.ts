@@ -102,8 +102,18 @@ io.on('connection', socket => {
 		console.log('room')
 		io.to(room).emit('stop typing', room)
 	})
-	socket.on('join chat', room => {
+	socket.on('join chat', ({room,targetUser}, callback) => {
+		console.log('join chat' + room);
+		console.log('target user' + targetUser);
 		socket.join(room)
+		socket.roomIds.push(room);
+		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
+		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
+			callback(targetUser, isOnline); // Respond back to the requester with the online status
+		});
+		socket.join(targetUser);
+
+		io.to(room).emit('online user', socket.userId);
 		console.log('User joined :' + room)
 	})
 	socket.on('new message', newMessageReceived => {

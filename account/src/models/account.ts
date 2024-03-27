@@ -53,14 +53,6 @@ const accountSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
-		unreadNotification: {
-			type: Number,
-			default: 0,
-		},
-		unreadMessage: {
-			type: Number,
-			default: 0,
-		},
 		searchHistory: [{ type: String }],
 		recentViewHistory: [{ type: Schema.Types.ObjectId }],
 		advertisementAgreement: {

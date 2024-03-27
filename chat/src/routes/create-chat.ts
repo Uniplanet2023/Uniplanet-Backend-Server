@@ -4,6 +4,7 @@ import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import { CREATE_CHAT } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import User from '../models/user'
+import { createChatProducer } from '..'
 
 const createChatRouter = express.Router()
 
@@ -49,6 +50,9 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 
 	const chatObj = await (await chat.save())
     .populate('seller buyer');
+    createChatProducer.sendMessage({
+        productId: productId,
+    });
 	const chatInfo = new GetChatInfo(chatObj)
 
 	// Include serialized buyer and seller data in the response
