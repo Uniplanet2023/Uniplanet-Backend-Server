@@ -8,4 +8,5 @@ export enum Topics{
     MessageDelete = 'message-delete',
     MessageUpdate = 'message-update',
     LikeCreate = 'like-create',
+    ChatCreate = 'chat-create',
 }
