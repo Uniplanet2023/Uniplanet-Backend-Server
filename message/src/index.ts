@@ -67,29 +67,8 @@ io.on('connection', socket => {
 	console.log('User connected')
 	
 
-	socket.on('setup', async (jsonRoom, callback) => {
-		const chatRooms = JSON.parse(jsonRoom);
-		chatRooms.forEach((room: string) => {
-			const roomObj:Room = JSON.parse(room);
-			socket.roomIds.push(roomObj.id);
-			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
-			io.to(roomObj.id).emit('online user', socket.userId);
-			socket.join(roomObj.id)
-			if(roomObj.buyer.id != socket.userId) {
-				redisClient.redis.sIsMember(`${socket.school} Online User`,roomObj.buyer.id ).then(isOnline => {
-					callback(roomObj.buyer.id, isOnline); // Respond back to the requester with the online status
-				});
-				console.log('target user id ' + roomObj.buyer.id);
-			}else{
-				redisClient.redis.sIsMember(`${socket.school} Online User`,roomObj.seller.id ).then(isOnline => {
-					callback(roomObj.seller.id, isOnline); // Respond back to the requester with the online status
-				});
-				console.log('target user id ' + roomObj.seller.id);
-			}
-			
-			console.log('User joined :' + room)
-		});
-		
+	socket.on('setup', (_) => {
+		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 	})
 	
 	socket.on('typing', room => {
@@ -106,8 +85,8 @@ io.on('connection', socket => {
 		console.log('join chat' + room);
 		console.log('target user' + targetUser);
 		socket.join(room)
+
 		socket.roomIds.push(room);
-		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
 			callback(targetUser, isOnline); // Respond back to the requester with the online status
 		});
