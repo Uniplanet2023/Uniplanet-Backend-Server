@@ -11,3 +11,23 @@
 
 # 2.Ingress setup
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml
+
+# 3. Notification (modify PRIVATE_KEY)
+# kubectl create secret generic fcm-auth --from-literal=FIREBASE_CLIENT_EMAIL=firebase-adminsdk-zeqcx@pushnotification-uniplanet.iam.gserviceaccount.com --from-literal=FIREBASE_PROJECT_ID=pushnotification-uniplanet --from-literal=PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCe8pyaZgbgOjf7\ncVV6+xSub5qYrUPo1FsRSd4kj8gdT7snoBxBQv8eyUBBoK6HGbI8Miapj9pO1Hk+\nu+05LvGTp81HQsYlu2Ie6ieXgTaiyq3qf/vwmKkihQ7buhFOVY6mJ50r1Fp2ALtj\nzw8eFrmunPcqmgpyZFCVHCFwl/c6lsuUNRCXqDARKm1Bk7eL4ZW1Hc43oJzyVs1i\nHL3MLg2WBpSmrjR0U9DMKiN8c66AiF9/3crsbGosT/TTdi3nfxctVN5MKXCXLqSb\nv0uhHCqMm+6TmDNZHpF1TEl7DR8bmbD9mKcQeDccbeQYPJUTIBr9+cVq6w10Njk8\n/QA/KPS9AgMBAAECggEAExJKLw5x4cKqh+1707M/soRqmMolXVDpkmP6Fwn3eWjh\nLGp+KWh4AwIjxxwYBNbU93sO/4Zmq9G7sIbM+nEDBHP8YgIFk25t4ga3dGrJGvRV\ntM7hdGdk1+L+OugS/oKuiIo1RhaHOiRxV5L3HeWdJvHniEGOYlZeAt4qtv9M50cT\nKcI/vM9cIfbt5XzCaKHeAV/jekRj6pH1Oh2xayfscPZ8zUskA82k6LlusMY0tsho\nZJcVeGwvjvqx765kOq30PzdXXGxhC82y0wV78mG0wfj4NlOOOICGGDVQrHG8E8nq\nZVIF4BYIka73+YI4mVTAF30YqMuFzoKwCyS/2V48UQKBgQDW+vyF+uY6lVwE5Vv8\n7cqUF2YqhnOrjseRuiKj/EZLn0EgZNeNGkzc4ekC8fKcIGzZTyLBJY6He1pV0odd\nYiZI+6iYxylxFiXpG6/xMN9wcJPtDsMg3apF5A0uzexYzIQSl+7/2vdhgDngc3v/\niewiyIll7NtjmPtEXSbusszaWQKBgQC9RqFnG9GJ4JA/W/wXOaGGf+qPndeHFI0s\nH/JNe4r82B9lc5n11Ba4EOtQSw6TFXhZtA9nW3o3sC+nbFrzUgRoYzQGf/IyDodN\n0EyXVnsZR5VGQAirzOZueb6QEBmDmhvY2+xSBid/RBcuY7+3yFlpL0vO8xvFVQVB\nKEdk98YZBQKBgBa4I6PNJjOewUDLNHOAdd48stFfsC27QyAFec+2w38Ob4WK4rTI\nyMK3JTbodulFC/vTPysGWw+6W4uiWifmTYF9Bw5OTfTjkFIYWPm2Xoa1fwyYeMqq\nYmpMdZAytv2Tb4m/gMSNUYN+V59+1OXmn4v1gX/CDlVyP2u0JH8pajjRAoGAW85i\ng0yu+h1+Wf0X7Xv6qO5qq3Z4EAEb6IcmVAbUh4ec0uybhO12h5lNSgjd7OHBGmGI\nBy4Lve8rbh3Uj6j8klVr6qssorMBVfDu9Yjw9HYQJZ7xlcMxEezjTaVBet/JGgqy\nOabaiZRRWiLv3wjCtY5HSv4IPlLa1Zvf5U15PLECgYBAFi0imVd+ExqVijNngBQK\nsZm9dxJnbd97wBJwyXmP3JHPjsoLtmSUEei2lmZF6lGW25nRX171Dj9u+yb1cG5c\n0Y8Au0d6nuzduVaq64HCZQD2jFTSaX5N8ivz/MkaeEwF3QIhWhVugMXSZyQ5HMzI\nRpakFQxAJArHwR3d4BJcng==\n-----END PRIVATE KEY-----\n
+
+# 4. Kafka setup
+#kubectl create namespace kafka
+#kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
+#kubectl get pod -n kafka --watch
+#kubectl apply -f https://strimzi.io/examples/latest/kafka/kafka-persistent-single.yaml -n kafka 
+#kubectl wait kafka/my-cluster --for=condition=Ready --timeout=300s -n kafka 
+#kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server kafka-cluster-kafka-bootstrap:9092 --topic my-topic
+#kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server kafka-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
+#kubectl -n kafka delete $(kubectl get strimzi -o name -n kafka)
+#kubectl -n kafka delete -f 'https://strimzi.io/install/latest?namespace=kafka'
+
+# 5. Redis setup
+#kubectl create namespace session
+#kubectl apply -f infra/redis.yaml -n session
+#kubectl get pod -n session --watch
+#kubectl delete -f infra/redis.yaml -n session

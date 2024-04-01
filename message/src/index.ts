@@ -6,24 +6,15 @@ import { MessageCreatedProducer } from './event/producer/MessageCreatedProducer'
 import { MessageReadProducer } from './event/producer/MessageReadProducer'
 import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
 import admin from 'firebase-admin'
-
 app.use(morgan('tiny'))
-const firebaseConfig = {
-	apiKey: "AIzaSyCDnfaEQyYw_54serI8H9jphtGKQqmQAwU",
-	authDomain: "pushnotification-uniplanet.firebaseapp.com",
-	projectId: "pushnotification-uniplanet",
-	storageBucket: "pushnotification-uniplanet.appspot.com",
-	messagingSenderId: "1003008222202",
-	appId: "1:1003008222202:web:819c4e3b262087ba517a43",
-	measurementId: "G-CRF5YRLGL0"
-	// apiKey: process.env.FIREBASE_API_KEY,
-	// authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-	// projectId: process.env.FIREBASE_PROJECT_ID,
-	// storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-	// messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-	// appId: process.env.FIREBASE_APP_ID,
-};
-admin.initializeApp(firebaseConfig);
+console.log('Firebase Private Key', process.env.FIREBASE_PRIVATE_KEY)
+admin.initializeApp({
+	credential: admin.credential.cert({
+		privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+		clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+		projectId: process.env.FIREBASE_PROJECT_ID,
+	}),
+});
 const { PORT = 3004, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
 
 // Creating and configuring Kafka client
