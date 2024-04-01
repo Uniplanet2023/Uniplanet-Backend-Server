@@ -120,9 +120,23 @@ io.on('connection', socket => {
 				title: "New Message",
 				body: msg.sender + " : " + msg.message,
 			},
-			data:{
-				"test": "test"
+			priority: 'high',
+			contentAvailable: true,
+			data: {
+				click_action: 'FLUTTER_NOTIFICATION_CLICK',
+				chatId: msg.chat,
+				sender: msg.sender,
+				receiver: msg.receiver,
+				message: msg.message,
+				date: msg.date,
+				type: msg.type
 			},
+			"aps":{
+				"content-available": true,
+			},
+			"apns-priority": "5",
+			"apns-push-type": "background",
+			"apns-topic": "com.uniplanet.uniplanet",
 			token: receiverToken
 		}
 		console.log(message);
