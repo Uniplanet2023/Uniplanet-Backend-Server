@@ -121,18 +121,15 @@ io.on('connection', socket => {
 				body: msg.sender + " : " + msg.message,
 			},
 			data: {
-				click_action: 'FLUTTER_NOTIFICATION_CLICK',
 				sender: msg.sender,
 			},
 			apns:{
 				headers:{
 					"apns-priority": "5",
-					"apns-push-type": "background",
-					"apns-topic": "com.uniplanet.uniplanet",
+					"apns-push-type": "alert",
 				},
 				payload:{
 					aps:{
-						// "mutable-content": 1,
 						"content-available": 1,
 						"sound": "default",
 						"alert": {
