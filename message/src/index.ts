@@ -124,12 +124,7 @@ io.on('connection', socket => {
 			contentAvailable: true,
 			data: {
 				click_action: 'FLUTTER_NOTIFICATION_CLICK',
-				chatId: msg.chat,
 				sender: msg.sender,
-				receiver: msg.receiver,
-				message: msg.message,
-				date: msg.date,
-				type: msg.type
 			},
 			"aps":{
 				"content-available": true,
