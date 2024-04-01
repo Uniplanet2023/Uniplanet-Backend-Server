@@ -2,12 +2,28 @@ import morgan from 'morgan'
 import { Server as SocketIOServer, Socket } from 'socket.io'
 import app from './app'
 import { URL_LIST_PROD, kafkaClient, redisClient, tokenValidation } from '@uniplanet-lib/common'
-import jwt, { JwtPayload } from 'jsonwebtoken'
 import { MessageCreatedProducer } from './event/producer/MessageCreatedProducer'
 import { MessageReadProducer } from './event/producer/MessageReadProducer'
 import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
-app.use(morgan('tiny'))
+import admin from 'firebase-admin'
 
+app.use(morgan('tiny'))
+const firebaseConfig = {
+	apiKey: "AIzaSyCDnfaEQyYw_54serI8H9jphtGKQqmQAwU",
+	authDomain: "pushnotification-uniplanet.firebaseapp.com",
+	projectId: "pushnotification-uniplanet",
+	storageBucket: "pushnotification-uniplanet.appspot.com",
+	messagingSenderId: "1003008222202",
+	appId: "1:1003008222202:web:819c4e3b262087ba517a43",
+	measurementId: "G-CRF5YRLGL0"
+	// apiKey: process.env.FIREBASE_API_KEY,
+	// authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+	// projectId: process.env.FIREBASE_PROJECT_ID,
+	// storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+	// messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+	// appId: process.env.FIREBASE_APP_ID,
+};
+admin.initializeApp(firebaseConfig);
 const { PORT = 3004, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
 
 // Creating and configuring Kafka client
@@ -49,6 +65,7 @@ declare module 'socket.io' {
 		userId: string
 		school: string
 		roomIds: string[]
+		firebaseToken: string
 	}
 }
 
@@ -60,15 +77,16 @@ io.use((socket, next) => {
 	socket.userId = userId as string;
 	socket.school = school as string;
 	socket.roomIds = [];
-
 	next()
 })
 io.on('connection', socket => {
 	console.log('User connected')
 	
 
-	socket.on('setup', (_) => {
+	socket.on('setup', (firebaseToken) => {
 		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
+		redisClient.redis.set(socket.userId, firebaseToken);
+		console.log(firebaseToken);
 	})
 	
 	socket.on('typing', room => {
@@ -95,13 +113,34 @@ io.on('connection', socket => {
 		io.to(room).emit('online user', socket.userId);
 		console.log('User joined :' + room)
 	})
-	socket.on('new message', newMessageReceived => {
+	socket.on('new message', async (newMessageReceived,callback) => {
+		
 		const msg = JSON.parse(newMessageReceived);
 		console.log('new message'+ msg);
-		
+		io.to(msg.chat).emit('message received', newMessageReceived)
+		const receiverToken = await redisClient.redis.get(msg.receiver);
+		if(!receiverToken){
+			console.log('receiver token not found');
+			callback('token not found');
+			return;
+		}
+		const message ={
+			data:{
+				title: "New Message",
+				body: msg.sender + " : " + msg.message,
+				click_action: 'FLUTTER_NOTIFICATION_CLICK',
+			},
+			token: receiverToken
+		}
+		console.log(message);
+		admin.messaging().send(message).then((response) => {
+			console.log('Successfully sent message:', response);
+		}).catch((error) => {
+			console.log('Error sending message:', error);
+		});
 		messageCreateProvider.sendMessage(msg);
 
-		io.to(msg.chat).emit('message received', newMessageReceived)
+		callback(msg);
 	})
 	socket.on('read all message', (chatId) => {
 		const readMessageTime = new Date();
