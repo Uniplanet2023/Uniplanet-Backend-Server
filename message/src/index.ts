@@ -126,12 +126,25 @@ io.on('connection', socket => {
 				click_action: 'FLUTTER_NOTIFICATION_CLICK',
 				sender: msg.sender,
 			},
-			"aps":{
-				"content-available": true,
+			apns:{
+				headers:{
+					"apns-priority": "5",
+					"apns-push-type": "background",
+					"apns-topic": "com.uniplanet.uniplanet",
+				},
+				payload:{
+					aps:{
+						// "mutable-content": 1,
+						"content-available": 1,
+						"sound": "default",
+						"alert": {
+							"title": "New Message",
+							"body": msg.sender + " : " + msg.message,
+						},
+						"badge": 1,
+					}
+				}
 			},
-			"apns-priority": "5",
-			"apns-push-type": "background",
-			"apns-topic": "com.uniplanet.uniplanet",
 			token: receiverToken
 		}
 		console.log(message);
