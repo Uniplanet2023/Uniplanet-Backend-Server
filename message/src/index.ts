@@ -120,8 +120,6 @@ io.on('connection', socket => {
 				title: "New Message",
 				body: msg.sender + " : " + msg.message,
 			},
-			priority: 'high',
-			contentAvailable: true,
 			data: {
 				click_action: 'FLUTTER_NOTIFICATION_CLICK',
 				sender: msg.sender,
