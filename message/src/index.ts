@@ -116,10 +116,12 @@ io.on('connection', socket => {
 			return;
 		}
 		const message ={
-			data:{
+			notification:{
 				title: "New Message",
 				body: msg.sender + " : " + msg.message,
-				click_action: 'FLUTTER_NOTIFICATION_CLICK',
+			},
+			data:{
+				"test": "test"
 			},
 			token: receiverToken
 		}

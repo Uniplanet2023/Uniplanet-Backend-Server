@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis
+type: Opaque
+data:
+  REDIS_HOST: c2Vzc2lvbi1yZWRpcy1zcnYuc2Vzc2lvbi5zdmMuY2x1c3Rlci5sb2NhbA==
+  REDIS_PORT: NjM3OQ==

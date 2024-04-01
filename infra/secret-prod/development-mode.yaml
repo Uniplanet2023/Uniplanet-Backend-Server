@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: development-mode
+type: Opaque
+data:
+  JWT_TOKEN_SECRET: cHJvZHVjdGlvbg==

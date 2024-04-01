@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: utils
+type: Opaque
+data:
+  OTP_KEY: dW5pcGxhbmV0TExDMTIz

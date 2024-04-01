@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: smtp-config
+type: Opaque
+data:
+  SMTP_HOST: c210cC5nbWFpbC5jb20=
+  SMTP_MODE: Z21haWw=
+  SMTP_PORT: NDY1
