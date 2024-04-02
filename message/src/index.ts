@@ -143,10 +143,6 @@ io.on('connection', socket => {
 					aps:{
 						"content-available": 1,
 						"sound": "default",
-						"alert": {
-							"title": "New Message",
-							"body": msg.sender + " : " + msg.message,
-						},
 						"badge": 1,
 					}
 				}
