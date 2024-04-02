@@ -76,8 +76,17 @@ io.on('connection', socket => {
 
 	socket.on('setup', (firebaseToken) => {
 		console.log('setup');
-		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
+		if(!firebaseToken){
+			console.log('firebase token not found');
+			return;
+		}
+		try{
+			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 		redisClient.redis.set(socket.userId, firebaseToken);
+		}catch(err){
+			console.log(err);
+		}
+		
 		console.log(firebaseToken);
 	})
 	
