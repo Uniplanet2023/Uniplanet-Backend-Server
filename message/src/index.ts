@@ -75,6 +75,7 @@ io.on('connection', socket => {
 	
 
 	socket.on('setup', (firebaseToken) => {
+		console.log('setup');
 		redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 		redisClient.redis.set(socket.userId, firebaseToken);
 		console.log(firebaseToken);
