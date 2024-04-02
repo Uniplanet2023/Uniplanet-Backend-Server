@@ -8,7 +8,7 @@
 		"lint:staged": "lint-staged",
 		"prettier:check": "prettier --check .",
 		"prettier:fix": "prettier --write .",
-		"start": "NODE_ENV=production nodemon src/index.ts",
+		"start": "NODE_ENV=production ts-node src/index.ts",
 		"dev": "NODE_ENV=development nodemon src/index.ts",
 		"test": "jest --verbose --forceExit --detectOpenHandles",
 		"test:ci": "jest --verbose --forceExit --detectOpenHandles",
