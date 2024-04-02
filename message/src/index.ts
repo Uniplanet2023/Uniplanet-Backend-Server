@@ -137,6 +137,7 @@ io.on('connection', socket => {
 				headers:{
 					"apns-priority": "10",
 					"apns-push-type": "alert",
+					"apns-topic":"com.example.uniplanetMobile"
 				},
 				payload:{
 					aps:{
