@@ -135,14 +135,19 @@ io.on('connection', socket => {
 			},
 			apns:{
 				headers:{
-					"apns-priority": "10",
-					"apns-push-type": "alert",
+					"apns-priority": "5",
+					"apns-push-type": "background",
 					"apns-topic":"com.example.uniplanetMobile"
 				},
 				payload:{
 					aps:{
-						"content-available": 0,
-						"badge": 1,
+						"content-available": 1,
+						// "sound": "default",
+						// "alert": {
+						// 	"title": "New Message",
+						// 	"body": msg.sender + " : " + msg.message,
+						// },
+						// "badge": 1,
 					}
 				}
 			},
