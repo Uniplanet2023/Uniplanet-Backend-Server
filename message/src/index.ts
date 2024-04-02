@@ -7,7 +7,7 @@ import { MessageReadProducer } from './event/producer/MessageReadProducer'
 import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
 import admin from 'firebase-admin'
 app.use(morgan('tiny'))
-console.log('Firebase Private Key', process.env.FIREBASE_PRIVATE_KEY)
+
 admin.initializeApp({
 	credential: admin.credential.cert({
 		privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
@@ -81,8 +81,10 @@ io.on('connection', socket => {
 			return;
 		}
 		try{
+			console.log('user Id: '+socket.userId);
+			console.log('school: '+socket.school);
 			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
-		redisClient.redis.set(socket.userId, firebaseToken);
+			redisClient.redis.set(socket.userId, firebaseToken);
 		}catch(err){
 			console.log(err);
 		}
