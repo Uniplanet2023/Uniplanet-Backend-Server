@@ -141,7 +141,7 @@ io.on('connection', socket => {
 				},
 				payload:{
 					aps:{
-						"content-available": 1,
+						"content-available": 0,
 						"badge": 1,
 					}
 				}
