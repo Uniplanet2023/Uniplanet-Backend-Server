@@ -128,17 +128,15 @@ io.on('connection', socket => {
 			return;
 		}
 		const message ={
-			notification:{
-				title: "New Message",
-				body: msg.sender + " : " + msg.message,
-			},
 			data: {
 				sender: msg.sender,
+				title: "New Message",
+				body: msg.sender + " : " + msg.message,
 			},
 			apns:{
 				headers:{
 					"apns-priority": "5",
-					"apns-push-type": "alert",
+					"apns-push-type": "background",
 				},
 				payload:{
 					aps:{
