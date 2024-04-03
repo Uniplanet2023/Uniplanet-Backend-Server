@@ -116,26 +116,23 @@ io.on('connection', socket => {
 		io.to(room).emit('online user', socket.userId);
 		console.log('User joined :' + room)
 	})
-	socket.on('new message', async (newMessageReceived,callback) => {
+	socket.on('new message', async ({messageJson,senderJson},callback) => {
 		
-		const msg = JSON.parse(newMessageReceived);
-		console.log('new message'+ msg);
-		io.to(msg.chat).emit('message received', newMessageReceived)
-		const receiverToken = await redisClient.redis.get(msg.receiver);
+		const message = JSON.parse(messageJson);
+		const sender = JSON.parse(senderJson);
+		console.log('new message'+ messageJson);
+		console.log('receiver'+ senderJson);
+		io.to(message.chat).emit('message received', messageJson)
+		const receiverToken = await redisClient.redis.get(message.receiver);
 		if(!receiverToken){
 			console.log('receiver token not found');
 			callback('token not found');
 			return;
 		}
-		const message ={
-			notification:{
-				title: "New Message",
-				body: msg.sender + " : " + msg.message,
-			},
+		const notification ={
 			data: {
-				sender: msg.sender,
-				title: "New Message",
-				body: msg.sender + " : " + msg.message,
+				message:message,
+				sender: sender,
 			},
 			apns:{
 				headers:{
@@ -146,26 +143,20 @@ io.on('connection', socket => {
 				payload:{
 					aps:{
 						"content-available": 1,
-						// "sound": "default",
-						// "alert": {
-						// 	"title": "New Message",
-						// 	"body": msg.sender + " : " + msg.message,
-						// },
-						// "badge": 1,
 					}
 				}
 			},
 			token: receiverToken
 		}
-		console.log(message);
-		admin.messaging().send(message).then((response) => {
+		console.log(notification);
+		admin.messaging().send(notification).then((response) => {
 			console.log('Successfully sent message:', response);
 		}).catch((error) => {
 			console.log('Error sending message:', error);
 		});
-		messageCreateProvider.sendMessage(msg);
+		messageCreateProvider.sendMessage(message);
 
-		callback(msg);
+		callback(message);
 	})
 	socket.on('read all message', (chatId) => {
 		const readMessageTime = new Date();
