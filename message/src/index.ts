@@ -118,6 +118,7 @@ io.on('connection', socket => {
 	})
 	socket.on('new message', async ({messageJson,senderJson},callback) => {
 		
+
 		const message = JSON.parse(messageJson);
 		const sender = JSON.parse(senderJson);
 		console.log('new message'+ messageJson);
@@ -131,8 +132,8 @@ io.on('connection', socket => {
 		}
 		const notification ={
 			data: {
-				message:message,
-				sender: sender,
+				message:JSON.stringify(message),
+				sender: JSON.stringify(sender),
 			},
 			apns:{
 				headers:{
