@@ -17,6 +17,7 @@ export type GetChatRestPayload = {
 }
 
 export type GetMessageRestPayload = {
+	id: String
 	sender: String
 	receiver: String
 	message: String

@@ -16,7 +16,7 @@ admin.initializeApp({
 	}),
 });
 const { PORT = 3004, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
-
+// Sold / onSale / fre
 // Creating and configuring Kafka client
 if (NODE_ENV === 'production') {
 	if (!KAFKA_BROKER) {
@@ -27,7 +27,7 @@ kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 const messageCreateProvider = new MessageCreatedProducer(kafkaClient.kafka);
 const messageReadAllProvider = new MessageReadAllProducer(kafkaClient.kafka);
 const messageReadProvider = new MessageReadProducer(kafkaClient.kafka);
-
+                  
 const server = app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
 	await messageCreateProvider.connect();
