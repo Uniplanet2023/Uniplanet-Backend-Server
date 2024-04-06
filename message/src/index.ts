@@ -113,6 +113,7 @@ io.on('connection', socket => {
 			data: {
 				message:JSON.stringify(message),
 				sender: JSON.stringify(sender),
+				type: "chat room created"
 			},
 			apns:{
 				headers:{
@@ -164,6 +165,7 @@ io.on('connection', socket => {
 			data: {
 				message:JSON.stringify(message),
 				sender: JSON.stringify(sender),
+				type: "new message"
 			},
 			apns:{
 				headers:{
