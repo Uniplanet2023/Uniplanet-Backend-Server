@@ -76,7 +76,6 @@ io.on('connection', socket => {
 
 	socket.on('setup', (firebaseToken) => {
 		console.log('setup');
-		socket.join(socket.userId);
 		if(!firebaseToken){
 			console.log('firebase token not found');
 			return;
@@ -97,13 +96,44 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', ({chatRoomId, targetUser}, callback) => {
+	socket.on('chat room created', ({messageJson,senderJson}, callback) => {
+		const message = JSON.parse(messageJson);
+		const sender = JSON.parse(senderJson);
 		console.log('chat room created')
-		socket.join(chatRoomId)
-		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser).then(isOnline => {
+		socket.join(message.chat)
+		redisClient.redis.sIsMember(`${socket.school} Online User`,message.receiver).then(async isOnline => {
 			console.log('==============user is online=======================');
-			io.to(targetUser).emit('chat room created ', {chatRoomId,targetUser})
-			callback(targetUser, isOnline); // Respond back to the requester with the online status
+			const receiverToken = await redisClient.redis.get(message.receiver);
+		if(!receiverToken){
+			console.log('receiver token not found');
+			callback('token not found');
+			return;
+		}
+		const notification ={
+			data: {
+				message:JSON.stringify(message),
+				sender: JSON.stringify(sender),
+			},
+			apns:{
+				headers:{
+					"apns-priority": "5",
+					"apns-push-type": "background",
+					"apns-topic":"com.example.uniplanetMobile"
+				},
+				payload:{
+					aps:{
+						"content-available": 1,
+					}
+				}
+			},
+			token: receiverToken
+		}
+		admin.messaging().send(notification).then((response) => {
+			console.log('Successfully sent message:', response);
+		}).catch((error) => {
+			console.log('Error sending message:', error);
+		});
+		callback(isOnline);
 		});
 	});
 	
