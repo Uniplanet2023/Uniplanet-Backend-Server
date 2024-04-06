@@ -82,40 +82,33 @@ io.on('connection', socket => {
 			return;
 		}
 		try{
-			console.log('user Id: '+socket.userId);
-			console.log('school: '+socket.school);
 			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
 			redisClient.redis.set(socket.userId, firebaseToken);
 		}catch(err){
 			console.log(err);
 		}
-		
-		console.log(firebaseToken);
 	})
 	
 	socket.on('typing', chatRoomId => {
 		console.log('typing')
-		console.log('chatRoomId')
 		io.to(chatRoomId).emit('typing', chatRoomId)
 	})
 	socket.on('stop typing', chatRoomId => {
 		console.log('stop typing')
-		console.log('chatRoomId')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
 	socket.on('chat room created', ({chatRoomId, targetUser}, callback) => {
 		console.log('chat room created')
 		socket.join(chatRoomId)
 		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser).then(isOnline => {
-			io.to(targetUser).emit('chat room created ', targetUser)
+			console.log('==============user is online=======================');
+			io.to(targetUser).emit('chat room created ', {chatRoomId,targetUser})
 			callback(targetUser, isOnline); // Respond back to the requester with the online status
 		});
-		io.to(chatRoomId).emit('online user', socket.userId);
 	});
 	
 	socket.on('join chat', ({chatRoomId,targetUser}, callback) => {
 		console.log('join chat' + chatRoomId);
-		console.log('target user' + targetUser);
 		socket.join(chatRoomId)
 
 		socket.chatRoomId.push(chatRoomId);
@@ -125,13 +118,11 @@ io.on('connection', socket => {
 		});
 
 		io.to(chatRoomId).emit('online user', socket.userId);
-		console.log('User joined :' + chatRoomId)
 	})
 	socket.on('new message', async ({messageJson,senderJson},callback) => {
 		const message = JSON.parse(messageJson);
 		const sender = JSON.parse(senderJson);
-		console.log('new message'+ messageJson);
-		console.log('receiver'+ senderJson);
+		
 		io.to(message.chat).emit('message received', messageJson)
 		const receiverToken = await redisClient.redis.get(message.receiver);
 		if(!receiverToken){
@@ -158,7 +149,6 @@ io.on('connection', socket => {
 			},
 			token: receiverToken
 		}
-		console.log(notification);
 		admin.messaging().send(notification).then((response) => {
 			console.log('Successfully sent message:', response);
 		}).catch((error) => {
