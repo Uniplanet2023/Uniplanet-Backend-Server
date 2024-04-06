@@ -106,7 +106,6 @@ io.on('connection', socket => {
 			const receiverToken = await redisClient.redis.get(message.receiver);
 		if(!receiverToken){
 			console.log('receiver token not found');
-			callback('token not found');
 			return;
 		}
 		const notification ={
@@ -145,7 +144,7 @@ io.on('connection', socket => {
 		socket.chatRoomId.push(chatRoomId);
 		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
 			
-			callback(targetUser, isOnline); // Respond back to the requester with the online status
+			callback(isOnline); // Respond back to the requester with the online status
 		});
 
 		io.to(chatRoomId).emit('online user', socket.userId);
