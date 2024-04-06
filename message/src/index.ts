@@ -55,7 +55,7 @@ declare module 'socket.io' {
 	interface Socket {
 		userId: string
 		school: string
-		roomIds: string[]
+		chatRoomId: string[]
 		firebaseToken: string
 	}
 }
@@ -67,7 +67,7 @@ io.use((socket, next) => {
 	}
 	socket.userId = userId as string;
 	socket.school = school as string;
-	socket.roomIds = [];
+	socket.chatRoomId = [];
 	next()
 })
 io.on('connection', socket => {
@@ -76,6 +76,7 @@ io.on('connection', socket => {
 
 	socket.on('setup', (firebaseToken) => {
 		console.log('setup');
+		socket.join(socket.userId);
 		if(!firebaseToken){
 			console.log('firebase token not found');
 			return;
@@ -92,29 +93,39 @@ io.on('connection', socket => {
 		console.log(firebaseToken);
 	})
 	
-	socket.on('typing', room => {
+	socket.on('typing', chatRoomId => {
 		console.log('typing')
-		console.log('room')
-		io.to(room).emit('typing', room)
+		console.log('chatRoomId')
+		io.to(chatRoomId).emit('typing', chatRoomId)
 	})
-	socket.on('stop typing', room => {
+	socket.on('stop typing', chatRoomId => {
 		console.log('stop typing')
-		console.log('room')
-		io.to(room).emit('stop typing', room)
+		console.log('chatRoomId')
+		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('join chat', ({room,targetUser}, callback) => {
-		console.log('join chat' + room);
-		console.log('target user' + targetUser);
-		socket.join(room)
-
-		socket.roomIds.push(room);
-		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
+	socket.on('chat room created', ({chatRoomId, targetUser}, callback) => {
+		console.log('chat room created')
+		socket.join(chatRoomId)
+		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser).then(isOnline => {
+			io.to(targetUser).emit('chat room created ', targetUser)
 			callback(targetUser, isOnline); // Respond back to the requester with the online status
 		});
-		socket.join(targetUser);
+		io.to(chatRoomId).emit('online user', socket.userId);
+	});
+	
+	socket.on('join chat', ({chatRoomId,targetUser}, callback) => {
+		console.log('join chat' + chatRoomId);
+		console.log('target user' + targetUser);
+		socket.join(chatRoomId)
 
-		io.to(room).emit('online user', socket.userId);
-		console.log('User joined :' + room)
+		socket.chatRoomId.push(chatRoomId);
+		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
+			
+			callback(targetUser, isOnline); // Respond back to the requester with the online status
+		});
+
+		io.to(chatRoomId).emit('online user', socket.userId);
+		console.log('User joined :' + chatRoomId)
 	})
 	socket.on('new message', async ({messageJson,senderJson},callback) => {
 		const message = JSON.parse(messageJson);
@@ -179,9 +190,9 @@ io.on('connection', socket => {
 		console.log('User disconnected')
 		redisClient.redis.sRem('onlineUsers', socket.userId);
 
-		socket.roomIds.forEach((room: string) => {
-			io.to(room).emit('offline user', socket.userId)
-			socket.leave(room)
+		socket.chatRoomId.forEach((chatRoomId: string) => {
+			io.to(chatRoomId).emit('offline user', socket.userId)
+			socket.leave(chatRoomId)
 		})
 	})
 })
