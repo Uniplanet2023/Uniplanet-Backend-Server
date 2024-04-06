@@ -117,8 +117,6 @@ io.on('connection', socket => {
 		console.log('User joined :' + room)
 	})
 	socket.on('new message', async ({messageJson,senderJson},callback) => {
-		
-
 		const message = JSON.parse(messageJson);
 		const sender = JSON.parse(senderJson);
 		console.log('new message'+ messageJson);

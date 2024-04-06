@@ -9,6 +9,7 @@ import Message from '../models/message'
 const getChatRouter = express.Router()
 getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	const chatList = []
+	var totalUnseenMessage = 0
 	const chats = await Chat.find({
 		$or: [{ seller: req.user!.id }, { buyer: req.user!.id }],
 	})
@@ -20,7 +21,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	}
 	for (const chat of chats) {
 		const unseenMessage = await Message.find({ chat: chat._id, receiver: req.user!.id, readDate: null })
-
+		totalUnseenMessage += unseenMessage.length
 		chatList.push({ chat: new GetChatInfo(chat).serializeRest(), unseenMessageCount: unseenMessage.length })
 	}
 
