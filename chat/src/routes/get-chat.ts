@@ -24,7 +24,8 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		totalUnseenMessage += unseenMessage.length
 		chatList.push({ chat: new GetChatInfo(chat).serializeRest(), unseenMessageCount: unseenMessage.length })
 	}
+	console.log('chatList:', chatList)
 
-	return res.status(200).json(chatList) // Changed status code to 200 for successful response
+	return res.status(200).json({'chatList':chatList,'totalUnseenMessage':totalUnseenMessage}) // Changed status code to 200 for successful response
 })
 export default getChatRouter
