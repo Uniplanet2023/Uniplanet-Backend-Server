@@ -105,7 +105,7 @@ io.on('connection', socket => {
 		socket.chatRoomId.push(message.chat);
 		console.log(message.receiver);
 		socket.join(message.receiver);
-		io.to(message.receiver).emit('chat room created', messageJson);
+		io.to(message.receiver).emit('chat room created', {message,sender});
 		redisClient.redis.sIsMember(`${socket.school} Online User`,message.receiver).then(async isOnline => {
 			console.log('==============user is online=======================');
 			const receiverToken = await redisClient.redis.get(message.receiver);
