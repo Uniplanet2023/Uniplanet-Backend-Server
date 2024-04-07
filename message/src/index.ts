@@ -76,6 +76,7 @@ io.on('connection', socket => {
 
 	socket.on('setup', (firebaseToken) => {
 		console.log('setup');
+		socket.join(socket.userId);
 		if(!firebaseToken){
 			console.log('firebase token not found');
 			return;
@@ -101,6 +102,9 @@ io.on('connection', socket => {
 		const sender = JSON.parse(senderJson);
 		console.log('chat room created')
 		socket.join(message.chat)
+		socket.chatRoomId.push(message.chat);
+		console.log(message.receiver);
+		io.to(message.receiver).emit('chat room created', messageJson);
 		redisClient.redis.sIsMember(`${socket.school} Online User`,message.receiver).then(async isOnline => {
 			console.log('==============user is online=======================');
 			const receiverToken = await redisClient.redis.get(message.receiver);
