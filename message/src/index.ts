@@ -98,7 +98,6 @@ io.on('connection', socket => {
 	})
 	socket.on('chat room created', (chatJson, callback) => {
 		const chat = JSON.parse(chatJson);
-		const seller = chat?.seller;
 		
 		socket.chatRoomId.push(chat.id);
 

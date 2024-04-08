@@ -14,6 +14,7 @@ export type GetChatRestPayload = {
 	buyer: GetUserRestPayload
 	productId: String
 	lastMessage?: GetMessageRestPayload
+	unseenMessageCount: Number
 }
 
 export type GetMessageRestPayload = {
