@@ -96,25 +96,23 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', (chat, callback) => {
-
-		console.log(chat);
-		console.log(JSON.parse(chat));
+	socket.on('chat room created', (chatJson, callback) => {
+		const chat = JSON.parse(chatJson);
 		const seller = chat?.seller;
-		console.log(seller);
-		socket.chatRoomId.push(chat['id']);
+		
+		socket.chatRoomId.push(chat.id);
 
-		socket.join(chat['id'])
-		socket.join(seller['id']);
+		socket.join(chat.id)
+		socket.join(chat.seller.id);
 
-		io.to(seller.id).emit('chat room created', chat);
+		io.to(chat.seller.id).emit('chat room created', chatJson);
 
-		redisClient.redis.sIsMember(`Online User`,seller['id']).then(async isOnline => {
-			const receiverToken = await redisClient.redis.get(seller['id']);
+		redisClient.redis.sIsMember(`Online User`,chat.seller.id).then(async isOnline => {
+			const receiverToken = await redisClient.redis.get(chat.seller.id);
 			if(!receiverToken){
 				return;
 			}
-			const notification = creatingChatNotification(receiverToken,JSON.stringify(chat));
+			const notification = creatingChatNotification(receiverToken,chatJson);
 			admin.messaging().send(notification).then((response) => {
 				console.log('Successfully sent message:', response);
 			}).catch((error) => {
