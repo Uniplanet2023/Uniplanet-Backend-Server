@@ -5,6 +5,7 @@ import { CREATE_CHAT } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import User from '../models/user'
 import { createChatProducer } from '..'
+import Message from '../models/message'
 
 const createChatRouter = express.Router()
 
@@ -36,7 +37,8 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	console.log('existing chat:', existingChat)
 
 	if (existingChat) {
-		const chatInfo = new GetChatInfo(existingChat)
+		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
+		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
 		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
 	}
 
@@ -53,7 +55,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
     createChatProducer.sendMessage({
         productId: productId,
     });
-	const chatInfo = new GetChatInfo(chatObj)
+	const chatInfo = new GetChatInfo(chatObj,0)
 
 	// Include serialized buyer and seller data in the response
 	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
