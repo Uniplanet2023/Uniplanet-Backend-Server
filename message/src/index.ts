@@ -214,7 +214,7 @@ io.on('connection', socket => {
 
 	socket.on('disconnect', () => {
 		console.log('User disconnected')
-		redisClient.redis.sRem('onlineUsers', socket.userId);
+		redisClient.redis.sRem(`${socket.school} Online User`, socket.userId);
 
 		socket.chatRoomId.forEach((chatRoomId: string) => {
 			io.to(chatRoomId).emit('offline user', socket.userId)
