@@ -36,7 +36,8 @@ signInRouter.post(
 
 		// Store it on session object
 		req.session = { jwt: userJwt }
-		return res.status(202).send({ userId: user._id, school: user.school, access: true })
+		const userInfo = new UserSerializer(user);
+	return res.status(userInfo.getStatusCode()).send(userInfo.serializeRest());
 	},
 )
 

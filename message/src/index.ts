@@ -54,7 +54,6 @@ io = new SocketIOServer(server, {
 declare module 'socket.io' {
 	interface Socket {
 		userId: string
-		school: string
 		chatRoomId: string[]
 		firebaseToken: string
 	}
@@ -66,7 +65,6 @@ io.use((socket, next) => {
 		return next(new Error('Authentication error'))
 	}
 	socket.userId = userId as string;
-	socket.school = school as string;
 	socket.chatRoomId = [];
 	next()
 })
@@ -82,7 +80,7 @@ io.on('connection', socket => {
 			return;
 		}
 		try{
-			redisClient.redis.sAdd(`${socket.school} Online User`, socket.userId);
+			redisClient.redis.sAdd(`Online User`, socket.userId);
 			redisClient.redis.set(socket.userId, firebaseToken);
 		}catch(err){
 			console.log(err);
@@ -106,7 +104,7 @@ io.on('connection', socket => {
 		console.log(message.receiver);
 		socket.join(message.receiver);
 		io.to(message.receiver).emit('chat room created', {message:message,sender:sender});
-		redisClient.redis.sIsMember(`${socket.school} Online User`,message.receiver).then(async isOnline => {
+		redisClient.redis.sIsMember(`Online User`,message.receiver).then(async isOnline => {
 			console.log('==============user is online=======================');
 			const receiverToken = await redisClient.redis.get(message.receiver);
 		if(!receiverToken){
@@ -147,7 +145,7 @@ io.on('connection', socket => {
 		socket.join(chatRoomId)
 
 		socket.chatRoomId.push(chatRoomId);
-		redisClient.redis.sIsMember(`${socket.school} Online User`,targetUser ).then(isOnline => {
+		redisClient.redis.sIsMember(`Online User`,targetUser ).then(isOnline => {
 			
 			callback(isOnline); // Respond back to the requester with the online status
 		});
@@ -207,14 +205,14 @@ io.on('connection', socket => {
 	// });
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
-		redisClient.redis.sIsMember(`${socket.school} Online User`, checkUserId).then(isOnline => {
+		redisClient.redis.sIsMember(`Online User`, checkUserId).then(isOnline => {
 			callback(isOnline); // Respond back to the requester with the online status
 		});
 	});
 
 	socket.on('disconnect', () => {
 		console.log('User disconnected')
-		redisClient.redis.sRem(`${socket.school} Online User`, socket.userId);
+		redisClient.redis.sRem(`Online User`, socket.userId);
 
 		socket.chatRoomId.forEach((chatRoomId: string) => {
 			io.to(chatRoomId).emit('offline user', socket.userId)
