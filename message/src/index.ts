@@ -99,16 +99,16 @@ io.on('connection', socket => {
 	socket.on('chat room created', (chat, callback) => {
 
 		console.log(chat);
-
+		const seller = JSON.parse(chat.seller);
 		socket.chatRoomId.push(chat.id);
 
 		socket.join(chat.id)
-		socket.join(chat.seller.id);
+		socket.join(seller.id);
 
-		io.to(chat.seller.id).emit('chat room created', chat);
+		io.to(seller.id).emit('chat room created', chat);
 
-		redisClient.redis.sIsMember(`Online User`,chat.seller.id).then(async isOnline => {
-			const receiverToken = await redisClient.redis.get(chat.seller.id);
+		redisClient.redis.sIsMember(`Online User`,seller.id).then(async isOnline => {
+			const receiverToken = await redisClient.redis.get(seller.id);
 			if(!receiverToken){
 				return;
 			}
