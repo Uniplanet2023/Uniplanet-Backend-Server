@@ -60,8 +60,8 @@ declare module 'socket.io' {
 }
 
 io.use((socket, next) => {
-	const {userId, school} = socket.handshake.query
-	if (!userId || !school) {
+	const {userId} = socket.handshake.query
+	if (!userId) {
 		return next(new Error('Authentication error'))
 	}
 	socket.userId = userId as string;
