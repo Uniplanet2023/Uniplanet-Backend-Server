@@ -6,6 +6,7 @@ import { MessageCreatedProducer } from './event/producer/MessageCreatedProducer'
 import { MessageReadProducer } from './event/producer/MessageReadProducer'
 import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
 import admin from 'firebase-admin'
+import { creatingChatNotification, newMessageNotification } from './event/notification'
 app.use(morgan('tiny'))
 
 admin.initializeApp({
@@ -95,48 +96,30 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', ({messageJson,senderJson}, callback) => {
-		const message = JSON.parse(messageJson);
-		const sender = JSON.parse(senderJson);
-		console.log('chat room created')
-		socket.join(message.chat)
-		socket.chatRoomId.push(message.chat);
-		console.log(message.receiver);
-		socket.join(message.receiver);
-		io.to(message.receiver).emit('chat room created', {message:message,sender:sender});
-		redisClient.redis.sIsMember(`Online User`,message.receiver).then(async isOnline => {
-			console.log('==============user is online=======================');
-			const receiverToken = await redisClient.redis.get(message.receiver);
-		if(!receiverToken){
-			console.log('receiver token not found');
-			return;
-		}
-		const notification ={
-			data: {
-				message:JSON.stringify(message),
-				sender: JSON.stringify(sender),
-				type: "chat room created"
-			},
-			apns:{
-				headers:{
-					"apns-priority": "5",
-					"apns-push-type": "background",
-					"apns-topic":"com.example.uniplanetMobile"
-				},
-				payload:{
-					aps:{
-						"content-available": 1,
-					}
-				}
-			},
-			token: receiverToken
-		}
-		admin.messaging().send(notification).then((response) => {
-			console.log('Successfully sent message:', response);
-		}).catch((error) => {
-			console.log('Error sending message:', error);
-		});
-		callback(isOnline);
+	socket.on('chat room created', (chatJson, callback) => {
+
+		const chat = JSON.parse(chatJson);
+		console.log(chat);
+
+		socket.chatRoomId.push(chat.id);
+
+		socket.join(chat.id)
+		socket.join(chat.seller.id);
+
+		io.to(chat.seller.id).emit('chat room created', chat);
+
+		redisClient.redis.sIsMember(`Online User`,chat.seller.id).then(async isOnline => {
+			const receiverToken = await redisClient.redis.get(chat.seller.id);
+			if(!receiverToken){
+				return;
+			}
+			const notification = creatingChatNotification(receiverToken,chatJson);
+			admin.messaging().send(notification).then((response) => {
+				console.log('Successfully sent message:', response);
+			}).catch((error) => {
+				console.log('Error sending message:', error);
+			});
+			callback(isOnline);
 		});
 	});
 	
@@ -154,7 +137,6 @@ io.on('connection', socket => {
 	})
 	socket.on('new message', async ({messageJson,senderJson},callback) => {
 		const message = JSON.parse(messageJson);
-		const sender = JSON.parse(senderJson);
 		
 		io.to(message.chat).emit('message received', messageJson)
 		const receiverToken = await redisClient.redis.get(message.receiver);
@@ -163,27 +145,9 @@ io.on('connection', socket => {
 			callback('token not found');
 			return;
 		}
-		const notification ={
-			data: {
-				message:JSON.stringify(message),
-				sender: JSON.stringify(sender),
-				type: "new message"
-			},
-			apns:{
-				headers:{
-					"apns-priority": "5",
-					"apns-push-type": "background",
-					"apns-topic":"com.example.uniplanetMobile"
-				},
-				payload:{
-					aps:{
-						"content-available": 1,
-					}
-				}
-			},
-			token: receiverToken
-		}
-		admin.messaging().send(notification).then((response) => {
+		const messageNotification = newMessageNotification(receiverToken, messageJson,senderJson);
+		
+		admin.messaging().send(messageNotification).then((response) => {
 			console.log('Successfully sent message:', response);
 		}).catch((error) => {
 			console.log('Error sending message:', error);
@@ -197,12 +161,7 @@ io.on('connection', socket => {
 		io.to(chatId).emit('read all message', {sender: socket.userId,chatId, readMessageTime});
 		messageReadAllProvider.sendMessage({sender: socket.userId, chat: chatId, readDate: readMessageTime});
 	})
-	// socket.on('read message', (chatId, messageId) => {
-	// 	console.log('read message');
-	// 	const readMessageTime = new Date();
-	// 	io.to(chatId).emit('read message', {chatId, messageId, readMessageTime});
-	// 	messageReadProvider.sendMessage({messageId: messageId,readDate: readMessageTime});
-	// });
+	
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
 		redisClient.redis.sIsMember(`Online User`, checkUserId).then(isOnline => {
