@@ -100,6 +100,7 @@ io.on('connection', socket => {
 
 		console.log(chat);
 		const seller = chat['seller'];
+		console.log(seller);
 		socket.chatRoomId.push(chat['id']);
 
 		socket.join(chat['id'])
