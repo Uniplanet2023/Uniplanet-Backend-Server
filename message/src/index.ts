@@ -218,6 +218,8 @@ io.on('connection', socket => {
 			io.to(chatRoomId).emit('offline user', socket.userId)
 			socket.leave(chatRoomId)
 		})
+		socket.leave(socket.userId);
+		socket.firebaseToken = '';
 		socket.chatRoomId = [];
 	})
 })
