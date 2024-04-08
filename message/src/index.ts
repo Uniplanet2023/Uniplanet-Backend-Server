@@ -96,9 +96,8 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', (chatJson, callback) => {
+	socket.on('chat room created', (chat, callback) => {
 
-		const chat = JSON.parse(chatJson);
 		console.log(chat);
 
 		socket.chatRoomId.push(chat.id);
@@ -113,7 +112,7 @@ io.on('connection', socket => {
 			if(!receiverToken){
 				return;
 			}
-			const notification = creatingChatNotification(receiverToken,chatJson);
+			const notification = creatingChatNotification(receiverToken,JSON.stringify(chat));
 			admin.messaging().send(notification).then((response) => {
 				console.log('Successfully sent message:', response);
 			}).catch((error) => {
