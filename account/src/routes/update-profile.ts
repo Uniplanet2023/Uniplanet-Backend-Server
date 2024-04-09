@@ -1,0 +1,24 @@
+import express, { Request, Response } from 'express'
+import { GET_ACCOUNT_INFO, UPDATE_NAME_ROUTE, UPDATE_PROFILE_ROUTE } from './routes-def'
+import { redisClient, tokenValidation } from '@uniplanet-lib/common'
+import Account from '../models/account'
+import GetAccountInfo from '../event/serializer/get-account'
+
+const updateProfileRouter = express.Router()
+
+updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Request, res: Response) => {
+    const {profileImage} = req.body
+	const accountData = await Account.findById(req.user!.id)
+	if (!accountData) {
+		return res.status(404).send({ message: 'Account not found' })
+	}
+    accountData.profileImage = profileImage;
+    await accountData.save();
+    //TODO: Update other db using kafka
+    
+	const accountInfo = new GetAccountInfo(accountData)
+
+	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
+})
+
+export default updateProfileRouter
