@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
-import { GET_ACCOUNT_INFO, UPDATE_NAME_ROUTE } from './routes-def'
-import { redisClient, tokenValidation } from '@uniplanet-lib/common'
+import { UPDATE_NAME_ROUTE } from './routes-def'
+import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 

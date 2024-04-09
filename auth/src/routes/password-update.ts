@@ -17,9 +17,7 @@ passwordUpdateRouter.put(PASSWORD_UPDATE_ROUTE, tokenValidation, async (req, res
 	if (!isMatch) throw new PasswordMismatchError()
 
 	// Update password
-	user.password = newPassword;
-	await user.save();
-
+	await user.updateOne({ password: newPassword })
 
 	res.status(200).json({ message: 'Password updated successfully' });
 })
