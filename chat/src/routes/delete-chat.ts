@@ -9,7 +9,7 @@ import Message from '../models/message'
 
 const deleteChatRouter = express.Router()
 
-deleteChatRouter.post(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => {
+deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => {
 	const { chatId } = req.params
 
 	const chatRoom = await Chat.findById(chatId);
