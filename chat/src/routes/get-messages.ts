@@ -24,7 +24,7 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
     const limit = 20;
     const skip = (pageNumber - 1) * limit;
     
-    const messages = await Message.find({ chat: chatId }).sort({ createdAt: -1 }).limit(limit).skip(skip);
+    const messages = await Message.find({ chat: chatId, deletionDate:null}).sort({ createdAt: -1 }).limit(limit).skip(skip);
     if (!messages) {
         return res.status(404).send('No messages found');
     }

@@ -10,7 +10,7 @@ import Message from '../models/message'
 const createChatRouter = express.Router()
 
 createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-	const { productId, seller, buyer } = req.body
+	const { productId, productName, seller, buyer } = req.body
 
 	const sellerParsed = JSON.parse(seller)
 	const buyerParsed = JSON.parse(buyer)
@@ -27,7 +27,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 
 	// Check if a chat already exists between these two users for this product
 	const existingChat = await Chat.findOne({
-		productId: productId,
+		productId,
 		buyer: buyerObj,
 		seller: sellerObj,
 	})
@@ -44,7 +44,8 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 
 	// Create and save the chat
 	const chat = Chat.build({
-		productId: productId,
+		productName,
+		productId,
 		buyer: buyerObj.id,
 		seller: sellerObj.id,
 	})

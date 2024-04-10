@@ -1,5 +1,5 @@
 export const CREATE_CHAT = '/api/chat/create-chat'
-export const DELETE_USER_ROUTE = '/api/chat/delete-user'
+export const DELETE_CHAT_ROUTE = '/api/chat/delete-chat/:chatId'
 export const GET_CHAT = '/api/chat/get-chat'
 export const GET_CHAT_LIST = '/api/chat/get-chat-list'
 export const GET_MESSAGES = '/api/chat/get-messages'

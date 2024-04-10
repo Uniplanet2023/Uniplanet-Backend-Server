@@ -12,6 +12,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	var totalUnseenMessage = 0
 	const chats = await Chat.find({
 		$or: [{ seller: req.user!.id }, { buyer: req.user!.id }],
+		deletionDate: null
 	})
 		.populate('buyer seller lastMessage')
 		.sort({ updatedAt: -1 })
@@ -20,7 +21,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		return res.status(200).json([])
 	}
 	for (const chat of chats) {
-		const unseenMessage = await Message.find({ chat: chat._id, receiver: req.user!.id, readDate: null })
+		const unseenMessage = await Message.find({ chat: chat._id, receiver: req.user!.id, readDate: null, deletionDate: null})
 		totalUnseenMessage += unseenMessage.length
 		chatList.push({ chat: new GetChatInfo(chat,unseenMessage.length).serializeRest() })
 	}
