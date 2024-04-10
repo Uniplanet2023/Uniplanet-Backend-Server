@@ -26,6 +26,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 			seller: new GetUserInfo(this.chat.seller).serializeRest(),
 			buyer: new GetUserInfo(this.chat.buyer).serializeRest(),
 			productId: this.chat.productId.toString(),
+			productName: this.chat.productName,
 			lastMessage: this.chat.lastMessage ? new GetMessageInfo(this.chat.lastMessage).serializeRest() : undefined,
 			unseenMessageCount: this.unseenMessageCount ?? 0,
 		}
