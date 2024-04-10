@@ -37,7 +37,9 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	console.log('existing chat:', existingChat)
 
 	if (existingChat) {
-		await existingChat.updateOne({ deletionDate: null });
+		if(existingChat.deletionDate !== null){
+			await existingChat.updateOne({ deletionDate: null });
+		}
 		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
 		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
 		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
