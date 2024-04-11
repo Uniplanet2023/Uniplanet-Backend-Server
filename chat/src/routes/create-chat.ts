@@ -33,6 +33,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	})
 		.populate('buyer')
 		.populate('seller')
+		.populate('lastMessage');
 
 	console.log('existing chat:', existingChat)
 

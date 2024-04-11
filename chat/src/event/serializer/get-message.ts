@@ -17,7 +17,7 @@ export default class GetMessageInfo extends BaseSerializeEvent<GetMessageRestPay
 
 	serializeRest(): GetMessageRestPayload {
 		return {
-			id: this.message ? this.message._id : '',
+			id: this.message ? this.message._id.toString() : '',
 			sender: this.message.sender.toString(),
 			receiver: this.message.receiver.toString(),
 			message: this.message.message,
