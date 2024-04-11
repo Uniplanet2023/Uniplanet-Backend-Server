@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 export type MessageDocument = mongoose.Document & {
+	id: mongoose.Types.ObjectId
 	sender: mongoose.Types.ObjectId
 	receiver: mongoose.Types.ObjectId
 	message: String
