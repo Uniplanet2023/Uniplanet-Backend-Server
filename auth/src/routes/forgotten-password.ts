@@ -5,7 +5,7 @@ import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
 
 const forgottenPasswordRouter = express.Router()
 
-forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, tokenValidation, async (req, res) => {
+forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 	const { email } = req.body
 
 	const existingUser = await User.findOne({ email })

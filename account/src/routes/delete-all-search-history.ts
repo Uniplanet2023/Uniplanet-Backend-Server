@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { DELETE_ALL_SEARCH_HISTORY, DELETE_SEARCH_HISTORY } from './routes-def'
+import { DELETE_ALL_SEARCH_HISTORY } from './routes-def'
 import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 
 const deleteAllSearchHistoryRouter = express.Router()
