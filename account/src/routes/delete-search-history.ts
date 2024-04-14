@@ -7,7 +7,7 @@ const deleteSearchHistoryRouter = express.Router()
 deleteSearchHistoryRouter.delete(DELETE_SEARCH_HISTORY, tokenValidation, async (req: Request, res: Response) => {
 
     const { searchHistory } = req.params;
-    await redisClient.redis.sRem(`Search Record: ${req.user!.id}`, searchHistory);
+    await redisClient.redis.lRem(`Search Record: ${req.user!.id}`, 1, searchHistory);
 
     res.status(200).send({
         success: true,
