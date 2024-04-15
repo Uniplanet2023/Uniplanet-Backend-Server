@@ -3,6 +3,7 @@ import { GET_ACCOUNT_INFO, UPDATE_NAME_ROUTE, UPDATE_PROFILE_ROUTE } from './rou
 import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
+import { userUpdateProducer } from '..'
 
 const updateProfileRouter = express.Router()
 
@@ -17,7 +18,10 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
     //TODO: Update other db using kafka
     
 	const accountInfo = new GetAccountInfo(accountData)
-
+	await userUpdateProducer.sendMessage({
+		id: req.user!.id,
+		profileImage: profileImage,
+	});
 	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
 })
 
