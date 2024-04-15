@@ -9,6 +9,7 @@ export type UserDocument = Document & {
 	verified: boolean
 	password: string
 	type: string
+	deletionDate?: Date
 }
 
 type UserAttrs = {

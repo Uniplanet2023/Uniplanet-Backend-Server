@@ -26,7 +26,11 @@ signInRouter.post(
 		// Check if user exists
 		if (!user) throw new UserNotFoundError()
 		if (!user.verified) throw new VerificationRequiredError()
-
+		if(user.deletionDate != undefined) {
+			user.deletionDate = undefined;
+			await user.save();
+		}
+		
 		// Compare passwords
 		const isMatch = PasswordHash.compareSync({ providedPassword: password, storedPassword: user.password })
 		if (!isMatch) throw new PasswordMismatchError()
