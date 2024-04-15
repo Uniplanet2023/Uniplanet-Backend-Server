@@ -4,10 +4,7 @@ export type GetAccountRestPayload = {
 	email: string
 	profileImage: string
 	school: string
-	unreadNotification: number
-	unreadMessage: number
-	searchHistory: string[]
-	recentViewHistory: string[]
+	isNotificationAllowed: boolean
 }
 export type UserRestPayload = {
 	id: string

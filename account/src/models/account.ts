@@ -7,11 +7,8 @@ export type AccountDocument = Document & {
 	email: string
 	profileImage: string
 	school: string
-	unreadNotification: number
-	unreadMessage: number
-	searchHistory: string[]
-	recentViewHistory: string[]
 	advertisementAgreement: boolean
+	isNotificationAllowed: boolean
 }
 
 type AccountAttrs = {
@@ -20,11 +17,8 @@ type AccountAttrs = {
 	email: string
 	profileImage?: string
 	school: string
-	unreadNotification?: number
-	unreadMessage?: number
-	searchHistory?: string[]
-	recentViewHistory?: string[]
 	advertisementAgreement?: boolean
+	isNotificationAllowed?: boolean
 }
 interface AccountModel extends Model<AccountDocument> {
 	build(attrs: AccountAttrs): AccountDocument
@@ -53,11 +47,13 @@ const accountSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
-		searchHistory: [{ type: String }],
-		recentViewHistory: [{ type: Schema.Types.ObjectId }],
 		advertisementAgreement: {
 			type: Boolean,
 			default: true,
+		},
+		isNotificationAllowed:{
+			type: Boolean,
+			default: false,
 		},
 		deletionDate: { type: Date, default: null },
 	},
