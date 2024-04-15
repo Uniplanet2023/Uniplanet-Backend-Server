@@ -5,7 +5,7 @@ import { DELETE_USER_ROUTE } from './routes-def'
 
 const deleteUserRouter = express.Router()
 deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => {
-	const user = await User.findById({ email: req.user!.id })
+	const user = await User.findById( req.user!.id )
 	if (!user) {
 		throw new UserNotFoundError()
 	}
