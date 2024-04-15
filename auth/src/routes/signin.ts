@@ -28,7 +28,7 @@ signInRouter.post(
 		if (!user.verified) throw new VerificationRequiredError()
 		if(user.deletionDate != undefined) {
 			user.deletionDate = undefined;
-			await user.save();
+			await user.updateOne({deletionDate: undefined});
 		}
 		
 		// Compare passwords
