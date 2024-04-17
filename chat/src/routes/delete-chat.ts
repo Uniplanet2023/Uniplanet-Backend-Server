@@ -15,13 +15,11 @@ deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => 
         if (!chatId) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
-        console.log(' start deleting chat:'+ chatId);
-        // Delete all the images from cloudinary
-        const deleteResources = await cloudinaryAPI.api.delete_resources_by_prefix(chatId+'/');
-        console.log('image delete result : '+deleteResources);
-        console.log('start deleting folder')
-    await cloudinaryAPI.api.delete_folder(chatId);
-    console.log('successfully deleted');
+        
+    // Delete all the images from cloudinary
+    await cloudinaryAPI.api.delete_resources_by_prefix('chat-images/'+chatId+'/');
+    await cloudinaryAPI.api.delete_folder('chat-images/'+chatId);
+    
         
 	const chatRoom = await Chat.findById(chatId);
     if(chatRoom === null){
