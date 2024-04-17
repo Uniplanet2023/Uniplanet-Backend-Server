@@ -40,8 +40,7 @@ const accountSchema: Schema = new Schema(
 		},
 		profileImage:{
 			type: String,
-			required: true,
-			default:'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg',
+			required: false,
 		},
 		school:{
 			type: String,
