@@ -16,7 +16,6 @@ type UserAttrs = {
 	profileImage: string
 	school: string
 }
-//'https://res.cloudinary.com/dtgmmfv3d/image/upload/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg'
 interface UserModel extends Model<UserDocument> {
 	build(attrs: UserAttrs): UserDocument
 }
@@ -37,7 +36,7 @@ const userSchema: Schema = new Schema(
 		},
 		profileImage: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		school: {
 			type: String,
