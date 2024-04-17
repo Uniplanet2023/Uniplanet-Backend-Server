@@ -3,7 +3,7 @@ import { GET_ACCOUNT_INFO, UPDATE_NAME_ROUTE, UPDATE_PROFILE_ROUTE } from './rou
 import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
-import { userUpdateProducer } from '..'
+import { cloudinaryAPI, userUpdateProducer } from '..'
 
 const updateProfileRouter = express.Router()
 
@@ -13,8 +13,15 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
 	if (!accountData) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
+	if(accountData.profileImage){
+		await cloudinaryAPI.api.delete_resources_by_prefix('profile-image/'+accountData.id+'/');
+    await cloudinaryAPI.api.delete_folder('product-images/'+accountData.id);
+	}
+	
+
     accountData.profileImage = profileImage;
     await accountData.save();
+
     //TODO: Update other db using kafka
     
 	const accountInfo = new GetAccountInfo(accountData)
