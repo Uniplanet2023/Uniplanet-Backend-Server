@@ -16,7 +16,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	})
 		.populate('buyer seller lastMessage')
 		.sort({ updatedAt: -1 })
-
+	
 	if (!chats || chats.length === 0) {
 		return res.status(200).json([])
 	}
