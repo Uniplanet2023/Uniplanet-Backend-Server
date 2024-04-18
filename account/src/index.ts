@@ -5,7 +5,15 @@ import app from './app'
 import UserCreatedConsumer from './event/consumer/UserCreatedConsumer'
 import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
+import { v2 as cloudinary } from 'cloudinary'
 
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+
+export const cloudinaryAPI = cloudinary;
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 export const userUpdateProducer = new UserUpdateProducer(kafkaClient.kafka);
