@@ -65,7 +65,6 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 		email: attrs.email,
 		profileImage: attrs.profileImage,
 		school: attrs.school,
-	
 	})
 	return user
 }

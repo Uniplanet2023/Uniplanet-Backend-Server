@@ -1,30 +1,28 @@
-import { ObjectId } from 'mongoose'
-
 export type GetUserRestPayload = {
-	id: String
-	name: String
-	email: String
-	profileImage: String
-	school: String
+	id: string
+	name: string
+	email: string
+	profileImage: string
+	school: string
 }
 
 export type GetChatRestPayload = {
-	id: String
+	id: string
 	seller: GetUserRestPayload
 	buyer: GetUserRestPayload
-	productId: String
-	productName: String
+	productId: string
+	productName: string
 	lastMessage?: GetMessageRestPayload
-	unseenMessageCount: Number
+	unseenMessageCount: number
 }
 
 export type GetMessageRestPayload = {
-	id: String
-	sender: String
-	receiver: String
-	message: String
-	messageType: String
-	chat: String
+	id: string
+	sender: string
+	receiver: string
+	message: string
+	messageType: string
+	chat: string
 	readDate?: Date
 	createdAt: Date
 }

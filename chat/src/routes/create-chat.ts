@@ -1,6 +1,6 @@
 import express from 'express'
 import Chat from '../models/chat'
-import { redisClient, tokenValidation } from '@uniplanet-lib/common'
+import { tokenValidation } from '@uniplanet-lib/common'
 import { CREATE_CHAT } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import User from '../models/user'
@@ -14,8 +14,8 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 
 	const sellerParsed = JSON.parse(seller)
 	const buyerParsed = JSON.parse(buyer)
-	var sellerObj = await User.findById(sellerParsed.id)
-	var buyerObj = await User.findById(buyerParsed.id)
+	let sellerObj = await User.findById(sellerParsed.id)
+	let buyerObj = await User.findById(buyerParsed.id)
 	if (!sellerObj) {
 		sellerObj = User.build(sellerParsed)
 		sellerObj.save()
@@ -33,16 +33,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	})
 		.populate('buyer')
 		.populate('seller')
-		.populate('lastMessage');
+		.populate('lastMessage')
 
 	console.log('existing chat:', existingChat)
 
 	if (existingChat) {
-		if(existingChat.deletionDate !== null){
-			await existingChat.updateOne({ deletionDate: null });
+		if (existingChat.deletionDate !== null) {
+			await existingChat.updateOne({ deletionDate: null })
 		}
 		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
-		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
+		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
 		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
 	}
 
@@ -55,12 +55,11 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	})
 	// Save the online status of the buyer in Redis
 
-	const chatObj = await (await chat.save())
-    .populate('seller buyer');
-    createChatProducer.sendMessage({
-        productId: productId,
-    });
-	const chatInfo = new GetChatInfo(chatObj,0)
+	const chatObj = await (await chat.save()).populate('seller buyer')
+	createChatProducer.sendMessage({
+		productId: productId,
+	})
+	const chatInfo = new GetChatInfo(chatObj, 0)
 
 	// Include serialized buyer and seller data in the response
 	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })

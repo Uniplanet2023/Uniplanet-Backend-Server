@@ -4,19 +4,19 @@ export type MessageDocument = mongoose.Document & {
 	id: mongoose.Types.ObjectId
 	sender: mongoose.Types.ObjectId
 	receiver: mongoose.Types.ObjectId
-	message: String
-	messageType: String
+	message: string
+	messageType: string
 	readDate: Date
 	chat: mongoose.Types.ObjectId
 	createdAt: Date
 }
 
 type MessageAttrs = {
-	sender: String
-	message: String
-	messageType: String
-	receiver: String
-	chat: String
+	sender: string
+	message: string
+	messageType: string
+	receiver: string
+	chat: string
 	createdAt: Date
 }
 

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import app from './app'
-import { secretCheck } from './secret-check'
-import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
+import { kafkaClient } from '@uniplanet-lib/common'
 import { v2 as cloudinary } from 'cloudinary'
 import MessageCreatedConsumer from './event/consumer/message_receive'
 import MessageReadAllConsumer from './event/consumer/message_read_all'
@@ -17,8 +16,8 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export const cloudinaryAPI = cloudinary;
-export const createChatProducer = new CreateChatProducer(kafkaClient.kafka);		
+export const cloudinaryAPI = cloudinary
+export const createChatProducer = new CreateChatProducer(kafkaClient.kafka)
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -28,8 +27,7 @@ app.listen(PORT, async () => {
 		}
 		const messageCreatedConsumer = new MessageCreatedConsumer(kafkaClient.kafka, 'messagecreated')
 		const messageReadAllConsumer = new MessageReadAllConsumer(kafkaClient.kafka, 'messageread')
-		const userUpdateConsumer = new UserUpdateConsumer(kafkaClient.kafka, 'userupdate');
-		
+		const userUpdateConsumer = new UserUpdateConsumer(kafkaClient.kafka, 'userupdate')
 
 		// Consumer
 		await messageReadAllConsumer.connect()

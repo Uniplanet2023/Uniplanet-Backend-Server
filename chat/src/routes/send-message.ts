@@ -1,10 +1,7 @@
 import express from 'express'
-import Chat from '../models/chat'
 import { tokenValidation } from '@uniplanet-lib/common'
-import { GET_MESSAGES, SEND_MESSAGE } from './routes-def'
-import { GetMessageRestPayload } from '../event/serializer/type-def'
+import { SEND_MESSAGE } from './routes-def'
 import Message from '../models/message'
-import GetMessageInfo from '../event/serializer/get-message'
 
 const sendMessagesRouter = express.Router()
 sendMessagesRouter.post(SEND_MESSAGE, tokenValidation, async (req, res) => {

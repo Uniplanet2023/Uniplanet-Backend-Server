@@ -3,17 +3,18 @@ import { GetChatRestPayload } from './type-def'
 import { ChatDocument } from '../../models/chat'
 import GetUserInfo from './get-user'
 import GetMessageInfo from './get-message'
-import { MessageDocument } from '../../models/message'
 
 export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> {
 	private chat: ChatDocument
-	private unseenMessageCount: Number
+
+	private unseenMessageCount: number
+
 	private statusCode = 200
 
-	constructor(chat: ChatDocument, unseenMessageCount: Number) {
+	constructor(chat: ChatDocument, unseenMessageCount: number) {
 		super()
 		this.chat = chat
-		unseenMessageCount ? this.unseenMessageCount = unseenMessageCount : this.unseenMessageCount = 0
+		unseenMessageCount ? (this.unseenMessageCount = unseenMessageCount) : (this.unseenMessageCount = 0)
 	}
 
 	getStatusCode(): number {

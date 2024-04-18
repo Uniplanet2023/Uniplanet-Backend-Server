@@ -12,11 +12,11 @@ export type ChatDocument = mongoose.Document & {
 }
 
 type ChatAttrs = {
-	productId: String
-	productName: String
-	buyer: String
-	seller: String
-	lastMessage?: String
+	productId: string
+	productName: string
+	buyer: string
+	seller: string
+	lastMessage?: string
 }
 
 interface ChatModel extends mongoose.Model<ChatDocument> {
@@ -35,10 +35,10 @@ const chatModel = new mongoose.Schema(
 	{ timestamps: true },
 )
 
+const Chat = mongoose.model<ChatDocument, ChatModel>('Chat', chatModel)
+
 chatModel.statics.build = (attrs: ChatAttrs) => {
 	return new Chat(attrs)
 }
-
-const Chat = mongoose.model<ChatDocument, ChatModel>('Chat', chatModel)
 
 export default Chat

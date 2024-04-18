@@ -4,6 +4,7 @@ import { MessageDocument } from '../../models/message'
 
 export default class GetMessageInfo extends BaseSerializeEvent<GetMessageRestPayload> {
 	private message: MessageDocument
+
 	private statusCode = 201
 
 	constructor(message: MessageDocument) {

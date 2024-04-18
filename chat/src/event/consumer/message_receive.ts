@@ -1,6 +1,4 @@
-import { Kafka, EachMessagePayload } from 'kafkajs'
 import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common'
-import { profile } from 'console'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
 import User from '../../models/user'
@@ -9,9 +7,6 @@ import User from '../../models/user'
 export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 	topic: Topics.MessageCreated = Topics.MessageCreated
 
-	constructor(kafka: Kafka, groupId: string) {
-		super(kafka, groupId)
-	}
 	// Implement the onMessage method
 	async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
 		try {
