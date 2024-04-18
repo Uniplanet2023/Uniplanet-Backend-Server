@@ -123,7 +123,7 @@ io.on('connection', socket => {
 			callback(isOnline)
 		})
 	})
-	socket.on('delete chat room', async (chatRoom, callback) => {
+	socket.on('chat room deleted', async (chatRoom, callback) => {
 		console.log('Deleting chat room:', chatRoom)
 
 		// Check if the current user is authorized to delete the chat room (optional)
