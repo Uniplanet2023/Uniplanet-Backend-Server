@@ -15,6 +15,8 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 		{ deletionDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
 		{ new: true },
 	)
+	req.session = null
+	req.user = undefined;
 	// TODO: Delete All the product, messages, userchat related to the User
 
 	res.status(200).json('Account Successfully Deleted')
