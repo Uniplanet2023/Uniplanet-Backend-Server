@@ -131,7 +131,7 @@ io.on('connection', socket => {
 		// This logic depends on how you handle chat room ownership or admin rights
 
 		// Notify all users in the chat room that it will be deleted
-		io.to(chatRoom).emit('chat room deleted', { chatRoom })
+		
 
 		// Perform the deletion of the chat room from the database or your storage system
 		// Example: Delete chat room from your database
@@ -140,6 +140,7 @@ io.on('connection', socket => {
 			// await ChatRoom.deleteOne({ _id: chatRoomId });
 			// Leave all users from this chat room and remove it from their list
 			socket.leave(chatRoom)
+			io.to(chatRoom).emit('chat room deleted', { chatRoom })
 			const index = socket.chatRoomId.indexOf(chatRoom)
 			if (index > -1) {
 				socket.chatRoomId.splice(index, 1)
