@@ -13,10 +13,10 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
 	if (!accountData) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
-	if(accountData.profileImage){
-		await cloudinaryAPI.api.delete_resources_by_prefix('profile-image/'+accountData.id+'/');
-    await cloudinaryAPI.api.delete_folder('product-images/'+accountData.id);
-	}
+	// if(accountData.profileImage){
+	// 	await cloudinaryAPI.api.delete_resources_by_prefix('profile-image/'+accountData.id+'/');
+    // await cloudinaryAPI.api.delete_folder('product-images/'+accountData.id);
+	// }
 	
 
     accountData.profileImage = profileImage;
