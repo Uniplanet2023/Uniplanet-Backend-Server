@@ -35,10 +35,10 @@ const chatModel = new mongoose.Schema(
 	{ timestamps: true },
 )
 
-const Chat = mongoose.model<ChatDocument, ChatModel>('Chat', chatModel)
-
 chatModel.statics.build = (attrs: ChatAttrs) => {
 	return new Chat(attrs)
 }
+
+const Chat = mongoose.model<ChatDocument, ChatModel>('Chat', chatModel)
 
 export default Chat
