@@ -1,5 +1,6 @@
 export enum Topics{
     UserCreated = 'user-created',
+    UserDeleted = 'user-deleted',
     UserUpdated = 'user-updated',
     MessageReceive = 'message-receive',
     MessageCreated = 'message-created',
