@@ -2,10 +2,11 @@ import mongoose from 'mongoose'
 import app from './app'
 
 // import { secretCheck } from './secret-check'
-import UserCreatedConsumer from './event/consumer/UserCreatedConsumer'
+import UserCreatedConsumer from './event/consumer/user-created'
 import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import { v2 as cloudinary } from 'cloudinary'
+import UserDeletedConsumer from './event/consumer/user-deleted'
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -26,8 +27,10 @@ app.listen(PORT, async () => {
 		console.log('Kafka Broker', process.env.KAFKA_BROKER!)
 		
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
+		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted')
 		await userCreatedConsumer.connect()
 		await userUpdateProducer.connect();
+		await userDeletedConsumer.connect()
 	}
 	
 

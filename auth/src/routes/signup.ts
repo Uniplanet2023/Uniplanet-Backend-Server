@@ -10,7 +10,7 @@ import {
 	validateRequest,
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
-import { userProducer } from '..'
+import { userCreatedProducer } from '..'
 
 const signUpRouter = express.Router()
 
@@ -38,7 +38,7 @@ signUpRouter.post(
 		}
 		const newUser = User.build({ email, password, school })
 		await newUser.save()
-		userProducer.sendMessage({
+		userCreatedProducer.sendMessage({
 			id: newUser.id,
 			name: name,
 			email: email,

@@ -6,6 +6,7 @@ import MessageCreatedConsumer from './event/consumer/message_receive'
 import MessageReadAllConsumer from './event/consumer/message_read_all'
 import { CreateChatProducer } from './event/producer/create_chat'
 import UserUpdateConsumer from './event/consumer/user-update-Consumer'
+import UserDeletedConsumer from './event/consumer/user-deleted'
 
 const { PORT = 3003, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST } = process.env
 
@@ -28,11 +29,13 @@ app.listen(PORT, async () => {
 		const messageCreatedConsumer = new MessageCreatedConsumer(kafkaClient.kafka, 'messagecreated')
 		const messageReadAllConsumer = new MessageReadAllConsumer(kafkaClient.kafka, 'messageread')
 		const userUpdateConsumer = new UserUpdateConsumer(kafkaClient.kafka, 'userupdate')
+		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted')
 
 		// Consumer
 		await messageReadAllConsumer.connect()
 		await messageCreatedConsumer.connect()
 		await userUpdateConsumer.connect()
+		await userDeletedConsumer.connect()
 		// Producer
 		await createChatProducer.connect()
 	}
