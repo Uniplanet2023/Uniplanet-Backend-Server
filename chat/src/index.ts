@@ -29,7 +29,7 @@ app.listen(PORT, async () => {
 		const messageCreatedConsumer = new MessageCreatedConsumer(kafkaClient.kafka, 'messagecreated')
 		const messageReadAllConsumer = new MessageReadAllConsumer(kafkaClient.kafka, 'messageread')
 		const userUpdateConsumer = new UserUpdateConsumer(kafkaClient.kafka, 'userupdate')
-		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted')
+		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-chat')
 
 		// Consumer
 		await messageReadAllConsumer.connect()

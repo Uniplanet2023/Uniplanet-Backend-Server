@@ -27,7 +27,7 @@ app.listen(PORT, async () => {
 		console.log('Kafka Broker', process.env.KAFKA_BROKER!)
 		
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
-		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted')
+		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
 		await userCreatedConsumer.connect()
 		await userUpdateProducer.connect();
 		await userDeletedConsumer.connect()
