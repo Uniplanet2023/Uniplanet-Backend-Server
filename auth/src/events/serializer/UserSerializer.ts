@@ -7,6 +7,7 @@ interface UserSignedUpRestPayload {
 	school: string
 	verified: boolean
 	type: string
+	deletionDate?: Date
 }
 
 export default class UserSerializer extends BaseSerializeEvent<UserSignedUpRestPayload> {
@@ -30,6 +31,7 @@ export default class UserSerializer extends BaseSerializeEvent<UserSignedUpRestP
 			school: this.user.school,
 			verified: this.user.verified,
 			type: this.user.type,
+			deletionDate: this.user.deletionDate,
 		}
 	}
 }
