@@ -23,6 +23,6 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 	})
 	// TODO: Delete All the product, messages, userchat related to the User
 
-	res.status(200).json('Account Successfully Deleted')
+	res.status(200).json({message:'Account Successfully Deleted'})
 })
 export default deleteUserRouter
