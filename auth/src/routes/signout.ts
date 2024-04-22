@@ -7,7 +7,7 @@ signOutRouter.delete(SIGNOUT_OUT_SIGNIN_ROUTE, tokenValidation, async (req: Requ
 	// Remove the JWT from Redis
 	// Clear the session
 	req.session = null
-	req.user = undefined;
+	req.user = undefined
 	res.status(200).send({ message: 'Logged Out Successfully' })
 })
 export default signOutRouter

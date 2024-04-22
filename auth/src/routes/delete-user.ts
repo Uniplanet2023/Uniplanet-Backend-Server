@@ -6,7 +6,7 @@ import { userDeletedProducer } from '..'
 
 const deleteUserRouter = express.Router()
 deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => {
-	const user = await User.findById( req.user!.id )
+	const user = await User.findById(req.user!.id)
 	if (!user) {
 		throw new UserNotFoundError()
 	}
@@ -17,12 +17,12 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 		{ new: true },
 	)
 	req.session = null
-	req.user = undefined;
+	req.user = undefined
 	userDeletedProducer.sendMessage({
 		id: user.id,
 	})
 	// TODO: Delete All the product, messages, userchat related to the User
 
-	res.status(200).json({message:'Account Successfully Deleted'})
+	res.status(200).json({ message: 'Account Successfully Deleted' })
 })
 export default deleteUserRouter

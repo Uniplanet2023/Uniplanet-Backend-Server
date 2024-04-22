@@ -7,9 +7,9 @@ const passwordUpdateRouter = express.Router()
 
 passwordUpdateRouter.put(PASSWORD_UPDATE_ROUTE, tokenValidation, async (req, res) => {
 	const { password, newPassword } = req.body
-	const user = await User.findById(req.user!.id);
-	if(!user){
-		return res.status(404).json({message: 'User not found'})
+	const user = await User.findById(req.user!.id)
+	if (!user) {
+		return res.status(404).json({ message: 'User not found' })
 	}
 
 	// Compare passwords
@@ -19,7 +19,7 @@ passwordUpdateRouter.put(PASSWORD_UPDATE_ROUTE, tokenValidation, async (req, res
 	// Update password
 	await user.updateOne({ password: newPassword })
 
-	res.status(200).json({ message: 'Password updated successfully' });
+	res.status(200).json({ message: 'Password updated successfully' })
 })
 
 export default passwordUpdateRouter

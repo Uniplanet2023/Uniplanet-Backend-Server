@@ -21,7 +21,7 @@ if (NODE_ENV === 'production') {
 }
 
 export const userCreatedProducer = new UserCreatedProducer(kafkaClient.kafka)
-export const userDeletedProducer = new UserDeletedProducer(kafkaClient.kafka);
+export const userDeletedProducer = new UserDeletedProducer(kafkaClient.kafka)
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -31,7 +31,7 @@ app.listen(PORT, async () => {
 		await userCreatedProducer.connect()
 		await userDeletedProducer.connect()
 	}
-	
+
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()

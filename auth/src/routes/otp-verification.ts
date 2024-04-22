@@ -7,7 +7,7 @@ const otpValidationRouter = express.Router()
 
 otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
 	const { otpHash, email, otpCode } = req.body
-	
+
 	const result = await verifyOtp({ otpHash, email, otpCode })
 
 	switch (result) {

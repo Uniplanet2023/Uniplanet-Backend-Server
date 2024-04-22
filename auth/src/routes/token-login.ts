@@ -17,8 +17,8 @@ tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, r
 
 	if (!user) throw new UserNotFoundError()
 	if (!user.verified) throw new VerificationRequiredError()
-	const userInfo = new UserSerializer(user);
-	return res.status(userInfo.getStatusCode()).send(userInfo.serializeRest());
+	const userInfo = new UserSerializer(user)
+	return res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
 })
 
 export default tokenLoginRouter
