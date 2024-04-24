@@ -1,9 +1,8 @@
-import { Topics } from "./topics";
-
+import { Topics } from './topics'
 
 export interface LikeProductEvent {
-  topic: Topics.LikeCreate;
-  data: { 
-    productId: string;
-  };
+	topic: Topics.LikeCreate
+	data: {
+		productId: string
+	}
 }

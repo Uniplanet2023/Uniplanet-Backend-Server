@@ -1,9 +1,8 @@
-import { Topics } from "./topics";
-
+import { Topics } from './topics'
 
 export interface UserDeletedEvent {
-  topic: Topics.UserDeleted;
-  data: {
-    id: string;
-  };
+	topic: Topics.UserDeleted
+	data: {
+		id: string
+	}
 }

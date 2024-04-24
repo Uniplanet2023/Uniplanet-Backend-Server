@@ -1,5 +1,4 @@
 import { body } from 'express-validator'
-import { urlInfo } from '../utils/domain-check'
 
 export const emailValidation = [
 	body('email')
@@ -13,15 +12,15 @@ export const emailValidation = [
 		.normalizeEmail({
 			gmail_remove_dots: false,
 		}),
-	body('email')
-		.custom(async value => {
-			// const info = urlInfo(value)
-			// console.log(`${value}  D=${info.domain}  S=${info.subdomain ? info.subdomain : 'None'}  TLD:${info.tld}`)
-			// if (info.tld !== 'edu') {
-			// 	throw new Error('It should be .edu email')
-			// }
-		})
-		.withMessage('It should be .edu email'),
+	// body('email')
+	// 	.custom(async value => {
+	// 		// const info = urlInfo(value)
+	// 		// console.log(`${value}  D=${info.domain}  S=${info.subdomain ? info.subdomain : 'None'}  TLD:${info.tld}`)
+	// 		// if (info.tld !== 'edu') {
+	// 		// 	throw new Error('It should be .edu email')
+	// 		// }
+	// 	})
+	// 	.withMessage('It should be .edu email'),
 ]
 export const nameValidation = body('name').isString().withMessage('Name should be String')
 export const profileImageValidation = body('profileImage').isURL().withMessage('Profile Image should be URL')

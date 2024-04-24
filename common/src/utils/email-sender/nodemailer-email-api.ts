@@ -8,7 +8,7 @@ import {
 	EmailApiSendResetPasswordEmailArgs,
 } from './types'
 import nodemailer from 'nodemailer'
-import {NodemailerSmtpServer} from './nodemailer-app-smtp-server'
+import { NodemailerSmtpServer } from './nodemailer-app-smtp-server'
 import { otpGenerate } from '../account-verification/otp-generater'
 
 import {
@@ -79,7 +79,7 @@ export class NodemailerEmailApi implements EmailApi {
 
 	private async sendEmail(args: EmailApiSendEmailArgs): Promise<void> {
 		const { toEmail, subject, htmlBody, textBody } = args
-		if (process.env.SMTP_MODE === 'gmail'){
+		if (process.env.SMTP_MODE === 'gmail') {
 			const accessToken = await this.smtpServer.getAccessToken()
 			await this.transporter.sendMail({
 				from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
@@ -91,7 +91,7 @@ export class NodemailerEmailApi implements EmailApi {
 					accessToken: accessToken,
 				},
 			} as nodemailer.SendMailOptions)
-		}else{
+		} else {
 			await this.transporter.sendMail({
 				from: 'UniPlanet ✉️ <noreply@uniplanet.com>',
 				to: toEmail,
@@ -100,6 +100,5 @@ export class NodemailerEmailApi implements EmailApi {
 				html: htmlBody,
 			} as nodemailer.SendMailOptions)
 		}
-		
 	}
 }

@@ -13,7 +13,7 @@ export const buildSignUpVerificationEmailTextBody = (args: BuildSignUpVerificati
 }
 
 export const buildSignUpVerificationEmailHtmlBody = (args: BuildSignUpVerificationEmailTextArgs): string => {
-	const {  otpCode } = args
+	const { otpCode } = args
 	return `<h2>Welcome to UniPlanet the coolest resell market platform!</h2>
     <br> Please verify your email address using the following verification code: ${otpCode}.
     <br/><br/>

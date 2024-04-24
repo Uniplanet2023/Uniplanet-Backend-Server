@@ -20,4 +20,3 @@ export class NotFoundError extends BaseCustomError {
 		}
 	}
 }
-

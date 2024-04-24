@@ -22,7 +22,6 @@ export class NodemailerSmtpServer implements SmtpServer {
 	private configAuth: GmailServerConfigAuth | NodemailerServerConfigAuth
 
 	constructor() {
-		
 		if (process.env.SMTP_MODE == 'gmail') {
 			this.oAuth2Client = new google.auth.OAuth2(this.smtpPublic, this.smtpPrivate, this.smtpRedirect)
 			this.oAuth2Client.setCredentials({ refresh_token: this.smtpRefreshToken })
@@ -36,7 +35,7 @@ export class NodemailerSmtpServer implements SmtpServer {
 				clientSecret: this.smtpPrivate,
 				refreshToken: this.smtpRefreshToken,
 			} as GmailServerConfigAuth
-		}else{
+		} else {
 			this.configAuth = {
 				user: this.smtpPublic,
 				pass: this.smtpPrivate,

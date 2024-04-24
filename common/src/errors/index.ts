@@ -1,4 +1,4 @@
-export { BaseCustomError }from './base-custom-error'
+export { BaseCustomError } from './base-custom-error'
 export { InvalidInput } from './invalid-input'
 export { NotFoundError } from './not-found-error'
 export { NotAuthorizedError } from './auth/not-authorized-error'

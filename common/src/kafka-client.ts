@@ -12,9 +12,9 @@ class KafkaClient {
 				initialRetryTime: 100,
 				retries: 1000,
 			},
-		});
+		})
 	}
-	
+
 	get kafka() {
 		//eslint-disable-next-line no-underscore-dangle
 		if (!this._kafka) {

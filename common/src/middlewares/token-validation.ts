@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
-import { redisClient } from '../redis-client'
 
 interface UserPayload {
 	id: string
