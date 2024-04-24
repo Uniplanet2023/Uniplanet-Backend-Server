@@ -9,7 +9,7 @@ export const newMessageNotification = (receiverToken: string, message: string, s
 			headers: {
 				'apns-priority': '5',
 				'apns-push-type': 'background',
-				'apns-topic': 'com.example.uniplanetMobile',
+				'apns-topic': 'shop.uniplanet.uniplanet',
 			},
 			payload: {
 				aps: {
