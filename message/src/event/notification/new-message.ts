@@ -7,7 +7,7 @@ export const newMessageNotification = (receiverToken: string, message: string, s
 		},
 		apns: {
 			headers: {
-				'apns-priority': '5',
+				'apns-priority': '10',
 				'apns-push-type': 'background',
 				'apns-topic': 'shop.uniplanet.uniplanet',
 			},
