@@ -44,7 +44,7 @@ const tlddata =
 	'group:gs:gt:gu:guardian:gucci:guge:guide:guitars:guru:gw:gy:hair:hamburg:hangout' +
 	':haus:hbo:hdfc:hdfcbank:health:healthcare:help:helsinki:here:hermes:hgtv:hiphop:' +
 	'hisamitsu:hitachi:hiv:hk:hkt:hm:hn:hockey:holdings:holiday:homedepot:homegoods:h' +
-	'omes:homesense:honda:honeywell:horse:hospital:host:hosting:hot:hoteles:hotels:ho' +
+	'omes:homesense:hondga:honeywell:horse:hospital:host:hosting:hot:hoteles:hotels:ho' +
 	'tmail:house:how:hr:hsbc:ht:htc:hu:hughes:hyatt:hyundai:ibm:icbc:ice:icu:id:ie:ie' +
 	'ee:ifm:iinet:ikano:il:im:imamat:imdb:immo:immobilien:in:industries:infiniti:info' +
 	':ing:ink:institute:insurance:insure:int:intel:international:intuit:investments:i' +

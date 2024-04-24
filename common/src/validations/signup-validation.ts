@@ -15,8 +15,8 @@ export const emailValidation = [
 		}),
 	body('email')
 		.custom(async value => {
-			const info = urlInfo(value)
-			console.log(`${value}  D=${info.domain}  S=${info.subdomain ? info.subdomain : 'None'}  TLD:${info.tld}`)
+			// const info = urlInfo(value)
+			// console.log(`${value}  D=${info.domain}  S=${info.subdomain ? info.subdomain : 'None'}  TLD:${info.tld}`)
 			// if (info.tld !== 'edu') {
 			// 	throw new Error('It should be .edu email')
 			// }
