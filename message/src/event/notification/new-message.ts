@@ -5,6 +5,13 @@ export const newMessageNotification = (receiverToken: string, message: string, s
 			sender: sender,
 			type: 'new message',
 		},
+		android:{
+			notification:{
+				sound: 'default',
+				tag: 'new message',
+				click_action: 'FLUTTER_NOTIFICATION_CLICK',
+			}
+		},
 		apns: {
 			headers: {
 				'apns-priority': '10',

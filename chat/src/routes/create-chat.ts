@@ -43,7 +43,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		}
 		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
 		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
-		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
+		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg:'existing chat'})
 	}
 
 	// Create and save the chat
@@ -62,7 +62,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	const chatInfo = new GetChatInfo(chatObj, 0)
 
 	// Include serialized buyer and seller data in the response
-	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest() })
+	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg:'new chat' })
 })
 
 export default createChatRouter
