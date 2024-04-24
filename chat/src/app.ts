@@ -1,6 +1,7 @@
 import express from 'express'
 import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
 import cors from 'cors'
+import 'express-async-errors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
 

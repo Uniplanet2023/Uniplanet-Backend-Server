@@ -1,7 +1,7 @@
 import express from 'express'
 import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
 import cors from 'cors'
-
+import 'express-async-errors'
 // IMPORTS FROM OTHER FILES
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
