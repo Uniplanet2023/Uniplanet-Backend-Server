@@ -95,7 +95,7 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', (chatJson, callback) => {
+	socket.on('chat room created', (chatJson,existingChat, callback) => {
 		const chat = JSON.parse(chatJson)
 
 		socket.chatRoomId.push(chat.id)
@@ -103,7 +103,7 @@ io.on('connection', socket => {
 		socket.join(chat.id)
 		socket.join(chat.seller.id)
 
-		io.to(chat.seller.id).emit('chat room created', chatJson)
+		io.to(chat.seller.id).emit('chat room created', chatJson, existingChat)
 
 		redisClient.redis.sIsMember(`Online User`, chat.seller.id).then(async isOnline => {
 			const receiverToken = await redisClient.redis.get(chat.seller.id)
