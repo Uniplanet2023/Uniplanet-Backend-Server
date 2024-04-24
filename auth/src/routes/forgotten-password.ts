@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from '../models/index'
-import { EmailSender, UserNotFoundError, tokenValidation } from '@uniplanet-lib/common'
+import { EmailSender, UserNotFoundError } from '@uniplanet-lib/common'
 import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
 
 const forgottenPasswordRouter = express.Router()

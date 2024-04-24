@@ -10,7 +10,7 @@ import {
 	VerificationRequiredError,
 } from '@uniplanet-lib/common'
 import { SIGNIN_ROUTE } from './routes-def'
-import { enforceTokenUniqueness } from '../utils/enforce-token-unique'
+import { generateToken } from '../utils/enforce-token-unique'
 import UserSerializer from '../events/serializer/UserSerializer'
 
 const signInRouter = express.Router()
@@ -32,7 +32,7 @@ signInRouter.post(
 		if (!isMatch) throw new PasswordMismatchError()
 
 		// Generate JWT
-		const userJwt = await enforceTokenUniqueness(user)
+		const userJwt = await generateToken(user)
 
 		// Store it on session object
 		req.session = { jwt: userJwt }

@@ -1,6 +1,6 @@
 import { UserDocument } from '../models'
 import jwt from 'jsonwebtoken'
-export async function enforceTokenUniqueness(user: UserDocument) {
+export async function generateToken(user: UserDocument) {
 	const token = jwt.sign(
 		{
 			id: user.id,

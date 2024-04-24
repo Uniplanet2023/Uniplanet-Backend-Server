@@ -2,11 +2,11 @@ import mongoose from 'mongoose'
 import app from './app'
 import { UserDeleteScheduler } from './scheduler'
 import { secretCheck } from './secret-check'
-import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
+import { EmailSender, NodemailerEmailApi, kafkaClient } from '@uniplanet-lib/common'
 import { UserCreatedProducer } from './events'
 import { UserDeletedProducer } from './events/producer/user-deleteted'
 
-const { PORT = 3000, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
+const { PORT = 3000, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST } = process.env
 
 const emailSender = EmailSender.getInstance()
 emailSender.activate()

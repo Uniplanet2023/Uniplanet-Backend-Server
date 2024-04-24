@@ -37,6 +37,7 @@ const userSchema: Schema = new Schema(
 		profileImage: {
 			type: String,
 			required: false,
+			default: "https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_150,h_150/v1/profile-image/default_image",
 		},
 		school: {
 			type: String,

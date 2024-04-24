@@ -1,10 +1,7 @@
 import express, { Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
 import {
-	NotAuthorizedError,
 	UserNotFoundError,
 	VerificationRequiredError,
-	generateEmailVerificationToken,
 	tokenValidation,
 } from '@uniplanet-lib/common'
 import { TOKEN_LOGIN_ROUTE } from './routes-def'
