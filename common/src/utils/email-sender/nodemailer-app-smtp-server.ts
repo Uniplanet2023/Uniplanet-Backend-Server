@@ -1,6 +1,6 @@
 import { google, Auth } from 'googleapis'
 import { GmailServerConfigAuth, NodemailerServerConfigAuth, SmtpServer, SmtpServerConfig } from './types'
-export default class NodemailerSmtpServer implements SmtpServer {
+export class NodemailerSmtpServer implements SmtpServer {
 	private host = process.env.SMTP_HOST!
 
 	private port = parseInt(process.env.SMTP_PORT!)

@@ -8,7 +8,7 @@ import {
 	EmailApiSendResetPasswordEmailArgs,
 } from './types'
 import nodemailer from 'nodemailer'
-import NodemailerSmtpServer from './nodemailer-app-smtp-server'
+import {NodemailerSmtpServer} from './nodemailer-app-smtp-server'
 import { otpGenerate } from '../account-verification/otp-generater'
 
 import {
