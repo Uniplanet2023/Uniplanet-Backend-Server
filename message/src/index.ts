@@ -178,7 +178,7 @@ io.on('connection', socket => {
 
 		redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
 			if (!isOnline) {
-				
+				console.log('sening notification')
 				const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
 
 				admin
