@@ -95,7 +95,7 @@ io.on('connection', socket => {
 		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
-	socket.on('chat room created', (chatJson,existingChat, callback) => {
+	socket.on('chat room created', (chatJson, existingChat, callback) => {
 		const chat = JSON.parse(chatJson)
 
 		socket.chatRoomId.push(chat.id)
@@ -110,8 +110,8 @@ io.on('connection', socket => {
 			if (!receiverToken) {
 				return
 			}
-			console.log(chat);
-			const notification = creatingChatNotification(receiverToken, chat)
+
+			const notification = creatingChatNotification(receiverToken, chatJson, chat)
 			admin
 				.messaging()
 				.send(notification)
@@ -132,7 +132,6 @@ io.on('connection', socket => {
 		// This logic depends on how you handle chat room ownership or admin rights
 
 		// Notify all users in the chat room that it will be deleted
-		
 
 		// Perform the deletion of the chat room from the database or your storage system
 		// Example: Delete chat room from your database
@@ -176,25 +175,24 @@ io.on('connection', socket => {
 			callback('token not found')
 			return
 		}
-		
+
 		redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
-			if(!isOnline){
-				let sender = JSON.parse(senderJson);
-				const messageNotification = newMessageNotification(receiverToken, message.message, sender)
+			if (!isOnline) {
+				
+				const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
 
-		admin
-			.messaging()
-			.send(messageNotification)
-			.then(response => {
-				console.log('Successfully sent message:', response)
-			})
-			.catch(error => {
-				console.log('Error sending message:', error)
-			})
-
+				admin
+					.messaging()
+					.send(messageNotification)
+					.then(response => {
+						console.log('Successfully sent message:', response)
+					})
+					.catch(error => {
+						console.log('Error sending message:', error)
+					})
 			}
 		})
-		
+
 		messageCreateProvider.sendMessage(message)
 
 		callback(message)

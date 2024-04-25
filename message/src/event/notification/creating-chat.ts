@@ -1,13 +1,13 @@
-export const creatingChatNotification = (receiverToken: string, chat: string) => {
+export const creatingChatNotification = (receiverToken: string, chatJson: string, chat: any) => {
 	const notificationPayload = {
-		notification:{
+		notification: {
 			title: 'New Chat',
-			body: 'You have a new chat',
+			body: chat.buyer.name + ' has started a chat with you',
 			sound: 'default',
 			badge: '1',
 		},
 		data: {
-			chat: chat,
+			chat: chatJson,
 			type: 'creating chat',
 		},
 		apns: {
