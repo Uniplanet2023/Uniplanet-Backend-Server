@@ -110,7 +110,8 @@ io.on('connection', socket => {
 			if (!receiverToken) {
 				return
 			}
-			const notification = creatingChatNotification(receiverToken, chatJson)
+			console.log(chat);
+			const notification = creatingChatNotification(receiverToken, chat)
 			admin
 				.messaging()
 				.send(notification)
@@ -175,7 +176,11 @@ io.on('connection', socket => {
 			callback('token not found')
 			return
 		}
-		const messageNotification = newMessageNotification(receiverToken, messageJson, senderJson)
+		
+		redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
+			if(!isOnline){
+				let sender = JSON.parse(senderJson);
+				const messageNotification = newMessageNotification(receiverToken, message.message, sender)
 
 		admin
 			.messaging()
@@ -186,6 +191,10 @@ io.on('connection', socket => {
 			.catch(error => {
 				console.log('Error sending message:', error)
 			})
+
+			}
+		})
+		
 		messageCreateProvider.sendMessage(message)
 
 		callback(message)

@@ -1,5 +1,11 @@
 export const creatingChatNotification = (receiverToken: string, chat: string) => {
 	const notificationPayload = {
+		notification:{
+			title: 'New Chat',
+			body: 'You have a new chat',
+			sound: 'default',
+			badge: '1',
+		},
 		data: {
 			chat: chat,
 			type: 'creating chat',

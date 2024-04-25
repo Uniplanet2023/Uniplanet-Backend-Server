@@ -1,16 +1,17 @@
 import { title } from "process"
 
-export const newMessageNotification = (receiverToken: string, message: string, sender: string) => {
+export const newMessageNotification = (receiverToken: string, message: string, sender:any) => {
 	const notificationPayload = {
 		notification:{
-			title: 'New Message',
+			title: sender.name as string,
 			body: message,
 		},
-		data: {
-			message: message,
-			sender: sender,
-			type: 'new message',
-		},
+		// data: {
+		// 	message: message,
+		// 	sender: sender,
+		// 	type: 'new message',
+		// },
+		
 		android:{
 			notification:{
 				sound: 'default',
