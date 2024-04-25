@@ -1,5 +1,11 @@
+import { title } from "process"
+
 export const newMessageNotification = (receiverToken: string, message: string, sender: string) => {
 	const notificationPayload = {
+		notification:{
+			title: 'New Message',
+			body: message,
+		},
 		data: {
 			message: message,
 			sender: sender,
@@ -15,7 +21,7 @@ export const newMessageNotification = (receiverToken: string, message: string, s
 		apns: {
 			headers: {
 				'apns-priority': '10',
-				'apns-push-type': 'background',
+				// 'apns-push-type': 'background',
 				'apns-topic': 'shop.uniplanet.uniplanet',
 			},
 			payload: {
