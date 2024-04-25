@@ -3,8 +3,6 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 		notification: {
 			title: 'New Chat',
 			body: chat.buyer.name + ' has started a chat with you',
-			sound: 'default',
-			badge: '1',
 		},
 		data: {
 			chat: chatJson,
