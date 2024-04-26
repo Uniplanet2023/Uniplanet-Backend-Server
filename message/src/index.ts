@@ -177,6 +177,10 @@ io.on('connection', socket => {
 			redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
 				if (!isOnline) {
 					console.log('sening notification')
+					const msg = message.message as string;
+					if(msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')){
+						message.message = 'Image'
+					}
 					const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
 	
 					admin
