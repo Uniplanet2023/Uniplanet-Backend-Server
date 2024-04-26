@@ -16,7 +16,7 @@ admin.initializeApp({
 		projectId: process.env.FIREBASE_PROJECT_ID,
 	}),
 })
-const { PORT = 3004, NODE_ENV, KAFKA_BROKER, REDIS_HOST, REDIS_PORT, MONGO_DB_HOST } = process.env
+const { PORT = 3004, NODE_ENV, KAFKA_BROKER } = process.env
 // Sold / onSale / fre
 // Creating and configuring Kafka client
 if (NODE_ENV === 'production') {
@@ -89,7 +89,7 @@ io.on('connection', socket => {
 
 	socket.on('typing', chatRoomId => {
 		console.log('typing')
-		io.to(chatRoomId).emit('typing', chatRoomId)
+		io.to(chatRoomId).emit('typing', chatRoomId, socket.userId)
 	})
 	socket.on('stop typing', chatRoomId => {
 		console.log('stop typing')
@@ -173,25 +173,26 @@ io.on('connection', socket => {
 		if (!receiverToken) {
 			console.log('receiver token not found')
 			callback('token not found')
-			return
+		}else{
+			redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
+				if (!isOnline) {
+					console.log('sening notification')
+					const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
+	
+					admin
+						.messaging()
+						.send(messageNotification)
+						.then(response => {
+							console.log('Successfully sent message:', response)
+						})
+						.catch(error => {
+							console.log('Error sending message:', error)
+						})
+				}
+			})
 		}
 
-		redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
-			if (!isOnline) {
-				console.log('sening notification')
-				const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
-
-				admin
-					.messaging()
-					.send(messageNotification)
-					.then(response => {
-						console.log('Successfully sent message:', response)
-					})
-					.catch(error => {
-						console.log('Error sending message:', error)
-					})
-			}
-		})
+		
 
 		messageCreateProvider.sendMessage(message)
 
