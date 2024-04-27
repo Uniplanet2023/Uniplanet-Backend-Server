@@ -1,74 +1,18 @@
-import morgan from 'morgan'
-import { Server as SocketIOServer, Socket } from 'socket.io'
-import app from './app'
-import { URL_LIST_PROD, kafkaClient, redisClient, tokenValidation } from '@uniplanet-lib/common'
-import { MessageCreatedProducer } from './event/producer/MessageCreatedProducer'
-import { MessageReadProducer } from './event/producer/MessageReadProducer'
-import { MessageReadAllProducer } from './event/producer/MessageReadAllProducer'
+import { redisClient } from '@uniplanet-lib/common'
 import admin from 'firebase-admin'
 import { creatingChatNotification, newMessageNotification } from './event/notification'
-app.use(morgan('tiny'))
+import { initializeFirebase, initializeKafka, messageCreateProvider, messageReadAllProvider } from './config'
+import { io } from './config/socket'
+import { initMiddleWare } from './socket/middleware/socket-init'
 
-admin.initializeApp({
-	credential: admin.credential.cert({
-		privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
-		clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-		projectId: process.env.FIREBASE_PROJECT_ID,
-	}),
-})
-const { PORT = 3004, NODE_ENV, KAFKA_BROKER } = process.env
-// Sold / onSale / fre
-// Creating and configuring Kafka client
-if (NODE_ENV === 'production') {
-	if (!KAFKA_BROKER) {
-		throw new Error('KAFKA_BROKER have to be define')
-	}
-}
-kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
-const messageCreateProvider = new MessageCreatedProducer(kafkaClient.kafka)
-const messageReadAllProvider = new MessageReadAllProducer(kafkaClient.kafka)
-const messageReadProvider = new MessageReadProducer(kafkaClient.kafka)
+//initial Setting
+initializeFirebase();
+initializeKafka();
 
-const server = app.listen(PORT, async () => {
-	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-	await messageCreateProvider.connect()
-	await messageReadAllProvider.connect()
-	await messageReadProvider.connect()
-
-	await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
-	redisClient.redis.on('error', err => console.log('Redis Client Error', err))
-	await redisClient.redis.connect().then(() => {
-		console.log('Redis is connected')
-	})
-})
-
-let io: SocketIOServer
-io = new SocketIOServer(server, {
-	pingTimeout: 60000,
-	pingInterval: 25000,
-	cookie: false,
-	cors: {
-		origin: URL_LIST_PROD,
-		credentials: true,
-	},
-})
-declare module 'socket.io' {
-	interface Socket {
-		userId: string
-		chatRoomId: string[]
-		firebaseToken: string
-	}
-}
-
-io.use((socket, next) => {
-	const { userId } = socket.handshake.query
-	if (!userId) {
-		return next(new Error('Authentication error'))
-	}
-	socket.userId = userId as string
-	socket.chatRoomId = []
-	next()
-})
+// Socket Programming
+// 1. init Setting
+initMiddleWare();
+// 2. Socket Router
 io.on('connection', socket => {
 	console.log('User connected')
 	try {
