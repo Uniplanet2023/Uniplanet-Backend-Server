@@ -72,9 +72,15 @@ io.use((socket, next) => {
 io.on('connection', socket => {
 	console.log('User connected')
 	try {
-		redisClient.redis.sAdd(`Online User`, socket.userId)
-		socket.join(socket.userId)
-		redisClient.redis.set(socket.userId, socket.firebaseToken)
+		if(socket.userId){
+			console.log(socket.userId);
+			redisClient.redis.sAdd(`Online User`, socket.userId)
+			socket.join(socket.userId)
+			console.log(socket.firebaseToken);
+			if(socket.firebaseToken){
+				redisClient.redis.set(socket.userId, socket.firebaseToken)
+			}	
+		}
 	} catch (err) {
 		console.log(err)
 	}
