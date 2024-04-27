@@ -76,12 +76,15 @@ io.on('connection', socket => {
 			console.log(socket.userId);
 			redisClient.redis.sAdd(`Online User`, socket.userId)
 			socket.join(socket.userId)
-			console.log(socket.chatRoomId);
-			if(socket.chatRoomId){
-				socket.chatRoomId.forEach((chatRoomId: string) => {
-					io.to(chatRoomId).emit('online user', socket.userId)
-				})
-			}
+			redisClient.redis.sMembers(`Chat: ${socket.userId}`).then( async chatList =>{
+				console.log(chatList);
+				if(chatList){
+					chatList.forEach((chatRoomId: string) => {
+						io.to(chatRoomId).emit('online user', socket.userId)
+					})
+				}
+			})
+			
 			
 		}
 	} catch (err) {
@@ -115,7 +118,7 @@ io.on('connection', socket => {
 
 		socket.join(chat.id)
 		socket.join(chat.seller.id)
-
+		redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id);
 		io.to(chat.seller.id).emit('chat room created', chatJson, existingChat)
 
 		redisClient.redis.sIsMember(`Online User`, chat.seller.id).then(async isOnline => {
@@ -146,7 +149,7 @@ io.on('connection', socket => {
 			if (index > -1) {
 				socket.chatRoomId.splice(index, 1)
 			}
-
+			redisClient.redis.sRem(`Chat: ${socket.userId}`, chatRoom);
 			// Callback with success message
 			callback({ success: true, message: 'Chat room deleted successfully' })
 		} catch (error) {
@@ -158,7 +161,7 @@ io.on('connection', socket => {
 	socket.on('join chat', ({ chatRoomId, targetUser }, callback) => {
 		console.log('join chat' + chatRoomId)
 		socket.join(chatRoomId)
-
+		redisClient.redis.sAdd(`Chat: ${socket.userId}`, chatRoomId);
 		socket.chatRoomId.push(chatRoomId)
 		redisClient.redis.sIsMember(`Online User`, targetUser).then(isOnline => {
 			callback(isOnline) // Respond back to the requester with the online status
