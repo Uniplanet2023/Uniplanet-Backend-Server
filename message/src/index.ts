@@ -71,28 +71,30 @@ io.use((socket, next) => {
 })
 io.on('connection', socket => {
 	console.log('User connected')
-
+	try {
+		redisClient.redis.sAdd(`Online User`, socket.userId)
+		socket.join(socket.userId)
+		redisClient.redis.set(socket.userId, socket.firebaseToken)
+	} catch (err) {
+		console.log(err)
+	}
 	socket.on('setup', firebaseToken => {
 		console.log('setup' + socket.userId)
-		socket.join(socket.userId)
 		if (!firebaseToken) {
 			console.log('firebase token not found')
 			return
 		}
 		try {
-			redisClient.redis.sAdd(`Online User`, socket.userId)
 			redisClient.redis.set(socket.userId, firebaseToken)
-		} catch (err) {
-			console.log(err)
+		} catch (e) {
+			console.log(e)
 		}
 	})
 
 	socket.on('typing', chatRoomId => {
-		console.log('typing')
 		io.to(chatRoomId).emit('typing', chatRoomId, socket.userId)
 	})
 	socket.on('stop typing', chatRoomId => {
-		console.log('stop typing')
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
 	socket.on('chat room created', (chatJson, existingChat, callback) => {
@@ -126,19 +128,7 @@ io.on('connection', socket => {
 	})
 	socket.on('chat room deleted', async (chatRoom, callback) => {
 		console.log('Deleting chat room:', chatRoom)
-
-		// Check if the current user is authorized to delete the chat room (optional)
-		// Example: Check if the user is the owner of the chat room
-		// This logic depends on how you handle chat room ownership or admin rights
-
-		// Notify all users in the chat room that it will be deleted
-
-		// Perform the deletion of the chat room from the database or your storage system
-		// Example: Delete chat room from your database
 		try {
-			// Placeholder for deletion logic, replace with actual database deletion code
-			// await ChatRoom.deleteOne({ _id: chatRoomId });
-			// Leave all users from this chat room and remove it from their list
 			socket.leave(chatRoom)
 			io.to(chatRoom).emit('chat room deleted', { chatRoom })
 			const index = socket.chatRoomId.indexOf(chatRoom)
@@ -167,40 +157,41 @@ io.on('connection', socket => {
 	})
 	socket.on('new message', async ({ messageJson, senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
+		try {
+			io.to(message.chat).emit('message received', messageJson)
+			const receiverToken = await redisClient.redis.get(message.receiver)
+			if (!receiverToken) {
+				console.log('receiver token not found')
+				callback('token not found')
+			} else {
+				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
+					if (!isOnline) {
+						console.log('sening notification')
+						const msg = message.message as string
+						if (msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')) {
+							message.message = 'Image'
+						}
+						const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
 
-		io.to(message.chat).emit('message received', messageJson)
-		const receiverToken = await redisClient.redis.get(message.receiver)
-		if (!receiverToken) {
-			console.log('receiver token not found')
-			callback('token not found')
-		}else{
-			redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
-				if (!isOnline) {
-					console.log('sening notification')
-					const msg = message.message as string;
-					if(msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')){
-						message.message = 'Image'
+						admin
+							.messaging()
+							.send(messageNotification)
+							.then(response => {
+								console.log('Successfully sent message:', response)
+							})
+							.catch(error => {
+								console.log('Error sending message:', error)
+							})
 					}
-					const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson);
-	
-					admin
-						.messaging()
-						.send(messageNotification)
-						.then(response => {
-							console.log('Successfully sent message:', response)
-						})
-						.catch(error => {
-							console.log('Error sending message:', error)
-						})
-				}
-			})
+				})
+			}
+
+			messageCreateProvider.sendMessage(message)
+
+			callback(message)
+		} catch (e) {
+			console.log(e)
 		}
-
-		
-
-		messageCreateProvider.sendMessage(message)
-
-		callback(message)
 	})
 	socket.on('read all message', chatId => {
 		const readMessageTime = new Date()
@@ -224,7 +215,6 @@ io.on('connection', socket => {
 			socket.leave(chatRoomId)
 		})
 		socket.leave(socket.userId)
-		socket.firebaseToken = ''
 		socket.chatRoomId = []
 	})
 })

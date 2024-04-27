@@ -1,6 +1,9 @@
-import { title } from 'process'
-
-export const newMessageNotification = (receiverToken: string, message: any, messageJson:string, senderJson: string) => {
+export const newMessageNotification = (
+	receiverToken: string,
+	message: any,
+	messageJson: string,
+	senderJson: string,
+) => {
 	const sender = JSON.parse(senderJson)
 
 	const notificationPayload = {
