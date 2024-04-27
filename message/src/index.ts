@@ -76,10 +76,7 @@ io.on('connection', socket => {
 			console.log(socket.userId);
 			redisClient.redis.sAdd(`Online User`, socket.userId)
 			socket.join(socket.userId)
-			console.log(socket.firebaseToken);
-			if(socket.firebaseToken){
-				redisClient.redis.set(socket.userId, socket.firebaseToken)
-			}
+			console.log(socket.chatRoomId);
 			if(socket.chatRoomId){
 				socket.chatRoomId.forEach((chatRoomId: string) => {
 					io.to(chatRoomId).emit('online user', socket.userId)
@@ -93,6 +90,7 @@ io.on('connection', socket => {
 	socket.on('setup', firebaseToken => {
 		console.log('setup' + socket.userId)
 		socket.firebaseToken = firebaseToken
+		console.log(socket.firebaseToken);
 		if (!firebaseToken) {
 			console.log('firebase token not found')
 			return
