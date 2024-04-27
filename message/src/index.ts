@@ -80,7 +80,9 @@ io.on('connection', socket => {
 				console.log(chatList);
 				if(chatList){
 					chatList.forEach((chatRoomId: string) => {
+						socket.join(chatRoomId);
 						io.to(chatRoomId).emit('online user', socket.userId)
+						
 					})
 				}
 			})
@@ -140,23 +142,30 @@ io.on('connection', socket => {
 			callback(isOnline)
 		})
 	})
-	socket.on('chat room deleted', async (chatRoom, callback) => {
-		console.log('Deleting chat room:', chatRoom)
+	socket.on('chat room deleted', async ({chatRoom, clientId}, callback) => {
+		console.log('Deleting chat room:', chatRoom);
 		try {
-			socket.leave(chatRoom)
-			io.to(chatRoom).emit('chat room deleted', { chatRoom })
-			const index = socket.chatRoomId.indexOf(chatRoom)
+			await socket.leave(chatRoom);
+			io.to(chatRoom).emit('chat room deleted', { chatRoom });
+	
+			// Assuming socket.chatRoomId is an array storing the user's chat rooms
+			const index = socket.chatRoomId.indexOf(chatRoom);
 			if (index > -1) {
-				socket.chatRoomId.splice(index, 1)
+				socket.chatRoomId.splice(index, 1);
 			}
-			redisClient.redis.sRem(`Chat: ${socket.userId}`, chatRoom);
+	
+			// Remove chat room from Redis for both users
+			await redisClient.redis.sRem(`Chat: ${socket.userId}`, chatRoom);
+			await redisClient.redis.sRem(`Chat: ${clientId}`, chatRoom);
+	
 			// Callback with success message
-			callback({ success: true, message: 'Chat room deleted successfully' })
+			callback({ success: true, message: 'Chat room deleted successfully' });
 		} catch (error) {
-			console.log('Error deleting chat room:', error)
-			callback({ success: false, message: 'Error deleting chat room' })
+			console.error('Error deleting chat room:', error);
+			callback({ success: false, message: 'Error deleting chat room' });
 		}
-	})
+	});
+	
 
 	socket.on('join chat', ({ chatRoomId, targetUser }, callback) => {
 		console.log('join chat' + chatRoomId)
