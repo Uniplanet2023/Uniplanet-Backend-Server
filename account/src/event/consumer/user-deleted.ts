@@ -16,7 +16,7 @@ export default class UserDeletedConsumer extends BaseConsumer<UserDeletedEvent> 
 		// Process the user:created message, e.g., send an email
 		console.log(`user Deleted ${data.id} -- account server`)
 		
-		await Account.updateOne({_id: data.id}, {deleteDate: new Date()})
+		await Account.updateOne({_id: data.id},  { $set: { deletionDate: new Date() } })
 		console.log('account deleted successfully')
 	}
 }
