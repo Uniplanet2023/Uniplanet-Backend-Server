@@ -66,14 +66,14 @@ io.on('connection', socket => {
 		socket.join(chat.seller.id)
 		redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id);
 		io.to(chat.seller.id).emit('chat room created', chatJson, existingChat)
-
+ 
 		redisClient.redis.sIsMember(`Online User`, chat.seller.id).then(async isOnline => {
 			const receiverToken = await redisClient.redis.get(chat.seller.id)
-			if (!receiverToken) {
-				return
-			}
-
-			const notification = creatingChatNotification(receiverToken, chatJson, chat)
+			
+			callback(isOnline);
+			try{
+				if(receiverToken){
+					const notification = creatingChatNotification(receiverToken, chatJson, chat)
 			admin
 				.messaging()
 				.send(notification)
@@ -83,8 +83,14 @@ io.on('connection', socket => {
 				.catch(error => {
 					console.log('Error sending message:', error)
 				})
-			callback(isOnline)
-		})
+				}
+				
+			
+		
+			}catch(e){
+				console.log(e);
+			}
+		})	
 	})
 	socket.on('chat room deleted', async ({chatRoom, clientId}, callback) => {
 		console.log('Deleting chat room:', chatRoom);
@@ -127,10 +133,7 @@ io.on('connection', socket => {
 		try {
 			io.to(message.chat).emit('message received', messageJson)
 			const receiverToken = await redisClient.redis.get(message.receiver)
-			if (!receiverToken) {
-				console.log('receiver token not found')
-				callback('token not found')
-			} else {
+			
 				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
 					if (!isOnline) {
 						console.log('sening notification')
@@ -138,20 +141,30 @@ io.on('connection', socket => {
 						if (msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')) {
 							message.message = 'Image'
 						}
-						const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
+						try{
+							if(receiverToken){
+								const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
 
-						admin
-							.messaging()
-							.send(messageNotification)
-							.then(response => {
-								console.log('Successfully sent message:', response)
-							})
-							.catch(error => {
-								console.log('Error sending message:', error)
-							})
+							admin
+								.messaging()
+								.send(messageNotification)
+								.then(response => {
+									console.log('Successfully sent message:', response)
+								})
+								.catch(error => {
+									console.log('Error sending message:', error)
+								})
+							}else{
+								console.log('receiverToken not found')
+							}
+							
+						}catch(e){
+							console.log(e);
+						}
+						
 					}
 				})
-			}
+			
 
 			messageCreateProvider.sendMessage(message)
 
