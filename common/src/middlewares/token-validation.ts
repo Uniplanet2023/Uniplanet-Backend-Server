@@ -6,6 +6,7 @@ interface UserPayload {
 	name: string
 	email: string
 	school: string
+	type: string
 	verified: string
 }
 declare global {
