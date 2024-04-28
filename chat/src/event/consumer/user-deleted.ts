@@ -16,9 +16,21 @@ export default class UserDeletedConsumer extends BaseConsumer<UserDeletedEvent> 
 		// Process the user:created message, e.g., send an email
 		console.log(`user Deleted ${data.id} -- account server`)
 		
-        await Chat.updateMany({$or: [{sender: data.id}, {receiver: data.id}]}, {deletionDate: new Date()} );
-        await User.updateOne({_id: data.id}, {deleteDate: new Date()});
-        await Message.updateMany({$or: [{sender: data.id}, {receiver: data.id}]}, {deletionDate: new Date()} );
+        await Chat.updateMany(
+			{ $or: [{ sender: data.id }, { receiver: data.id }] },
+			{ $set: { deletionDate: new Date() } }
+		  );
+		  
+		  await User.updateOne(
+			{ _id: data.id },
+			{ $set: { deleteDate: new Date() } }
+		  );
+		  
+		  await Message.updateMany(
+			{ $or: [{ sender: data.id }, { receiver: data.id }] },
+			{ $set: { deletionDate: new Date() } }
+		  );
+		  
 
 		console.log('account deleted successfully')
 	}
