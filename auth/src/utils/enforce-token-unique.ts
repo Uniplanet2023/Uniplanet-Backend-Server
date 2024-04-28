@@ -6,6 +6,7 @@ export async function generateToken(user: UserDocument) {
 			id: user.id,
 			email: user.email,
 			school: user.school,
+			type: user.type,
 		},
 		process.env.JWT_TOKEN_SECRET!,
 		{
