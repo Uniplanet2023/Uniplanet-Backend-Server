@@ -143,6 +143,7 @@ io.on('connection', socket => {
 						}
 						try{
 							if(receiverToken){
+								console.log(receiverToken);
 								const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
 
 							admin
