@@ -17,7 +17,7 @@ export default class UserDeletedConsumer extends BaseConsumer<UserDeletedEvent> 
 		console.log(`user Deleted ${data.id} -- account server`)
 		
         await Chat.updateMany(
-			{ $or: [{ sender: data.id }, { receiver: data.id }] },
+			{ $or: [{ seller: data.id }, { buyer: data.id }] },
 			{ $set: { deletionDate: new Date() } }
 		  );
 		  
