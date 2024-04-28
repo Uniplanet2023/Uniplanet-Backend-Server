@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from '../models/index'
-import { UserNotFoundError, tokenValidation } from '@uniplanet-lib/common'
+import { UserNotFoundError, redisClient, tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_USER_ROUTE } from './routes-def'
 import { userDeletedProducer } from '..'
 
@@ -18,6 +18,7 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 	)
 	req.session = null
 	req.user = undefined
+	
 	userDeletedProducer.sendMessage({
 		id: user.id,
 	})

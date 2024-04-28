@@ -105,8 +105,8 @@ io.on('connection', socket => {
 			}
 	
 			// Remove chat room from Redis for both users
-			await redisClient.redis.sRem(`Chat: ${socket.userId}`, chatRoom);
-			await redisClient.redis.sRem(`Chat: ${clientId}`, chatRoom);
+			await redisClient.redis.sRem(`Chat: ${socket.userId}`, chatRoom); // My chat room
+			await redisClient.redis.sRem(`Chat: ${clientId}`, chatRoom); // Other user's chat room
 	
 			// Callback with success message
 			callback({ success: true, message: 'Chat room deleted successfully' });
