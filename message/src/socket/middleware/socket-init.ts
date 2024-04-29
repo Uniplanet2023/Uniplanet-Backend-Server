@@ -9,7 +9,7 @@ export function initMiddleWare(){
             return next(new Error('Authentication error'))
         }
         socket.userId = userId as string
-        socket.chatRoomId = []
+        // socket.chatRoomId = []
         next()
     })
 }
