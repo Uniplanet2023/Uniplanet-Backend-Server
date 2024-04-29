@@ -250,7 +250,6 @@ io.on('connection', async socket => {
 	socket.on('disconnect', () => {
 		console.log('User disconnected: ' + socket.userId);
 		redisClient.redis.sRem(`Online User`, socket.userId);
-		redisClient.redis.get(`Chat: ${socket.userId}`);
 
 		socket.chatRoomId.forEach((chatRoomId: string) => {
 			io.to(chatRoomId).emit('offline user', socket.userId)
