@@ -38,10 +38,14 @@ signInRouter.post(
 		req.session = { jwt: userJwt }
 		const userInfo = new UserSerializer(user)
 		res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
-		if (user.deletionDate != undefined) {
-			user.deletionDate = undefined
-			await user.updateOne({ deletionDate: undefined })
-		}
+		if (user.deletionDate) {
+			await User.findByIdAndUpdate(
+				{ _id: user.id },
+				{ deletionDate: undefined },
+				{ new: true },
+			)
+		  }
+		  
 	},
 )
 
