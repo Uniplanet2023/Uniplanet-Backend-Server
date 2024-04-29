@@ -3,7 +3,7 @@ import app from './app'
 import { UserDeleteScheduler } from './scheduler'
 import { secretCheck } from './secret-check'
 import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
-import { UserCreatedProducer } from './events'
+import { UserCreatedProducer, UserRestoreProducer } from './events'
 import { UserDeletedProducer } from './events/producer/user-deleteted'
 import TokenRefreshScheduler from './scheduler/token-refresh-schedule'
 
@@ -23,6 +23,7 @@ if (NODE_ENV === 'production') {
 
 export const userCreatedProducer = new UserCreatedProducer(kafkaClient.kafka)
 export const userDeletedProducer = new UserDeletedProducer(kafkaClient.kafka)
+export const userRestoreProducer = new UserRestoreProducer(kafkaClient.kafka)
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -31,6 +32,7 @@ app.listen(PORT, async () => {
 	if (process.env.NODE_ENV == 'production') {
 		await userCreatedProducer.connect()
 		await userDeletedProducer.connect()
+		await userRestoreProducer.connect()
 	}
 
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(async() => {

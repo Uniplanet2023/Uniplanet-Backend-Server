@@ -12,6 +12,7 @@ import {
 import { SIGNIN_ROUTE } from './routes-def'
 import { generateToken } from '../utils/enforce-token-unique'
 import UserSerializer from '../events/serializer/UserSerializer'
+import { userRestoreProducer } from '..'
 
 const signInRouter = express.Router()
 signInRouter.post(
@@ -39,6 +40,10 @@ signInRouter.post(
 				{ deletionDate: null },
 				{ new: true },
 			)
+			userRestoreProducer.sendMessage({
+				id: user.id,
+				deletionDate: undefined,
+			})
 		}
 
 		// Store it on session object
