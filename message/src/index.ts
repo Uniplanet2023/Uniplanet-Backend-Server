@@ -25,30 +25,28 @@ io.on('connection', async socket => {
 			const chatList = await redisClient.redis.sMembers(`Chat: ${socket.userId}`);
 			console.log(chatList);
 	
-			if (chatList) {
-				chatList.forEach((chatRoomId) => {
-					// Check if the socket is already in the chat room
-					if (!socket.rooms.has(chatRoomId)) {
-						socket.join(chatRoomId);
-						io.to(chatRoomId).emit('online user', socket.userId);
-					} else {
-						console.log(`Socket is already in chat room: ${chatRoomId}`);
-					}
-				});
-			}
+			// if (chatList) {
+			// 	chatList.forEach((chatRoomId) => {
+			// 		// Check if the socket is already in the chat room
+			// 		if (!socket.rooms.has(chatRoomId)) {
+			// 			socket.join(chatRoomId);
+			// 			io.to(chatRoomId).emit('online user', socket.userId);
+			// 		} else {
+			// 			console.log(`Socket is already in chat room: ${chatRoomId}`);
+			// 		}
+			// 	});
+			// }
 		}
 	} catch (err) {
 		console.error('Error handling socket connection and chat rooms:', err);
 	}
 	
 	socket.on('setup', firebaseToken => {
-		console.log('setup' + socket.userId)
-		socket.firebaseToken = firebaseToken
-		console.log(socket.firebaseToken);
 		if (!firebaseToken) {
 			console.log('firebase token not found')
 			return
 		}
+		socket.firebaseToken = firebaseToken
 		try {
 			redisClient.redis.set(socket.userId, firebaseToken)
 		} catch (e) {
@@ -65,7 +63,6 @@ io.on('connection', async socket => {
 	socket.on('chat room created', async (chatJson, existingChat, callback) => {
 		try {
 			const chat = JSON.parse(chatJson);
-		
 			// Join chat rooms only if the socket is not already in them
 			if (!socket.rooms.has(chat.id)) {
 				socket.chatRoomId.push(chat.id);
