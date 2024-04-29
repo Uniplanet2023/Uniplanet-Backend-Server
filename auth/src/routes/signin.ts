@@ -33,18 +33,19 @@ signInRouter.post(
 
 		// Generate JWT
 		const userJwt = await generateToken(user)
+		if (user.deletionDate) {
+			await User.findByIdAndUpdate(
+				{ _id: user.id },
+				{ deletionDate: null },
+				{ new: true },
+			)
+		}
 
 		// Store it on session object
 		req.session = { jwt: userJwt }
 		const userInfo = new UserSerializer(user)
 		res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
-		if (user.deletionDate) {
-			await User.findByIdAndUpdate(
-				{ _id: user.id },
-				{ deletionDate: undefined },
-				{ new: true },
-			)
-		  }
+		
 		  
 	},
 )
