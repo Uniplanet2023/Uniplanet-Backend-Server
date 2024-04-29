@@ -23,19 +23,19 @@ io.on('connection', async socket => {
 	
 			// Retrieve chat rooms from Redis
 			const chatList = await redisClient.redis.sMembers(`Chat: ${socket.userId}`);
-			console.log(chatList);
+			console.log('chatList:'+chatList);
 	
-			// if (chatList) {
-			// 	chatList.forEach((chatRoomId) => {
-			// 		// Check if the socket is already in the chat room
-			// 		if (!socket.rooms.has(chatRoomId)) {
-			// 			socket.join(chatRoomId);
-			// 			io.to(chatRoomId).emit('online user', socket.userId);
-			// 		} else {
-			// 			console.log(`Socket is already in chat room: ${chatRoomId}`);
-			// 		}
-			// 	});
-			// }
+			if (chatList) {
+				chatList.forEach((chatRoomId) => {
+					// Check if the socket is already in the chat room
+					if (!socket.rooms.has(chatRoomId)) {
+						socket.join(chatRoomId);
+						io.to(chatRoomId).emit('online user', socket.userId);
+					} else {
+						console.log(`Socket is already in chat room: ${chatRoomId}`);
+					}
+				});
+			}
 		}
 	} catch (err) {
 		console.error('Error handling socket connection and chat rooms:', err);
