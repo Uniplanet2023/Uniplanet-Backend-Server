@@ -6,5 +6,6 @@ export interface UserUpdateEvent {
 		id: string
 		name?: string
 		profileImage?: string
+		deletionDate?: string
 	}
 }
