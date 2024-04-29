@@ -154,6 +154,7 @@ io.on('connection', async socket => {
 	socket.on('new message', async ({ messageJson, senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
 		try {
+			console.log('sent');
 			io.to(message.chat).emit('message received', messageJson)
 			const receiverToken = await redisClient.redis.get(message.receiver)
 			
