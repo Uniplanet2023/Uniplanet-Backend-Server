@@ -7,6 +7,7 @@ import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import { v2 as cloudinary } from 'cloudinary'
 import UserDeletedConsumer from './event/consumer/user-deleted'
+import UserUpdatedConsumer from './event/consumer/user-updated'
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -28,9 +29,13 @@ app.listen(PORT, async () => {
 		
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
 		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
+		const userUpdatedConsumer = new UserUpdatedConsumer(kafkaClient.kafka,'userupdated-account')
+
+		await userUpdatedConsumer.connect()
 		await userCreatedConsumer.connect()
-		await userUpdateProducer.connect();
 		await userDeletedConsumer.connect()
+
+		await userUpdateProducer.connect()
 	}
 	
 
