@@ -18,7 +18,8 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 	)
 	req.session = null
 	req.user = undefined
-	
+	await redisClient.redis.del(user.id);
+	await redisClient.redis.del(`Search Record: ${user.id}`);
 	userDeletedProducer.sendMessage({
 		id: user.id,
 	})
