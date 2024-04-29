@@ -37,5 +37,6 @@ app.listen(PORT, async () => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()
 		new TokenRefreshScheduler().taskInitializer()
+		
 	})
 })

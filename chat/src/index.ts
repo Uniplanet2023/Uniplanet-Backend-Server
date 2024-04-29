@@ -7,6 +7,7 @@ import MessageReadAllConsumer from './event/consumer/message_read_all'
 import { CreateChatProducer } from './event/producer/create_chat'
 import UserUpdateConsumer from './event/consumer/user-update-Consumer'
 import UserDeletedConsumer from './event/consumer/user-deleted'
+import DeleteScheduler from './scheduler/delete-scheduler'
 
 const { PORT = 3003, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST } = process.env
 
@@ -42,5 +43,6 @@ app.listen(PORT, async () => {
 
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(() => {
 		console.log('MongoDB is connected')
+		new DeleteScheduler().taskInitializer();
 	})
 })
