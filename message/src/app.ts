@@ -20,10 +20,6 @@ app.all('*', () => {
 })
 app.use(errorHandler)
 
-const server = app.listen(PORT, async () => {
-	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-	await initializeProducer(kafkaClient.kafka);
-	await initializeRedis();
-})
 
-export default server
+
+export default app;

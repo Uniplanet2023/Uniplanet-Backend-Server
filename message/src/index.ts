@@ -1,14 +1,39 @@
-import { redisClient } from '@uniplanet-lib/common'
+import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 import admin from 'firebase-admin'
 import { creatingChatNotification, newMessageNotification } from './event/notification'
-import { initializeFirebase, initializeKafka, messageCreateProvider, messageReadAllProvider } from './config'
-import { io } from './config/socket'
+import { initializeFirebase, initializeKafka, initializeProducer, initializeRedis, messageCreateProvider, messageReadAllProvider } from './config'
 import { initMiddleWare } from './socket/middleware/socket-init'
+import { Server as SocketIOServer, Server } from 'socket.io'
+import { URL_LIST_PROD } from '@uniplanet-lib/common'
+import app from './app'
 
-//initial Setting
-initializeFirebase();
-initializeKafka();
+const { PORT = 3004 } = process.env
 
+let io: SocketIOServer
+declare module 'socket.io' {
+	interface Socket {
+		userId: string
+		chatRoomId: string[]
+		firebaseToken: string
+	}
+}
+const server = app.listen(PORT, async () => {
+	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
+	initializeFirebase();
+	initializeKafka();
+	await initializeProducer(kafkaClient.kafka);
+	await initializeRedis();
+})
+
+io = new SocketIOServer(server, {
+	pingTimeout: 60000,
+	pingInterval: 25000,
+	cookie: false,
+	cors: {
+		origin: URL_LIST_PROD,
+		credentials: true,
+	},
+})
 // Socket Programming
 // 1. init Setting
 initMiddleWare();
