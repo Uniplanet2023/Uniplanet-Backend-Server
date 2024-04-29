@@ -58,7 +58,8 @@ io.on('connection', socket => {
 		io.to(chatRoomId).emit('stop typing', chatRoomId)
 	})
 	socket.on('chat room created', (chatJson, existingChat, callback) => {
-		const chat = JSON.parse(chatJson)
+		try{
+			const chat = JSON.parse(chatJson)
 
 		socket.chatRoomId.push(chat.id)
 
@@ -91,6 +92,11 @@ io.on('connection', socket => {
 				console.log(e);
 			}
 		})	
+
+		}catch(e){
+			console.log(e);
+		}
+		
 	})
 	socket.on('chat room deleted', async ({chatRoom, clientId}, callback) => {
 		console.log('Deleting chat room:', chatRoom);
@@ -118,7 +124,8 @@ io.on('connection', socket => {
 	
 
 	socket.on('join chat', ({ chatRoomId, targetUser }, callback) => {
-		console.log('join chat' + chatRoomId)
+		try{
+			console.log('join chat' + chatRoomId)
 		socket.join(chatRoomId)
 		redisClient.redis.sAdd(`Chat: ${socket.userId}`, chatRoomId);
 		socket.chatRoomId.push(chatRoomId)
@@ -127,6 +134,10 @@ io.on('connection', socket => {
 		})
 
 		io.to(chatRoomId).emit('online user', socket.userId)
+		}catch(e){
+			console.log(e);
+		}
+		
 	})
 	socket.on('new message', async ({ messageJson, senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
@@ -175,16 +186,26 @@ io.on('connection', socket => {
 		}
 	})
 	socket.on('read all message', chatId => {
-		const readMessageTime = new Date()
-		io.to(chatId).emit('read all message', { sender: socket.userId, chatId, readMessageTime })
-		messageReadAllProvider.sendMessage({ sender: socket.userId, chat: chatId, readDate: readMessageTime })
+		try{
+			const readMessageTime = new Date()
+			io.to(chatId).emit('read all message', { sender: socket.userId, chatId, readMessageTime })
+			messageReadAllProvider.sendMessage({ sender: socket.userId, chat: chatId, readDate: readMessageTime })
+		}catch(e){
+			console.log(e);
+		}
+		
 	})
 
 	// Handle a request to check if a user is online
 	socket.on('check user online', (checkUserId, callback) => {
-		redisClient.redis.sIsMember(`Online User`, checkUserId).then(isOnline => {
-			callback(isOnline) // Respond back to the requester with the online status
-		})
+		try{
+			redisClient.redis.sIsMember(`Online User`, checkUserId).then(isOnline => {
+				callback(isOnline) // Respond back to the requester with the online status
+			})
+		}catch(e){
+			console.log(e);
+		}
+		
 	})
 
 	socket.on('disconnect', () => {

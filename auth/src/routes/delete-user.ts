@@ -10,10 +10,12 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 	if (!user) {
 		throw new UserNotFoundError()
 	}
+	const deletionDate = new Date();
+	deletionDate.setDate(deletionDate.getDate() + 7);  // Adds 7 days to the current date
 	// Delete User 7 days after
 	await User.findByIdAndUpdate(
 		{ _id: user.id },
-		{ deletionDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
+		{ deletionDate: deletionDate},
 		{ new: true },
 	)
 	req.session = null
