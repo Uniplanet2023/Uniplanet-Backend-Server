@@ -7,6 +7,12 @@ import Message from '../models/message'
 
 const getChatRouter = express.Router()
 getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
+	const { page } = req.query
+	console.log( 'page:', page)
+	const pageNumber = parseInt(page as string) || 1
+	const limit = 10
+	const skip = (pageNumber - 1) * limit
+
 	const chatList = []
 	let totalUnseenMessage = 0
 	const chats = await Chat.find({
@@ -15,6 +21,8 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	})
 		.populate('buyer seller lastMessage')
 		.sort({ updatedAt: -1 })
+		.limit(limit)
+		.skip(skip)
 
 	if (!chats || chats.length === 0) {
 		return res.status(200).json([])
