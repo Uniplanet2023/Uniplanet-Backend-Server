@@ -1,4 +1,5 @@
-import { io } from "../../config/socket"
+import { io } from "../.."
+
 
 export function initMiddleWare(){
     io.use((socket, next) => {

@@ -9,7 +9,7 @@ import app from './app'
 
 const { PORT = 3004 } = process.env
 
-let io: SocketIOServer
+export let io: SocketIOServer
 declare module 'socket.io' {
 	interface Socket {
 		userId: string
