@@ -221,14 +221,25 @@ io.on('connection', async socket => {
 		
 	})
 
-	socket.on('disconnect', () => {
+	socket.on('disconnect', async() =>{
 		console.log('User disconnected: ' + socket.userId);
-		redisClient.redis.sRem(`Online User`, socket.userId)
-
-		socket.chatRoomId.forEach((chatRoomId: string) => {
-			io.to(chatRoomId).emit('offline user', socket.userId)
-			socket.leave(chatRoomId)
-		})
+		redisClient.redis.sRem(`Online User`, socket.userId);
+		redisClient.redis.get(`Chat: ${socket.userId}`);
+		const chatList = await redisClient.redis.sMembers(`Chat: ${socket.userId}`);
+			console.log('chatList:'+chatList);
+	
+			if (chatList) {
+				chatList.forEach((chatRoomId) => {
+					// Check if the socket is already in the chat room
+					if (!socket.rooms.has(chatRoomId)) {
+						socket.leave(chatRoomId)
+						io.to(chatRoomId).emit('offline user', socket.userId)
+					} else {
+						console.log(`Socket is already in chat room: ${chatRoomId}`);
+					}
+				});
+			}
+		
 		socket.leave(socket.userId)
 	})
 })
