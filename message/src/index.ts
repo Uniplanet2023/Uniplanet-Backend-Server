@@ -252,10 +252,12 @@ io.on('connection', async socket => {
 		redisClient.redis.sRem(`Online User`, socket.userId);
 
 		socket.chatRoomId.forEach((chatRoomId: string) => {
+			console.log('Leaving chat room: ' + chatRoomId)
 			io.to(chatRoomId).emit('offline user', socket.userId)
 			socket.leave(chatRoomId)
 		})
 		socket.leave(socket.userId)
-		socket.disconnect();
+		socket.removeAllListeners();
+		socket.disconnect(true);
 	})
 })
