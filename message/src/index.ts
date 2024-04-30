@@ -56,6 +56,7 @@ io.on('connection', async socket => {
 				chatList.forEach((chatRoomId) => {
 					// Check if the socket is already in the chat room
 					if (!socket.rooms.has(chatRoomId)) {
+						console.log('Joining chat room: ' + chatRoomId);
 						socket.join(chatRoomId);
 						socket.chatRoomId.push(chatRoomId);
 						io.to(chatRoomId).emit('online user', socket.userId);
