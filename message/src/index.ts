@@ -14,7 +14,6 @@ declare module 'socket.io' {
 	interface Socket {
 		userId: string
 		chatRoomId: string[]
-		firebaseToken: string
 	}
 }
 const server = app.listen(PORT, async () => {
@@ -69,7 +68,6 @@ io.on('connection', async socket => {
 			console.log('firebase token not found')
 			return
 		}
-		socket.firebaseToken = firebaseToken
 		try {
 			redisClient.redis.set(socket.userId, firebaseToken)
 		} catch (e) {
@@ -104,9 +102,10 @@ io.on('connection', async socket => {
 		
 			// Check if the seller is online and send notification if not
 			const isOnline = await redisClient.redis.sIsMember(`Online User`, chat.seller.id);
-			const receiverToken = await redisClient.redis.get(chat.seller.id);
 			callback(isOnline);
-		
+			
+			// Send notification to seller if they are offline
+			const receiverToken = await redisClient.redis.get(chat.seller.id);
 			if (!isOnline && receiverToken) {
 				try {
 					const notification = creatingChatNotification(receiverToken, chatJson, chat);
