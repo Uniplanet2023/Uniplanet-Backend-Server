@@ -42,27 +42,20 @@ io.on('connection', async socket => {
 	console.log('User connected')
 	try {
 		if (socket.userId) {
-			console.log(socket.userId);
-			console.log(socket.chatRoomId);
+			
 			redisClient.redis.sAdd(`Online User`, socket.userId);
 			socket.join(socket.userId);
 			
 			// Retrieve chat rooms from Redis
-			const chatList = await redisClient.redis.sMembers(`Chat: ${socket.userId}`);
-			console.log('chatList:'+chatList);
+			const chatList = await redisClient.redis.sMembers(`Chat: ${socket.userId}`);			
 			
 	
 			if (chatList) {
 				chatList.forEach((chatRoomId) => {
 					// Check if the socket is already in the chat room
-					if (!socket.rooms.has(chatRoomId)) {
-						console.log('Joining chat room: ' + chatRoomId);
-						socket.join(chatRoomId);
-						socket.chatRoomId.push(chatRoomId);
-						io.to(chatRoomId).emit('online user', socket.userId);
-					} else {
-						console.log(`Socket is already in chat room: ${chatRoomId}`);
-					}
+					socket.join(chatRoomId);
+					io.to(chatRoomId).emit('online user', socket.userId);
+					socket.chatRoomId.push(chatRoomId);
 				});
 			}
 		}
@@ -71,6 +64,7 @@ io.on('connection', async socket => {
 	}
 	
 	socket.on('setup', firebaseToken => {
+		console.log('setup');
 		if (!firebaseToken) {
 			console.log('firebase token not found')
 			return
@@ -183,20 +177,19 @@ io.on('connection', async socket => {
 	socket.on('new message', async ({ messageJson, senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
 		try {
-			console.log('sent');
 			io.to(message.chat).emit('message received', messageJson)
 			const receiverToken = await redisClient.redis.get(message.receiver)
 			
 				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
 					if (!isOnline) {
-						console.log('sening notification')
+
+
 						const msg = message.message as string
 						if (msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')) {
 							message.message = 'Image'
 						}
 						try{
 							if(receiverToken){
-								console.log(receiverToken);
 								const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
 
 							admin
@@ -260,7 +253,5 @@ io.on('connection', async socket => {
 			socket.leave(chatRoomId)
 		})
 		socket.leave(socket.userId)
-		socket.removeAllListeners();
-		socket.disconnect(true);
 	})
 })
