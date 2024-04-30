@@ -41,7 +41,7 @@ const accountSchema: Schema = new Schema(
 		profileImage:{
 			type: String,
 			required: false,
-			default: "https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_150,h_150/v1/profile-image/default_image",
+			default: "https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
 		},
 		school:{
 			type: String,
