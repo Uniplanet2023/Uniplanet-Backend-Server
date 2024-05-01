@@ -4,6 +4,10 @@ export type GetAccountRestPayload = {
 	email: string
 	profileImage: string
 	school: string
+	maximumPost?: number
+	numberOfPost?: number
+	maximumClick?: number
+	numberOfClick?: number
 }
 export type UserRestPayload = {
 	id: string
