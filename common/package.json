@@ -1,6 +1,6 @@
 {
 	"name": "@uniplanet-lib/common",
-	"version": "1.0.89",
+	"version": "1.0.90",
 	"description": "",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
@@ -51,6 +51,7 @@
 		"typescript": "5.3.3"
 	},
 	"dependencies": {
+		"@uniplanet-lib/common": "^1.0.90",
 		"express-validator": "7.0.1",
 		"generate-password": "1.7.1",
 		"googleapis": "133.0.0",
