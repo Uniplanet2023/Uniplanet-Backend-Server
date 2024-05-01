@@ -10,6 +10,8 @@ import UserDeletedConsumer from './event/consumer/user-deleted'
 import UserUpdatedConsumer from './event/consumer/user-updated'
 import { UserPostBlockProducer } from './event/producer/UserPostBlockProducer'
 import { PostDeletionReqProducer } from './event/producer/PostDeletionReqProducer'
+import ClickIncreaseConsumer from './event/consumer/product-click-increase'
+import ProductIncreaseConsumer from './event/consumer/product-increase'
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -31,14 +33,17 @@ app.listen(PORT, async () => {
 	// secretCheck()
 	if (process.env.NODE_ENV == 'production') {
 		console.log('Kafka Broker', process.env.KAFKA_BROKER!)
-		
+		const clickIncreaseConsumer = new ClickIncreaseConsumer(kafkaClient.kafka, 'click-increase')
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
 		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
 		const userUpdatedConsumer = new UserUpdatedConsumer(kafkaClient.kafka,'userupdated-account')
+		const productIncreaseConsumer = new ProductIncreaseConsumer(kafkaClient.kafka, 'product-increase')
 
+		await productIncreaseConsumer.connect()
 		await userUpdatedConsumer.connect()
 		await userCreatedConsumer.connect()
 		await userDeletedConsumer.connect()
+		await clickIncreaseConsumer.connect()
 
 		await userUpdateProducer.connect()
 		await userPostBlockProducer.connect()
