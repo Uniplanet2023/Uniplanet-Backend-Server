@@ -2,7 +2,7 @@ export enum Topics {
 	UserCreated = 'user-created',
 	UserDeleted = 'user-deleted',
 	UserUpdated = 'user-updated',
-	UserProductBlocked = 'user-product-blocked',
+	UserPostBlocked = 'user-product-blocked',
 	UserChatBlocked = 'user-chat-blocked',
 	MessageReceive = 'message-receive',
 	MessageCreated = 'message-created',
