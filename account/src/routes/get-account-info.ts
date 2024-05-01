@@ -12,7 +12,7 @@ accountInfoRouter.get(GET_ACCOUNT_INFO, tokenValidation, async (req: Request, re
 		return res.status(404).send({ message: 'Account not found' })
 	}
 	
-	const accountInfo = new GetAccountInfo(accountData)
+	const accountInfo = new GetAccountInfo(accountData, req.user!.type)
 
 	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
 })

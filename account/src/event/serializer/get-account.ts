@@ -4,11 +4,12 @@ import { AccountDocument } from '../../models/account'
 
 export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPayload> {
 	private account: AccountDocument
-
+	private type:string
 	private statusCode = 201
 
-	constructor(account: AccountDocument) {
+	constructor(account: AccountDocument, type:string) {
 		super()
+		this.type = type
 		this.account = account
 	}
 
@@ -27,6 +28,7 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 			numberOfClick: this.account.numberOfClick,
 			maximumPost: this.account.maximumPost,
 			numberOfPost: this.account.numberOfPost,
+			type: this.type
 		}
 	}
 }

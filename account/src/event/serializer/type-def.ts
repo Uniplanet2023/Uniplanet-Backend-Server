@@ -4,6 +4,7 @@ export type GetAccountRestPayload = {
 	email: string
 	profileImage: string
 	school: string
+	type: string
 	maximumPost?: number
 	numberOfPost?: number
 	maximumClick?: number
