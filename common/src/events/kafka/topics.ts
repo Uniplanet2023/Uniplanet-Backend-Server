@@ -14,5 +14,5 @@ export enum Topics {
 	ChatCreate = 'chat-create',
 	IncreaseClick = 'increase-click',
 	IncreasePost = 'increase-post',
-	
+	PostDeletionRequest = 'post-deletion-request',
 }
