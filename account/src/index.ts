@@ -8,6 +8,8 @@ import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import { v2 as cloudinary } from 'cloudinary'
 import UserDeletedConsumer from './event/consumer/user-deleted'
 import UserUpdatedConsumer from './event/consumer/user-updated'
+import { UserPostBlockProducer } from './event/producer/UserPostBlockProducer'
+import { PostDeletionReqProducer } from './event/producer/PostDeletionReqProducer'
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,7 +20,10 @@ cloudinary.config({
 export const cloudinaryAPI = cloudinary;
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
+
 export const userUpdateProducer = new UserUpdateProducer(kafkaClient.kafka);
+export const userPostBlockProducer = new UserPostBlockProducer(kafkaClient.kafka);
+export const postDeletionReqProducer = new PostDeletionReqProducer(kafkaClient.kafka);
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -36,6 +41,8 @@ app.listen(PORT, async () => {
 		await userDeletedConsumer.connect()
 
 		await userUpdateProducer.connect()
+		await userPostBlockProducer.connect()
+		await postDeletionReqProducer.connect()
 	}
 	
 

@@ -4,7 +4,6 @@ export type GetAccountRestPayload = {
 	email: string
 	profileImage: string
 	school: string
-	isNotificationAllowed: boolean
 }
 export type UserRestPayload = {
 	id: string

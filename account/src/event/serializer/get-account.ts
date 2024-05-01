@@ -23,7 +23,6 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 			email: this.account.email,
 			profileImage: this.account.profileImage,
 			school: this.account.school,
-			isNotificationAllowed: this.account.isNotificationAllowed,
 		}
 	}
 }
