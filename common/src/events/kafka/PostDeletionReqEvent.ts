@@ -4,6 +4,5 @@ export interface PostDeletionRequestEvent {
 	topic: Topics.PostDeletionRequest
 	data: {
 		id: string
-		productId: string
 	}
 }
