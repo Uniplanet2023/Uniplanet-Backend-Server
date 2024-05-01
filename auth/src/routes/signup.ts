@@ -36,7 +36,11 @@ signUpRouter.post(
 				return res.status(201).json({ hash })
 			}
 		}
-		const newUser = User.build({ email, password, school })
+
+        // Determine the user type based on the email suffix
+        const userType = email.endsWith('.edu') ? 'user' : 'other';  // Adjust 'other' as needed
+
+		const newUser = User.build({ email, password, school, type: userType})
 		await newUser.save()
 		userCreatedProducer.sendMessage({
 			id: newUser.id,
