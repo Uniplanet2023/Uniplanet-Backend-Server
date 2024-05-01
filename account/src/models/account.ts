@@ -60,6 +60,11 @@ const accountSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
+		type:{
+			type: String,
+			required: true,
+			default: 'user',
+		},
 		deletionDate: { type: Date, default: null },
 		isBlocked: { type: Boolean, default: false },
 		isBlockedPost: { type: Boolean, default: false },
