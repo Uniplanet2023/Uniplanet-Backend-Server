@@ -5,6 +5,9 @@ export type GetAccountRestPayload = {
 	profileImage: string
 	school: string
 	type: string
+	isBlocked: boolean
+	isBlockedPost: boolean
+	isBlockedChat: boolean
 	maximumPost?: number
 	numberOfPost?: number
 	maximumClick?: number
