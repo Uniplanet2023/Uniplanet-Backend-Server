@@ -35,11 +35,7 @@ signInRouter.post(
 		// Generate JWT
 		const userJwt = await generateToken(user)
 		if (user.deletionDate) {
-			await User.findByIdAndUpdate(
-				{ _id: user.id },
-				{ deletionDate: null },
-				{ new: true },
-			)
+			await User.findByIdAndUpdate({ _id: user.id }, { deletionDate: null }, { new: true })
 			userRestoreProducer.sendMessage({
 				id: user.id,
 				deletionDate: undefined,
@@ -50,8 +46,6 @@ signInRouter.post(
 		req.session = { jwt: userJwt }
 		const userInfo = new UserSerializer(user)
 		res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
-		
-		  
 	},
 )
 

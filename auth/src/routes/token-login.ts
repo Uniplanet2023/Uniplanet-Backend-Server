@@ -1,9 +1,5 @@
 import express, { Request, Response } from 'express'
-import {
-	UserNotFoundError,
-	VerificationRequiredError,
-	tokenValidation,
-} from '@uniplanet-lib/common'
+import { UserNotFoundError, VerificationRequiredError, tokenValidation } from '@uniplanet-lib/common'
 import { TOKEN_LOGIN_ROUTE } from './routes-def'
 import { User } from '../models'
 import UserSerializer from '../events/serializer/UserSerializer'

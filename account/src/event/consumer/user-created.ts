@@ -16,7 +16,7 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
 		// Process the user:created message, e.g., send an email
 		console.log(`user Created ${data.email} -- account server`)
 		let type = 'user'
-		if(!data.email.endsWith('.edu')){
+		if (!data.email.endsWith('.edu')) {
 			type = 'visitor'
 		}
 		const account = Account.build({
@@ -27,7 +27,6 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
 			school: data.school,
 			maximumPost: type === 'visitor' ? 0 : undefined,
 			maximumClick: type === 'visitor' ? 0 : undefined,
-
 		})
 		await account.save()
 		console.log('account created successfully')

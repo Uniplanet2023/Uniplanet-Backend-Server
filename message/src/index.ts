@@ -17,7 +17,7 @@ declare module 'socket.io' {
 	}
 }
 const server = app.listen(PORT, async () => {
-	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
+	console.log(` BackEnd Connection : BackEnd Server connected at port ${PORT}`)
 	initializeFirebase();
 	initializeKafka();
 	await initializeProducer(kafkaClient.kafka);

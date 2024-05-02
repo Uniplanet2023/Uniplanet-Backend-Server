@@ -9,13 +9,13 @@ class TokenRefreshScheduler extends Scheduler {
 	}
 
 	executeJob(): Promise<IScheduler> {
-		const smtpServer:NodemailerSmtpServer = new NodemailerSmtpServer();
-        console.log('Token Refresh Scheduler is running');
-        return new Promise(async resolve => {
-			smtpServer.getAccessToken();
-            resolve({
-                success: true,
-            });
+		const smtpServer: NodemailerSmtpServer = new NodemailerSmtpServer()
+		console.log('Token Refresh Scheduler is running')
+		return new Promise(async resolve => {
+			smtpServer.getAccessToken()
+			resolve({
+				success: true,
+			})
 		})
 	}
 }

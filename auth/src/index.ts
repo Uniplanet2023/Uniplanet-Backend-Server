@@ -35,7 +35,7 @@ app.listen(PORT, async () => {
 		await userRestoreProducer.connect()
 	}
 
-	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(async() => {
+	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(async () => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()
 		new TokenRefreshScheduler().taskInitializer()
@@ -44,6 +44,5 @@ app.listen(PORT, async () => {
 		await redisClient.redis.connect().then(() => {
 			console.log('Redis is connected')
 		})
-		
 	})
 })

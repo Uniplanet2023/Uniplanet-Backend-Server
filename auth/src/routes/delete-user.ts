@@ -10,18 +10,14 @@ deleteUserRouter.delete(DELETE_USER_ROUTE, tokenValidation, async (req, res) => 
 	if (!user) {
 		throw new UserNotFoundError()
 	}
-	const deletionDate = new Date();
-	deletionDate.setDate(deletionDate.getDate() + 7);  // Adds 7 days to the current date
+	const deletionDate = new Date()
+	deletionDate.setDate(deletionDate.getDate() + 7) // Adds 7 days to the current date
 	// Delete User 7 days after
-	await User.findByIdAndUpdate(
-		{ _id: user.id },
-		{ deletionDate: deletionDate},
-		{ new: true },
-	)
+	await User.findByIdAndUpdate({ _id: user.id }, { deletionDate: deletionDate }, { new: true })
 	req.session = null
 	req.user = undefined
-	await redisClient.redis.del(user.id);
-	await redisClient.redis.del(`Search Record: ${user.id}`);
+	await redisClient.redis.del(user.id)
+	await redisClient.redis.del(`Search Record: ${user.id}`)
 	userDeletedProducer.sendMessage({
 		id: user.id,
 	})

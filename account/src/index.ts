@@ -19,13 +19,13 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export const cloudinaryAPI = cloudinary;
+export const cloudinaryAPI = cloudinary
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 
-export const userUpdateProducer = new UserUpdateProducer(kafkaClient.kafka);
-export const userPostBlockProducer = new UserPostBlockProducer(kafkaClient.kafka);
-export const postDeletionReqProducer = new PostDeletionReqProducer(kafkaClient.kafka);
+export const userUpdateProducer = new UserUpdateProducer(kafkaClient.kafka)
+export const userPostBlockProducer = new UserPostBlockProducer(kafkaClient.kafka)
+export const postDeletionReqProducer = new PostDeletionReqProducer(kafkaClient.kafka)
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
@@ -36,7 +36,7 @@ app.listen(PORT, async () => {
 		const clickIncreaseConsumer = new ClickIncreaseConsumer(kafkaClient.kafka, 'click-increase')
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
 		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
-		const userUpdatedConsumer = new UserUpdatedConsumer(kafkaClient.kafka,'userupdated-account')
+		const userUpdatedConsumer = new UserUpdatedConsumer(kafkaClient.kafka, 'userupdated-account')
 		const productIncreaseConsumer = new ProductIncreaseConsumer(kafkaClient.kafka, 'product-increase')
 
 		await productIncreaseConsumer.connect()
@@ -49,7 +49,6 @@ app.listen(PORT, async () => {
 		await userPostBlockProducer.connect()
 		await postDeletionReqProducer.connect()
 	}
-	
 
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(async () => {
 		console.log('MongoDB is connected')

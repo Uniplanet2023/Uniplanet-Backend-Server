@@ -15,10 +15,10 @@ export default class UserDeletedConsumer extends BaseConsumer<UserDeletedEvent> 
 	async onMessage(data: UserDeletedEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email
 		console.log(`user Deleted ${data.id} -- account server`)
-		const deletionDate = new Date();
-		deletionDate.setDate(deletionDate.getDate() + 7);  // Adds 7 days to the current date
+		const deletionDate = new Date()
+		deletionDate.setDate(deletionDate.getDate() + 7) // Adds 7 days to the current date
 
-		await Account.updateOne({_id: data.id},  { $set: { deletionDate: deletionDate } })
+		await Account.updateOne({ _id: data.id }, { $set: { deletionDate: deletionDate } })
 		console.log('account deleted successfully')
 	}
 }

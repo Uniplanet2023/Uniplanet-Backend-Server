@@ -31,7 +31,6 @@ type AccountAttrs = {
 	numberOfPost?: number
 	maximumClick?: number
 	numberOfClick?: number
-	
 }
 interface AccountModel extends Model<AccountDocument> {
 	build(attrs: AccountAttrs): AccountDocument
@@ -43,24 +42,25 @@ const accountSchema: Schema = new Schema(
 			type: String,
 			required: true,
 		},
-		name:{
+		name: {
 			type: String,
 			required: true,
 		},
-		email:{
+		email: {
 			type: String,
 			required: true,
 		},
-		profileImage:{
+		profileImage: {
 			type: String,
 			required: false,
-			default: "https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
+			default:
+				'https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg',
 		},
-		school:{
+		school: {
 			type: String,
 			required: true,
 		},
-		type:{
+		type: {
 			type: String,
 			required: true,
 			default: 'user',
@@ -71,9 +71,9 @@ const accountSchema: Schema = new Schema(
 		isBlockedChat: { type: Boolean, default: false },
 		// this is for advertisement User
 		maximumPost: { type: Number },
-		numberOfPost: { type: Number, default: 0},
+		numberOfPost: { type: Number, default: 0 },
 		maximumClick: { type: Number },
-		numberOfClick: { type: Number, default: 0},
+		numberOfClick: { type: Number, default: 0 },
 	},
 	{
 		toJSON: {
