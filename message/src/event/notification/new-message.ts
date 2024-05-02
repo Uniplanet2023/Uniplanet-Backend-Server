@@ -26,9 +26,7 @@ export const newMessageNotification = (
 		},
 		apns: {
 			headers: {
-				'apns-priority': '5',
-				'apns-push-type': 'background',
-				'apns-topic': 'shop.uniplanet.uniplanet',
+				'apns-priority': 5,
 			},
 			payload: {
 				aps: {
