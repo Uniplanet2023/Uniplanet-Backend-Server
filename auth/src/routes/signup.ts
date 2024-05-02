@@ -21,10 +21,13 @@ signUpRouter.post(
 	async (req: Request, res: Response) => {
 		const { name, email, password, school, profileImage } = req.body
 		const existingUser = await User.findOne({ email })
-
+		const userType = email.endsWith('.edu') ? 'user' : 'visitor';  
 		if (existingUser) {
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
+			}
+			if(userType === 'visitor'){
+				return res.status(404).send({'error': 'Please use your school email to sign up. Or Contact with Admin for more information.'})
 			}
 			await existingUser.updateOne({ password, school })
 			// User exists but not verified, resend verification email
@@ -38,7 +41,6 @@ signUpRouter.post(
 		}
 
         // Determine the user type based on the email suffix
-        const userType = email.endsWith('.edu') ? 'user' : 'visitor';  // Adjust 'visitor' as needed
 
 		const newUser = User.build({ email, password, school, type: userType})
 		await newUser.save()

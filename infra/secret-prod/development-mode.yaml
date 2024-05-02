@@ -4,4 +4,4 @@ metadata:
   name: development-mode
 type: Opaque
 data:
-  JWT_TOKEN_SECRET: cHJvZHVjdGlvbg==
+  DEVELOPMENT_MODE: cHJvZHVjdGlvbg==
