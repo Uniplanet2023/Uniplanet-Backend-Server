@@ -26,7 +26,7 @@ export const newMessageNotification = (
 		},
 		apns: {
 			headers: {
-				'apns-priority': 5,
+				'apns-priority': '5',
 			},
 			payload: {
 				aps: {
