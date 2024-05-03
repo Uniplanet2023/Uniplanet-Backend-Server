@@ -24,19 +24,19 @@ export const newMessageNotification = (
 				click_action: 'FLUTTER_NOTIFICATION_CLICK',
 			},
 		},
-		apns: {
-			headers: {
-				'apns-priority': '5',
-				// 'apns-push-type': 'background',
-				// 'apns-topic': 'shop.uniplanet.uniplanet',
-			},
-			payload: {
-				aps: {
-					'mutable-content': true,
-					"badge": 15,
-				},
-			},
-			},
+		// apns: {
+		// 	headers: {
+		// 		'apns-priority': '5',
+		// 		// 'apns-push-type': 'background',
+		// 		// 'apns-topic': 'shop.uniplanet.uniplanet',
+		// 	},
+		// 	payload: {
+		// 		aps: {
+		// 			'mutable-content': true,
+		// 			"badge": 15,
+		// 		},
+		// 	},
+		// 	},
 		token: receiverToken,
 	}
 	return notificationPayload
