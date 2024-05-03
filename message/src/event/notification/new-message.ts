@@ -7,10 +7,10 @@ export const newMessageNotification = (
 	const sender = JSON.parse(senderJson)
 
 	const notificationPayload = {
-		notification: {
-			title: sender.name as string,
-			body: message.message,
-		},
+		// notification: {
+		// 	title: sender.name as string,
+		// 	body: message.message,
+		// },
 		data: {
 			message: messageJson,
 			sender: senderJson,
@@ -27,6 +27,8 @@ export const newMessageNotification = (
 		apns: {
 			headers: {
 				'apns-priority': '5',
+				'apns-push-type': 'background',
+				'apns-topic': 'shop.uniplanet.uniplanet',
 			},
 			payload: {
 				aps: {
