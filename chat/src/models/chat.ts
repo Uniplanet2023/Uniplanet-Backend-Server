@@ -9,6 +9,7 @@ export type ChatDocument = mongoose.Document & {
 	seller: UserDocument
 	lastMessage: MessageDocument
 	deletionDate: Date
+	unseenMessage: number
 }
 
 type ChatAttrs = {
@@ -17,6 +18,7 @@ type ChatAttrs = {
 	buyer: string
 	seller: string
 	lastMessage?: string
+	unseenMessage?: number
 }
 
 interface ChatModel extends mongoose.Model<ChatDocument> {
@@ -31,6 +33,7 @@ const chatModel = new mongoose.Schema(
 		buyer: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 		lastMessage: { type: mongoose.Schema.Types.ObjectId, ref: 'Message', default: null },
 		deletionDate: { type: Date, default: null },
+		unseenMessage: { type: Number, default: 0 },
 	},
 	{ timestamps: true },
 )

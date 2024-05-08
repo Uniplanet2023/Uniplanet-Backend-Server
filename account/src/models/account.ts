@@ -15,6 +15,7 @@ export type AccountDocument = Document & {
 	numberOfPost: number
 	maximumClick: number
 	numberOfClick: number
+	unSeenMessages: number
 }
 
 type AccountAttrs = {
@@ -31,6 +32,7 @@ type AccountAttrs = {
 	numberOfPost?: number
 	maximumClick?: number
 	numberOfClick?: number
+	unSeenMessages?: number
 }
 interface AccountModel extends Model<AccountDocument> {
 	build(attrs: AccountAttrs): AccountDocument
@@ -64,6 +66,10 @@ const accountSchema: Schema = new Schema(
 			type: String,
 			required: true,
 			default: 'user',
+		},
+		unSeenMessages: {
+			type: Number,
+			default: 0,
 		},
 		deletionDate: { type: Date, default: null },
 		isBlocked: { type: Boolean, default: false },

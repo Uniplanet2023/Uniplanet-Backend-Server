@@ -11,12 +11,11 @@ export const newMessageNotification = (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-	console.log('sender', sender);
-	console.log('message', message);
+	
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
-			body: message.message,
+			body: message.messageType == 'image'?'Image' :message.message,
 		},
 		data: {
 			content:
@@ -24,10 +23,10 @@ export const newMessageNotification = (
 				"id":-1,
 				"badge":1,
 				"channelKey":"alerts",
-				"displayOnForeground":true,
-				"notificationLayout":"BigPicture",
-				"largeIcon":"${LARGE_ICON_URL}",
-				"bigPicture":"${BIG_PICTURE_URL}",
+				"displayOnForeground":false,
+				"notificationLayout":"MessagingGroup",
+				"largeIcon":"${sender.profilePic}",
+				"bigPicture":"${sender.profilePic}",
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",

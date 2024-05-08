@@ -1,7 +1,7 @@
 import { kafkaClient, redisClient } from '@uniplanet-lib/common'
 import admin from 'firebase-admin'
 import { creatingChatNotification, newMessageNotification } from './event/notification'
-import { initializeFirebase, initializeKafka, initializeProducer, initializeRedis, messageCreateProvider, messageReadAllProvider } from './config'
+import { initializeFirebase, initializeKafka, initializeProducer, initializeRedis, messageCreateProvider, messageReadAllProvider, userUpdateProvider } from './config'
 import { initMiddleWare } from './socket/middleware/socket-init'
 import { Server as SocketIOServer, Server } from 'socket.io'
 import { URL_LIST_PROD } from '@uniplanet-lib/common'
@@ -178,15 +178,10 @@ io.on('connection', async socket => {
 		try {
 			io.to(message.chat).emit('message received', messageJson)
 			const receiverToken = await redisClient.redis.get(message.receiver)
-			
+				userUpdateProvider.sendMessage({ id: message.receiver, unSeenMessages: 1 })
 				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
 					if (!isOnline) {
 
-
-						const msg = message.message as string
-						if (msg.startsWith('https://res.cloudinary.com/dtgmmfv3d/')) {
-							message.message = 'Image'
-						}
 						try{
 							if(receiverToken){
 								const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
