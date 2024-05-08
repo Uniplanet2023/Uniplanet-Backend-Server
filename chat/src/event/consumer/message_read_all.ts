@@ -3,6 +3,7 @@ import { Topics, BaseConsumer, MessageReadAllEvent } from '@uniplanet-lib/common
 import Message from '../../models/message'
 import { userUpdateProvider } from '../..'
 import Chat from '../../models/chat'
+import UnseenMessage from '../../models/unseen-message'
 
 // Extend the BaseConsumer for the user:created event
 export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
@@ -21,12 +22,21 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 			if (chat == null) {
 				throw new Error('Chat not found');
 			}
-			userUpdateProvider.sendMessage({
-				id: chat.seller.id == data.sender ? chat.buyer.id: chat.seller.id,
-				unSeenMessages: -chat.unseenMessage
-			})
-			chat.unseenMessage = 0;
-			await chat.save();
+			const unseenMessage = await UnseenMessage.findOne({ chat: chat._id, user: data.sender });
+			if (unseenMessage == null) {
+				await UnseenMessage.build({
+					chat: chat._id,
+					user: data.sender,
+					unseenMessages: 0
+				}).save();
+			}else{
+				userUpdateProvider.sendMessage({
+					id: chat.seller.id == data.sender ? chat.buyer.id: chat.seller.id,
+					unSeenMessages: -unseenMessage.unseenMessages
+				})
+				unseenMessage.unseenMessages = 0;
+				await unseenMessage.save();
+			}
 		} catch (err) {
 			console.log(err)
 		}

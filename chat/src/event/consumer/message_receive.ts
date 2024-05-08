@@ -2,6 +2,7 @@ import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common
 import Message from '../../models/message'
 import Chat from '../../models/chat'
 import User from '../../models/user'
+import UnseenMessage from '../../models/unseen-message'
 
 // Extend the BaseConsumer for the user:created event
 export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
@@ -31,8 +32,19 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 			})
 			const msg = await msgModel.save()
 			chat.lastMessage = msg._id
-			chat.unseenMessage = chat.unseenMessage + 1
-			await chat.save();
+			const unseenMessage =await UnseenMessage.findOne(
+				{ user: receiver._id, chat: chat._id },
+			)
+			if(unseenMessage){
+				unseenMessage.unseenMessages += 1
+				await unseenMessage.save()
+			}else{
+				await UnseenMessage.build({
+					chat: chat._id,
+					user: receiver._id,
+					unseenMessages: 1,
+				}).save()
+			}
 		} catch (err) {
 			console.log(err)
 		}
