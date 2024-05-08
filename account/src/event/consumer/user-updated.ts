@@ -34,7 +34,9 @@ export default class UserUpdatedConsumer extends BaseConsumer<UserUpdateEvent> {
 				}else if(account.unSeenNotification == null) {
 					account.unSeenNotification = 0;
 				}
-				account.unSeenNotification += data.unSeenMessages;
+				console.log(data.unSeenMessages as number + 1);
+				account.unSeenNotification += data.unSeenMessages as number;
+				console.log(account.unSeenNotification);
 				if(account.unSeenNotification < 0) {
 					account.unSeenNotification = 0;
 				}
