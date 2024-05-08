@@ -22,6 +22,7 @@ export default class UserUpdatedConsumer extends BaseConsumer<UserUpdateEvent> {
 	async onMessage(data: UserUpdateEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email
 		console.log(`user update ${data.id} -- account server`)
+		console.log(data)
 		try{
 			if (data.deletionDate == undefined) {
 				await Account.updateOne({ _id: data.id }, { $set: { deletionDate: null } })
@@ -30,12 +31,12 @@ export default class UserUpdatedConsumer extends BaseConsumer<UserUpdateEvent> {
 				const account = await Account.findById(data.id);
 				if(account == null) {
 					throw new Error('Account not found');
-				}else if(account.unSeenMessages == null) {
-					account.unSeenMessages = 0;
+				}else if(account.unSeenNotification == null) {
+					account.unSeenNotification = 0;
 				}
-				account.unSeenMessages += data.unSeenMessages;
-				if(account.unSeenMessages < 0) {
-					account.unSeenMessages = 0;
+				account.unSeenNotification += data.unSeenMessages;
+				if(account.unSeenNotification < 0) {
+					account.unSeenNotification = 0;
 				}
 				await account.save();
 			}
