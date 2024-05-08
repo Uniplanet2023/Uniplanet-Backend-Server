@@ -39,6 +39,8 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 			if(unseenMessage){
 				unseenMessage.unseenMessages += 1
 				await unseenMessage.save()
+				receiver.totalUnseenMessages += unseenMessage.unseenMessages as number;
+				await receiver.save();
 			}else{
 				await UnseenMessage.build({
 					chat: chat._id,
@@ -46,6 +48,8 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 					unseenMessages: 1,
 				}).save()
 			}
+			
+
 		} catch (err) {
 			console.log(err)
 		}

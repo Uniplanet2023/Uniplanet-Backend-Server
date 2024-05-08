@@ -4,6 +4,8 @@ import { tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_CHAT_ROUTE } from './routes-def'
 import { cloudinaryAPI } from '..'
 import Message from '../models/message'
+import User from '../models/user'
+import UnseenMessage from '../models/unseen-message'
 
 const deleteChatRouter = express.Router()
 
@@ -29,7 +31,17 @@ deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => 
 	chatRoom.deletionDate = new Date()
 	await Message.updateMany({ chat: chatId }, { deletionDate: new Date() })
 	await chatRoom.save()
-
+	let user = await User.findById(req.user!.id);
+	if(user == null) {
+		throw new Error('User not found');
+	}
+	const unseenMessages = await UnseenMessage.findOne({ chat: chatId, user: req.user!.id });
+	user.totalUnseenMessages -= unseenMessages?.unseenMessages as number;
+	await unseenMessages?.updateOne({deletionDate: new Date()});
+	if(user.totalUnseenMessages < 0) {
+		user.totalUnseenMessages = 0;
+	}
+	await user.save();
 	return res.status(200).send({ message: 'Chat deleted successfully' })
 })
 

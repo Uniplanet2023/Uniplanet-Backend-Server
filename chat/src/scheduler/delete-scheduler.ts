@@ -3,6 +3,7 @@ import User from '../models/user';
 import Chat from '../models/chat';
 import Message from '../models/message';
 import { cloudinaryAPI } from '..';
+import UnseenMessage from '../models/unseen-message';
 
 class DeleteScheduler extends Scheduler {
 	constructor() {
@@ -19,7 +20,7 @@ class DeleteScheduler extends Scheduler {
 				await User.deleteMany({ deletionDate: { $lte: now } });
 				const chats = await Chat.find({ deletionDate: { $lte: now } });
 				await Chat.deleteMany({ _id: { $in: chats.map(chat => chat._id) } });
-	
+				await UnseenMessage.deleteMany({ deletionDate: { $lte: now } });
 				for (const chat of chats) {
 					try {
 						await cloudinaryAPI.api.delete_resources_by_prefix('chat-images/' + chat.id + '/');

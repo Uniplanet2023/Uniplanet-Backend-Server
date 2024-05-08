@@ -4,6 +4,8 @@ import { tokenValidation } from '@uniplanet-lib/common'
 import { GET_CHAT_LIST } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import Message from '../models/message'
+import UnseenMessage from '../models/unseen-message'
+import User from '../models/user'
 
 const getChatRouter = express.Router()
 getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
@@ -28,16 +30,25 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		return res.status(200).json([])
 	}
 	for (const chat of chats) {
-		const unseenMessage = await Message.find({
+		let unseenMessage = await UnseenMessage.findOne({
+			user: req.user!.id,
 			chat: chat._id,
-			receiver: req.user!.id,
-			readDate: null,
-			deletionDate: null,
 		})
-		totalUnseenMessage += unseenMessage.length
-		chatList.push({ chat: new GetChatInfo(chat, unseenMessage.length).serializeRest() })
+		if(!unseenMessage){
+			await UnseenMessage.build({
+				chat: chat._id,
+				user: req.user!.id,
+				unseenMessages: 0,
+			}).save()
+			chatList.push({ chat: new GetChatInfo(chat, 0).serializeRest() })
+		}else{
+			chatList.push({ chat: new GetChatInfo(chat, unseenMessage.unseenMessages).serializeRest() })
+		}
 	}
-
+	const user = await User.findById(req.user!.id);
+	if(user){
+		totalUnseenMessage = user.totalUnseenMessages;
+	}
 	return res.status(200).json({ chatList: chatList, totalUnseenMessage: totalUnseenMessage }) // Changed status code to 200 for successful response
 })
 export default getChatRouter

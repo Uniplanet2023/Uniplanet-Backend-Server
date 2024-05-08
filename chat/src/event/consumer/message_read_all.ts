@@ -4,6 +4,7 @@ import Message from '../../models/message'
 import { userUpdateProvider } from '../..'
 import Chat from '../../models/chat'
 import UnseenMessage from '../../models/unseen-message'
+import User from '../../models/user'
 
 // Extend the BaseConsumer for the user:created event
 export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
@@ -36,6 +37,15 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 				})
 				unseenMessage.unseenMessages = 0;
 				await unseenMessage.save();
+				let user = await User.findById(data.sender);
+				if(user == null) {
+					throw new Error('User not found');
+				}
+				user.totalUnseenMessages -= unseenMessage.unseenMessages as number;
+				if(user.totalUnseenMessages < 0) {
+					user.totalUnseenMessages = 0;
+				}
+				await user.save();
 			}
 		} catch (err) {
 			console.log(err)
