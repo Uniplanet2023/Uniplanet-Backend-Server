@@ -1,3 +1,5 @@
+import { title } from "process"
+
 export const newMessageNotification = (
 	receiverToken: string,
 	message: any,
@@ -15,6 +17,27 @@ export const newMessageNotification = (
 			message: messageJson,
 			sender: senderJson,
 			type: 'new message',
+			content:{
+				id: "1",
+				badge:'15',
+				channelKey: "alert",
+				notificationLayout: "BigPicture",
+				largeIcon:"https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg",
+				bigPicture: "https://www.dw.com/image/49519617_303.jpg",
+				showWhen: true,
+				autoDismissible:true,
+				payload:{
+					secret:"Awesome Notifications Rocks!"
+				}
+			},
+			iOS:{
+				content:{
+					title: sender.name as string,
+					payload:{
+						ios: "payload"
+					}
+				}
+			}
 		},
 
 		android: {
@@ -32,7 +55,7 @@ export const newMessageNotification = (
 			},
 			payload: {
 				aps: {
-					'content-available': 1,
+					'mutable-content': 1,
 					"badge": 15,
 				},  
 			},
