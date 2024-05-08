@@ -1,5 +1,9 @@
 import { title } from "process"
 
+// Configuration Constants
+const LARGE_ICON_URL = "https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg";
+const BIG_PICTURE_URL = "https://www.dw.com/image/49519617_303.jpg";
+
 export const newMessageNotification = (
 	receiverToken: string,
 	message: any,
@@ -7,15 +11,44 @@ export const newMessageNotification = (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-
+	console.log('sender', sender);
+	console.log('message', message);
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
 			body: message.message,
 		},
 		data: {
-			content: "{\"id\":-1,\"badge\":1,\"channelKey\":\"alerts\",\"displayOnForeground\":true,\"notificationLayout\":\"BigPicture\",\"largeIcon\":\"https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg\",\"bigPicture\":\"https://www.dw.com/image/49519617_303.jpg\",\"showWhen\":true,\"autoDismissible\":true,\"privacy\":\"Private\",\"payload\":{\"category\":\"like\",\"userId\":\"oUGw1AHfmkQPDuP9DOAT1J0iQ1X2\",\"ownerId\":\"AppleBoy\",\"notifId\":\"liked_279f33c9-9c58-4099-940b-06a463a9d929\",\"pageId\":\"notifsPage\",\"gameAction\":\"\"}}",
-            actionButtons: "[{\"key\":\"REDIRECT\",\"label\":\"Redirect\",\"autoDismissible\":true},{\"key\":\"CANCEL\",\"label\":\"Dismiss\",\"actionType\":\"DismissAction\",\"isDangerousOption\":true,\"autoDismissible\":true}]"
+			content:
+			`{
+				"id":-1,
+				"badge":1,
+				"channelKey":"alerts",
+				"displayOnForeground":true,
+				"notificationLayout":"BigPicture",
+				"largeIcon":"${LARGE_ICON_URL}",
+				"bigPicture":"${BIG_PICTURE_URL}",
+				"showWhen":true,
+				"autoDismissible":true,
+				"privacy":"Private",
+				"payload":{
+					"message":${messageJson},
+				}
+			}`,
+            actionButtons: `[
+				{
+					"key":"REDIRECT",
+					"label":"Redirect",
+					"autoDismissible":true
+				},
+				{
+					"key":"CANCEL",
+					"label":"Dismiss",
+					"actionType":"DismissAction",
+					"isDangerousOption":true,
+					"autoDismissible":true
+				}
+			]`
 		},
 
 		android: {
