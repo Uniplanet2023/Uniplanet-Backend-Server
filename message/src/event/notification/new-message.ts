@@ -24,7 +24,7 @@ export const newMessageNotification = (
 				"badge":1,
 				"channelKey":"alerts",
 				"displayOnForeground":false,
-				"notificationLayout":"MessagingGroup",
+				"notificationLayout":"BigPicture",
 				"largeIcon":"${sender.profilePic}",
 				"bigPicture":"${sender.profilePic}",
 				"showWhen":true,
