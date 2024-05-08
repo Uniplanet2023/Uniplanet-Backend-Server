@@ -31,7 +31,7 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 				}).save();
 			}else{
 				userUpdateProvider.sendMessage({
-					id: chat.seller.id == data.sender ? chat.buyer.id: chat.seller.id,
+					id: data.sender,
 					unSeenMessages: -(unseenMessage.unseenMessages as number)
 				})
 				unseenMessage.unseenMessages = 0;
