@@ -9,43 +9,15 @@ export const newMessageNotification = (
 	const sender = JSON.parse(senderJson)
 
 	const notificationPayload = {
-		// notification: {
-		// 	title: sender.name as string,
-		// 	body: message.message,
-		// },
-		data: {
-			"content.id": "1",
-			"content.badge": "42",
-			"content.channelKey": "alerts",
-			"content.displayOnForeground": "true",
-			"content.notificationLayout": "BigPicture",
-			"content.largeIcon": "https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg",
-			"content.bigPicture": "https://www.dw.com/image/49519617_303.jpg",
-			"content.showWhen": "true",
-			"content.autoDismissible": "true",
-			"content.privacy": "Private",
-			"content.payload.secret": "Awesome Notifications Rocks!",
-			"actionButtons.0.key": "REDIRECT",
-			"actionButtons.0.label": "Redirect",
-			"actionButtons.0.autoDismissible": "true",
-			"actionButtons.1.key": "DISMISS",
-			"actionButtons.1.label": "Dismiss",
-			"actionButtons.1.actionType": "DismissAction",
-			"actionButtons.1.isDangerousOption": "true",
-			"actionButtons.1.autoDismissible": "true",
-			"Android.content.title": "Android! The eagle has landed!",
-			"Android.content.payload.android": "android custom content!",
-			"iOS.content.title": "Jobs! The eagle has landed!",
-			"iOS.content.payload.ios": "iOS custom content!",
-			"iOS.actionButtons.0.key": "REDIRECT",
-			"iOS.actionButtons.0.label": "Redirect message",
-			"iOS.actionButtons.0.autoDismissible": "true",
-			"iOS.actionButtons.1.key": "DISMISS",
-			"iOS.actionButtons.1.label": "Dismiss message",
-			"iOS.actionButtons.1.actionType": "DismissAction",
-			"iOS.actionButtons.1.isDangerousOption": "true",
-			"iOS.actionButtons.1.autoDismissible": "true"
+		notification: {
+			title: sender.name as string,
+			body: message.message,
 		},
+		data: {
+			content: "{\"id\":-1,\"badge\":1,\"channelKey\":\"alerts\",\"displayOnForeground\":true,\"notificationLayout\":\"BigPicture\",\"largeIcon\":\"https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg\",\"bigPicture\":\"https://www.dw.com/image/49519617_303.jpg\",\"showWhen\":true,\"autoDismissible\":true,\"privacy\":\"Private\",\"payload\":{\"category\":\"like\",\"userId\":\"oUGw1AHfmkQPDuP9DOAT1J0iQ1X2\",\"ownerId\":\"AppleBoy\",\"notifId\":\"liked_279f33c9-9c58-4099-940b-06a463a9d929\",\"pageId\":\"notifsPage\",\"gameAction\":\"\"}}",
+            actionButtons: "[{\"key\":\"REDIRECT\",\"label\":\"Redirect\",\"autoDismissible\":true},{\"key\":\"CANCEL\",\"label\":\"Dismiss\",\"actionType\":\"DismissAction\",\"isDangerousOption\":true,\"autoDismissible\":true}]"
+		},
+
 		android: {
 			notification: {
 				sound: 'default',
