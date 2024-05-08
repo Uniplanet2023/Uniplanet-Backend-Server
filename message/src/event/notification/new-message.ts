@@ -11,7 +11,8 @@ export const newMessageNotification = (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-	
+	console.log(sender)
+	console.log(messageJson);
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -22,9 +23,9 @@ export const newMessageNotification = (
 			`{
 				"id":-1,
 				"badge":1,
-				"channelKey":"alerts",
+				"channelKey":"chats",
 				"displayOnForeground":false,
-				"notificationLayout":"BigPicture",
+				"notificationLayout":"MessagingGroup",
 				"largeIcon":"${sender.profilePic}",
 				"bigPicture":"${sender.profilePic}",
 				"showWhen":true,
