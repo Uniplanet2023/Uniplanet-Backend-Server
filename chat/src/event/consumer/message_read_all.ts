@@ -35,8 +35,6 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 					id: data.sender,
 					unSeenMessages: -(unseenMessage.unseenMessages as number)
 				})
-				unseenMessage.unseenMessages = 0;
-				await unseenMessage.save();
 				let user = await User.findById(data.sender);
 				if(user == null) {
 					throw new Error('User not found');
@@ -46,6 +44,8 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 					user.totalUnseenMessages = 0;
 				}
 				await user.save();
+				unseenMessage.unseenMessages = 0;
+				await unseenMessage.save();
 			}
 		} catch (err) {
 			console.log(err)
