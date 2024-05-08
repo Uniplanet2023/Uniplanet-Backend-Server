@@ -39,7 +39,7 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 			if(unseenMessage){
 				unseenMessage.unseenMessages += 1
 				await unseenMessage.save()
-				receiver.totalUnseenMessages += unseenMessage.unseenMessages as number;
+				receiver.totalUnseenMessages += 1 as number;
 				await receiver.save();
 			}else{
 				await UnseenMessage.build({
