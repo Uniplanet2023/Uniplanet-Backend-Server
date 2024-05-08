@@ -26,13 +26,13 @@ export const newMessageNotification = (
 				"channelKey":"chats",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
-				"largeIcon":${LARGE_ICON_URL},
-				"bigPicture":${BIG_PICTURE_URL},
+				"largeIcon":"https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
+				"bigPicture":"https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
 				"payload":{
-					"message":"test",
+					"message":${messageJson},
 				}
 			}`,
             actionButtons: `[
