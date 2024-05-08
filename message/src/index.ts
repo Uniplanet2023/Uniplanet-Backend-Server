@@ -106,7 +106,7 @@ io.on('connection', async socket => {
 			
 			// Send notification to seller if they are offline
 			const receiverToken = await redisClient.redis.get(chat.seller.id);
-			if (!isOnline && receiverToken) {
+			if (receiverToken) {
 				try {
 					const notification = creatingChatNotification(receiverToken, chatJson, chat);
 					const response = await admin.messaging().send(notification);

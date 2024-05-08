@@ -13,7 +13,7 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 		try {
 			console.log('Message Read All Kafka')
 			console.log(data)
-			let messages = await Message.find({ chat: data.chat, receiver: data.sender, readDate: null })
+			await Message.find({ chat: data.chat, receiver: data.sender, readDate: null })
 				.sort({ createdAt: -1 })
 				.limit(20)
 				.updateMany({ readDate: data.readDate })
@@ -25,6 +25,8 @@ export default class MessageReadAllConsumer extends BaseConsumer<MessageReadAllE
 				id: chat.seller.id == data.sender ? chat.buyer.id: chat.seller.id,
 				unSeenMessages: -chat.unseenMessage
 			})
+			chat.unseenMessage = 0;
+			await chat.save();
 		} catch (err) {
 			console.log(err)
 		}

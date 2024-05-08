@@ -1,8 +1,3 @@
-import { title } from "process"
-
-// Configuration Constants
-const LARGE_ICON_URL = "https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg";
-const BIG_PICTURE_URL = "https://www.dw.com/image/49519617_303.jpg";
 
 export const newMessageNotification = (
 	receiverToken: string,
@@ -11,9 +6,7 @@ export const newMessageNotification = (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-	const profileImage = sender.profileImage;
-	console.log(messageJson);
-	console.log(profileImage);
+	
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -27,8 +20,8 @@ export const newMessageNotification = (
 				"channelKey":"chats",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
-				"largeIcon":"${profileImage}",
-				"bigPicture":"${profileImage}",
+				"largeIcon":"${sender.profileImage}",
+				"bigPicture":"${sender.profileImage}",
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
