@@ -32,6 +32,7 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 			})
 			const msg = await msgModel.save()
 			chat.lastMessage = msg._id
+			await chat.save();
 			const unseenMessage =await UnseenMessage.findOne(
 				{ user: receiver._id, chat: chat._id },
 			)
