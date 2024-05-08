@@ -7,10 +7,10 @@ export const newMessageNotification = (
 	const sender = JSON.parse(senderJson)
 
 	const notificationPayload = {
-		// notification: {
-		// 	title: sender.name as string,
-		// 	body: message.message,
-		// },
+		notification: {
+			title: sender.name as string,
+			body: message.message,
+		},
 		data: {
 			message: messageJson,
 			sender: senderJson,
@@ -32,7 +32,7 @@ export const newMessageNotification = (
 			},
 			payload: {
 				aps: {
-					'mutable-content': true,
+					'mutable-content': 1,
 					"badge": 15,
 				},  
 			},
