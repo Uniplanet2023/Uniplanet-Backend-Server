@@ -11,8 +11,9 @@ export const newMessageNotification = (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-	console.log(sender)
+	const profileImage = sender.profileImage;
 	console.log(messageJson);
+	console.log(profileImage);
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -26,8 +27,8 @@ export const newMessageNotification = (
 				"channelKey":"chats",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
-				"largeIcon":"https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
-				"bigPicture":"https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg",
+				"largeIcon":${profileImage},
+				"bigPicture":${profileImage},
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
