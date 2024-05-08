@@ -1,6 +1,8 @@
 import { title } from "process"
 
 // Configuration Constants
+const LARGE_ICON_URL = "https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg";
+const BIG_PICTURE_URL = "https://www.dw.com/image/49519617_303.jpg";
 
 export const newMessageNotification = (
 	receiverToken: string,
@@ -24,13 +26,13 @@ export const newMessageNotification = (
 				"channelKey":"chats",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
-				"largeIcon":${sender.profileImage},
-				"bigPicture":${sender.profileImage},
+				"largeIcon":${LARGE_ICON_URL},
+				"bigPicture":${BIG_PICTURE_URL},
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
 				"payload":{
-					"message":${messageJson},
+					"message":"test",
 				}
 			}`,
             actionButtons: `[
