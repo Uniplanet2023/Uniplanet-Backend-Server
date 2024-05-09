@@ -15,7 +15,8 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	const skip = (pageNumber - 1) * limit
 
 	const chatList = []
-	let totalUnseenMessage = 0
+	let totalUnseenMessage = await redisClient.redis.zCount(`user:${req.user!.id}:unseen`, '-inf', '+inf');
+	
 	const chats = await Chat.find({
 		$or: [{ seller: req.user!.id }, { buyer: req.user!.id }],
 		deletionDate: null,
