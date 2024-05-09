@@ -8,7 +8,7 @@ async function markChatMessagesAndSendNotification({ userId, chatId }: { userId:
 		const unseenMessagesArray = unseenMessages.map(msg => JSON.parse(msg))
 
 		// Filter and map messages related to the specific chat
-		const seenMessages = unseenMessagesArray.filter(msg => msg.chat === chatId).map(msg => JSON.stringify(msg))
+		const seenMessages = unseenMessagesArray.filter(msg => msg.chat == chatId).map(msg => JSON.stringify(msg))
 		// Remove the seen messages from the Redis set
 		if (seenMessages.length > 0) {
 			await redisClient.redis.zRem(`user:${userId}:unseen`, seenMessages)
