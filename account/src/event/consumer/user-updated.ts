@@ -24,7 +24,7 @@ export default class UserUpdatedConsumer extends BaseConsumer<UserUpdateEvent> {
 		console.log(`user update ${data.id} -- account server`)
 		console.log(data)
 		try{
-			if (data.deletionDate == undefined) {
+			if (data.deletionDate != null) {
 				await Account.updateOne({ _id: data.id }, { $set: { deletionDate: null } })
 			}
 			if(data.unSeenMessages != undefined) {

@@ -16,7 +16,7 @@ export default class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 				await User.findByIdAndUpdate({ _id: data.id }, { name: data.name })
 			} else if (data.profileImage) {
 				await User.findByIdAndUpdate({ _id: data.id }, { profileImage: data.profileImage })
-			} else if (data.deletionDate == null) {
+			} else if (data.deletionDate != null) {
 				
 				await Chat.updateMany(
 					{ $or: [{ seller: data.id }, { buyer: data.id }] },
@@ -32,7 +32,6 @@ export default class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 					{ $or: [{ sender: data.id }, { receiver: data.id }] },
 					{ $set: { deletionDate: null } }
 				  );
-				  
 			}
 		} catch (err) {
 			console.log(err)

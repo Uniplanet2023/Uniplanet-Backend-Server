@@ -38,7 +38,7 @@ signInRouter.post(
 			await User.findByIdAndUpdate({ _id: user.id }, { deletionDate: null }, { new: true })
 			userRestoreProducer.sendMessage({
 				id: user.id,
-				deletionDate: undefined,
+				deletionDate: user.deletionDate.toString(),
 			})
 		}
 
