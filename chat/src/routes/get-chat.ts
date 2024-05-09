@@ -34,14 +34,13 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		// Count unseen messages for the specific chat
         const numberOfUnseenMessages = unseenMessages.reduce((count, msg) => {
             const message = JSON.parse(msg);
-			console.log('message:', message);
             if (message.chat === chat._id) {
                 count++;
+				console.log('count', count);
             }
             return count;
         }, 0);
-
-
+		console.log('numberOfUnseenMessages:', numberOfUnseenMessages);
 		chatList.push({ chat: new GetChatInfo(chat, numberOfUnseenMessages).serializeRest() })
 	}
 
