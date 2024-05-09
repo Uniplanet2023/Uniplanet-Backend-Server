@@ -29,11 +29,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 		},
 
 		android: {
-			notification: {
-				sound: 'default',
-				tag: 'new message',
-				click_action: 'FLUTTER_NOTIFICATION_CLICK',
-			},
+			priority: 'high',
 		},
 		apns: {
 			headers: {
