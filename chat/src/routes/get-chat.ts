@@ -31,14 +31,16 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	for (const chat of chats) {
 		const unseenMessages = await redisClient.redis.zRange(`user:${req.user!.id}:unseen`, 0, -1)
 
-		// Filter messages for a specific chat
-		const unseenMessagesForChat = unseenMessages.filter(msg => {
-			const message = JSON.parse(msg)
-			return message.chat === chat._id
-		})
+		// Count unseen messages for the specific chat
+        const numberOfUnseenMessages = unseenMessages.reduce((count, msg) => {
+            const message = JSON.parse(msg);
+			console.log('message:', message);
+            if (message.chat === chat._id) {
+                count++;
+            }
+            return count;
+        }, 0);
 
-		// Get the number of unseen messages for this chat
-		const numberOfUnseenMessages = unseenMessagesForChat.length
 
 		chatList.push({ chat: new GetChatInfo(chat, numberOfUnseenMessages).serializeRest() })
 	}
