@@ -3,7 +3,7 @@ import { MessageDocument } from '../../models/message'
 import { UserDocument } from '../../models/user'
 
 export const newMessageNotification = async (receiverToken: string, message: MessageDocument, sender: UserDocument) => {
-	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString())) + 1
+	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString()))
 	console.log(sender.profileImage);
 	const notificationPayload = {
 		notification: {
