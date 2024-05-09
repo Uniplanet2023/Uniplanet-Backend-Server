@@ -29,10 +29,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 		},
 
 		android: {
-			notification: {
-				sound: 'default',
-				tag: 'new message',
-			},
+			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
 		},
 		apns: {
 			headers: {
