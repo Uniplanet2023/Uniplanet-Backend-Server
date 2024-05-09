@@ -19,7 +19,7 @@ export const readNotification = (receiverToken: string, totalCount: number) => {
 			payload: {
 				aps: {
 					'content-available': 1,
-					badge: totalCount,
+					"badge": totalCount,
 				},
 			},
 		},

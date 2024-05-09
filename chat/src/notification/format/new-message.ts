@@ -4,6 +4,7 @@ import { UserDocument } from '../../models/user'
 
 export const newMessageNotification = async (receiverToken: string, message: MessageDocument, sender: UserDocument) => {
 	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString())) + 1
+	console.log(sender.profileImage);
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -22,7 +23,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"autoDismissible":true,
 				"privacy":"Private",
 				"payload":{
-					"message":${message},
+					"message":${JSON.stringify(message)},
 				}
 			}`,
 		},
@@ -41,7 +42,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			payload: {
 				aps: {
 					'mutable-content': 1,
-					badge: unseenMessageCount,
+					"badge": unseenMessageCount,
 				},
 			},
 		},
