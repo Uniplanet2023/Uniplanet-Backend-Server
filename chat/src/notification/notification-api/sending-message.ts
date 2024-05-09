@@ -13,7 +13,7 @@ export async function sendingMessageNotification({
 	sender: UserDocument
 	receiver: UserDocument
 }) {
-	const receiverToken = await redisClient.redis.get(receiver.id)
+	const receiverToken = await redisClient.redis.get(`firebaseToken:${receiver._id}`)
 	try {
 		if (receiverToken) {
 			const messageNotification = await newMessageNotification(receiverToken, message, sender)

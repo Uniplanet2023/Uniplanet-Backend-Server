@@ -70,7 +70,7 @@ io.on('connection', async socket => {
 			return
 		}
 		try {
-			redisClient.redis.set(socket.userId, firebaseToken)
+			redisClient.redis.set(`firebaseToken:${socket.userId}`, firebaseToken)
 		} catch (e) {
 			console.log(e)
 		}
@@ -106,7 +106,7 @@ io.on('connection', async socket => {
 			callback(isOnline);
 			
 			// Send notification to seller if they are offline
-			const receiverToken = await redisClient.redis.get(chat.seller.id);
+			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`);
 			if (receiverToken) {
 				try {
 					const notification = creatingChatNotification(receiverToken, chatJson, chat);
@@ -178,7 +178,7 @@ io.on('connection', async socket => {
 		const message = JSON.parse(messageJson)
 		try {
 			io.to(message.chat).emit('message received', messageJson)
-			const receiverToken = await redisClient.redis.get(message.receiver)
+			const receiverToken = await redisClient.redis.get(`firebaseToken:${message.receiver}`)
 				userUpdateProvider.sendMessage({ id: message.receiver, unSeenMessages: 1 })
 				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => async () =>{
 					if (!isOnline) {

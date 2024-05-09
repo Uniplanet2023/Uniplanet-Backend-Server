@@ -4,7 +4,7 @@ import { UserDocument } from '../../models/user'
 import { readNotification } from '../format/read-message'
 
 export async function readMessageNotification({ totalCount, receiverId }: { totalCount: number; receiverId: string }) {
-	const receiverToken = await redisClient.redis.get(receiverId)
+	const receiverToken = await redisClient.redis.get(`firebaseToken:${receiverId}`)
 	try {
 		if (receiverToken) {
 			const readNotificationContent = await readNotification(receiverToken, totalCount)

@@ -5,6 +5,10 @@ import 'express-async-errors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
 import { v2 as cloudinary } from 'cloudinary'
+// IMPORTS FROM OTHER FILES
+import chatRouter from './routes'
+import { UserUpdateProducer } from './event/producer/user-update'
+import { CreateChatProducer } from './event/producer/create_chat'
 
 if (process.env.NODE_ENV! == 'development') {
 	dotenv.config({
@@ -16,16 +20,13 @@ cloudinary.config({
 	api_key: process.env.CLOUDINARY_API_KEY,
 	api_secret: process.env.CLOUDINARY_API_SECRET,
 })
+kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 
 export const cloudinaryAPI = cloudinary
 export const createChatProducer = new CreateChatProducer(kafkaClient.kafka)
 export const userUpdateProvider = new UserUpdateProducer(kafkaClient.kafka)
 
-kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
-// IMPORTS FROM OTHER FILES
-import chatRouter from './routes'
-import { UserUpdateProducer } from './event/producer/user-update'
-import { CreateChatProducer } from './event/producer/create_chat'
+
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 
