@@ -16,7 +16,8 @@ export default class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 				await User.findByIdAndUpdate({ _id: data.id }, { name: data.name })
 			} else if (data.profileImage) {
 				await User.findByIdAndUpdate({ _id: data.id }, { profileImage: data.profileImage })
-			} else if (data.deletionDate == undefined){
+			} else if (data.deletionDate == null) {
+				
 				await Chat.updateMany(
 					{ $or: [{ seller: data.id }, { buyer: data.id }] },
 					{ $set: { deletionDate: null } }
