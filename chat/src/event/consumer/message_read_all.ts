@@ -4,10 +4,10 @@ import Message from '../../models/message'
 import Chat from '../../models/chat'
 import User from '../../models/user'
 import markChatMessagesAndSendNotification from '../../function/mark-chat-messages'
-import { userUpdateProvider } from '../../config'
 import getUnseenMessageCount from '../../function/get-unseen-message'
 import { readNotification } from '../../notification/format/read-message'
 import { readMessageNotification } from '../../notification/notification-api/read-message'
+import { userUpdateProvider } from '../..'
 
 // Extend the BaseConsumer for the user:created event
 export class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {

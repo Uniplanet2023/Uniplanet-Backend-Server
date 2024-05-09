@@ -71,6 +71,21 @@ spec:
                 secretKeyRef:
                   name: cloudinary
                   key: CLOUDINARY_API_SECRET
+            - name: FIREBASE_CLIENT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: fcm-auth
+                  key: FIREBASE_CLIENT_EMAIL
+            - name: FIREBASE_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fcm-auth
+                  key: FIREBASE_PROJECT_ID
+            - name: FIREBASE_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fcm-auth
+                  key: FIREBASE_PRIVATE_KEY
 
 ---
 apiVersion: v1
