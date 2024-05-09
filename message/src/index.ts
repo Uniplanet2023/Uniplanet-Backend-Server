@@ -6,6 +6,7 @@ import { initMiddleWare } from './socket/middleware/socket-init'
 import { Server as SocketIOServer, Server } from 'socket.io'
 import { URL_LIST_PROD } from '@uniplanet-lib/common'
 import app from './app'
+import getUnseenMessageCount from './functions/get-unseen-message'
 
 const { PORT = 3004 } = process.env
 
@@ -179,29 +180,29 @@ io.on('connection', async socket => {
 			io.to(message.chat).emit('message received', messageJson)
 			const receiverToken = await redisClient.redis.get(message.receiver)
 				userUpdateProvider.sendMessage({ id: message.receiver, unSeenMessages: 1 })
-				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => {
+				redisClient.redis.sIsMember(`Online User`, message.receiver).then(isOnline => async () =>{
 					if (!isOnline) {
 
-						try{
-							if(receiverToken){
-								const messageNotification = newMessageNotification(receiverToken, message, messageJson, senderJson)
+						// try{
+						// 	if(receiverToken){
+						// 		const messageNotification = await newMessageNotification(receiverToken, message, messageJson, senderJson)
 
-							admin
-								.messaging()
-								.send(messageNotification)
-								.then(response => {
-									console.log('Successfully sent message:', response)
-								})
-								.catch(error => {
-									console.log('Error sending message:', error)
-								})
-							}else{
-								console.log('receiverToken not found')
-							}
+						// 	admin
+						// 		.messaging()
+						// 		.send(messageNotification)
+						// 		.then(response => {
+						// 			console.log('Successfully sent message:', response)
+						// 		})
+						// 		.catch(error => {
+						// 			console.log('Error sending message:', error)
+						// 		})
+						// 	}else{
+						// 		console.log('receiverToken not found')
+						// 	}
 							
-						}catch(e){
-							console.log(e);
-						}
+						// }catch(e){
+						// 	console.log(e);
+						// }
 						
 					}
 				})
@@ -214,11 +215,12 @@ io.on('connection', async socket => {
 			console.log(e)
 		}
 	})
-	socket.on('read all message', chatId => {
+	socket.on('read all message', async ( chatId ) => {
 		try{
 			const readMessageTime = new Date()
 			io.to(chatId).emit('read all message', { sender: socket.userId, chatId, readMessageTime })
 			messageReadAllProvider.sendMessage({ sender: socket.userId, chat: chatId, readDate: readMessageTime })
+							
 		}catch(e){
 			console.log(e);
 		}

@@ -7,7 +7,6 @@ export type UserDocument = Document & {
 	email: string
 	profileImage: string
 	school: string
-	totalUnseenMessages: number
 }
 
 type UserAttrs = {
@@ -16,7 +15,6 @@ type UserAttrs = {
 	email: string
 	profileImage: string
 	school: string
-	totalUnseenMessages: number
 }
 interface UserModel extends Model<UserDocument> {
 	build(attrs: UserAttrs): UserDocument
@@ -39,14 +37,14 @@ const userSchema: Schema = new Schema(
 		profileImage: {
 			type: String,
 			required: false,
-			default: "https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_150,h_150/v1/profile-image/default_image",
+			default:
+				'https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_150,h_150/v1/profile-image/default_image',
 		},
 		school: {
 			type: String,
 			required: true,
 		},
 		deletionDate: { type: Date, default: null },
-		totalUnseenMessages: { type: Number, default: 0 },
 	},
 	{
 		toJSON: {
@@ -69,7 +67,6 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 		email: attrs.email,
 		profileImage: attrs.profileImage,
 		school: attrs.school,
-		totalUnseenMessages: attrs.totalUnseenMessages,
 	})
 	return user
 }

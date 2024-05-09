@@ -1,18 +1,20 @@
-import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common'
+import { Topics, BaseConsumer, MessageCreatedEvent, redisClient } from '@uniplanet-lib/common'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
 import User from '../../models/user'
-import UnseenMessage from '../../models/unseen-message'
-
+import { addUnSeenMessage } from '../../function/add-unseen-message'
+import admin from 'firebase-admin'
+import { newMessageNotification } from '../../notification/format/new-message'
+import { sendingMessageNotification } from '../../notification/notification-api/sending-message'
 // Extend the BaseConsumer for the user:created event
-export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
+export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 	topic: Topics.MessageCreated = Topics.MessageCreated
 
 	// Implement the onMessage method
 	async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
 		try {
 			console.log('Message Received')
-			console.log(data)
+
 			const receiver = await User.findById(data.receiver)
 			const sender = await User.findById(data.sender)
 			const chat = await Chat.findById(data.chat)
@@ -30,25 +32,13 @@ export default class MessageCreatedConsumer extends BaseConsumer<MessageCreatedE
 				chat: chat._id,
 				createdAt: data.createdAt,
 			})
-			const msg = await msgModel.save()
-			await chat.updateOne({ lastMessage: msg._id });
-			const unseenMessage =await UnseenMessage.findOne(
-				{ user: receiver._id, chat: chat._id },
-			)
-			if(unseenMessage){
-				unseenMessage.unseenMessages += 1
-				await unseenMessage.save()
-				receiver.totalUnseenMessages += 1 as number;
-				await receiver.save();
-			}else{
-				await UnseenMessage.build({
-					chat: chat._id,
-					user: receiver._id,
-					unseenMessages: 1,
-				}).save()
-			}
+			const message = await msgModel.save()
+			await chat.updateOne({ lastMessage: message._id })
+			// Add UnSeen message to the receiver
+			await addUnSeenMessage({ userId: receiver._id,message })
+			// Send notification to the receiver
+			await sendingMessageNotification({ sender, receiver, message})
 			
-
 		} catch (err) {
 			console.log(err)
 		}

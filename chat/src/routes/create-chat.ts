@@ -4,8 +4,8 @@ import { tokenValidation } from '@uniplanet-lib/common'
 import { CREATE_CHAT } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import User from '../models/user'
-import { createChatProducer } from '..'
 import Message from '../models/message'
+import { createChatProducer } from '../config'
 
 const createChatRouter = express.Router()
 
@@ -38,14 +38,14 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	console.log('existing chat: ', existingChat)
 
 	if (existingChat) {
-		let msg = "existing chat";
+		let msg = 'existing chat'
 		if (existingChat.deletionDate !== null) {
 			msg = 'chat restored'
 			await existingChat.updateOne({ deletionDate: null })
 		}
 		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
 		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
-		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg})
+		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg })
 	}
 
 	// Create and save the chat
@@ -64,7 +64,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	const chatInfo = new GetChatInfo(chatObj, 0)
 
 	// Include serialized buyer and seller data in the response
-	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg:'new chat' })
+	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg: 'new chat' })
 })
 
 export default createChatRouter

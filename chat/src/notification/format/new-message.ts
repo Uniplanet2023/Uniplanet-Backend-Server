@@ -1,13 +1,15 @@
-import getUnseenMessageCount from "../../functions/get-unseen-message";
+import getUnseenMessageCount from "../../function/get-unseen-message";
+import { MessageDocument } from "../../models/message";
+import { UserDocument } from "../../models/user";
+
 
 export const newMessageNotification = async (
 	receiverToken: string,
-	message: any,
-	messageJson: string,
-	senderJson: string,
+	message: MessageDocument,
+	sender: UserDocument,
 ) => {
-	const sender = JSON.parse(senderJson)
-	const unseenMessageCount = await getUnseenMessageCount(message.receiver) + 1;
+	
+	const unseenMessageCount = await getUnseenMessageCount(message.receiver._id.toString()) + 1;
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -27,23 +29,9 @@ export const newMessageNotification = async (
 				"autoDismissible":true,
 				"privacy":"Private",
 				"payload":{
-					"message":${messageJson},
+					"message":${message},
 				}
 			}`,
-            actionButtons: `[
-				{
-					"key":"REDIRECT",
-					"label":"Redirect",
-					"autoDismissible":true
-				},
-				{
-					"key":"CANCEL",
-					"label":"Dismiss",
-					"actionType":"DismissAction",
-					"isDangerousOption":true,
-					"autoDismissible":true
-				}
-			]`
 		},
 
 		android: {
@@ -56,8 +44,6 @@ export const newMessageNotification = async (
 		apns: {
 			headers: {
 				'apns-priority': '5',
-				// 'apns-push-type': 'background',
-				// 'apns-topic': 'shop.uniplanet.uniplanet',
 			},
 			payload: {
 				aps: {

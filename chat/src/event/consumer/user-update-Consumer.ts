@@ -4,7 +4,7 @@ import Chat from '../../models/chat'
 import Message from '../../models/message'
 
 // Extend the BaseConsumer for the user:created event
-export default class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
+export class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 	topic: Topics.UserUpdated = Topics.UserUpdated
 
 	// Implement the onMessage method
@@ -17,21 +17,14 @@ export default class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 			} else if (data.profileImage) {
 				await User.findByIdAndUpdate({ _id: data.id }, { profileImage: data.profileImage })
 			} else if (data.deletionDate != null) {
-				
-				await Chat.updateMany(
-					{ $or: [{ seller: data.id }, { buyer: data.id }] },
-					{ $set: { deletionDate: null } }
-				  );
-				  
-				  await User.updateOne(
-					{ _id: data.id },
-					{ $set: { deleteDate: null } }
-				  );
-				  
-				  await Message.updateMany(
+				await Chat.updateMany({ $or: [{ seller: data.id }, { buyer: data.id }] }, { $set: { deletionDate: null } })
+
+				await User.updateOne({ _id: data.id }, { $set: { deleteDate: null } })
+
+				await Message.updateMany(
 					{ $or: [{ sender: data.id }, { receiver: data.id }] },
-					{ $set: { deletionDate: null } }
-				  );
+					{ $set: { deletionDate: null } },
+				)
 			}
 		} catch (err) {
 			console.log(err)
