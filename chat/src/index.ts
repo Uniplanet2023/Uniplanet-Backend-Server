@@ -5,7 +5,7 @@ import { initializeFirebase, initializeKafkaConsumer, initializeMongooseWithSche
 
 const { PORT = 3003, NODE_ENV, KAFKA_BROKER } = process.env
 
-kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
+
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
@@ -20,6 +20,7 @@ app.listen(PORT, async () => {
 		if (!KAFKA_BROKER) {
 			throw new Error('KAFKA_BROKER have to be define')
 		}
+		await kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 		// Kafka Consumer
 		await initializeKafkaConsumer();		
 		// Kafka Producer
