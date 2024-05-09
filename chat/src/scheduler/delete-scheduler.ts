@@ -2,7 +2,7 @@ import { IScheduler, NodemailerSmtpServer, Scheduler, redisClient } from '@unipl
 import User from '../models/user'
 import Chat from '../models/chat'
 import Message from '../models/message'
-import { cloudinaryAPI } from '..'
+import { cloudinaryAPI } from '../app'
 
 class DeleteScheduler extends Scheduler {
 	constructor() {

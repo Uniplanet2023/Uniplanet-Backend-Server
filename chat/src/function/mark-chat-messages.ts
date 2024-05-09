@@ -1,5 +1,5 @@
 import { redisClient } from '@uniplanet-lib/common'
-import { readMessageNotification } from '../notification/notification-api/read-message';
+import { readMessageNotification } from '../notification/notification-api/read-message'
 
 async function markChatMessagesAndSendNotification({ userId, chatId }: { userId: string; chatId: string }) {
 	const unseenMessages = await redisClient.redis.zRange(`user:${userId}:unseen`, 0, -1)
@@ -15,8 +15,8 @@ async function markChatMessagesAndSendNotification({ userId, chatId }: { userId:
 		}
 		const totalCount = unseenMessages.length - seenMessages.length
 		// Send notification to the receiver
-		await readMessageNotification({totalCount, receiverId: userId});
-		
+		await readMessageNotification({ totalCount, receiverId: userId })
+
 		return seenMessages
 	}
 	return []

@@ -2,10 +2,11 @@ import express from 'express'
 import Chat from '../models/chat'
 import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import { DELETE_CHAT_ROUTE } from './routes-def'
-import { cloudinaryAPI } from '..'
+
 import Message from '../models/message'
 import User from '../models/user'
 import markChatMessagesAndSendNotification from '../function/mark-chat-messages'
+import { cloudinaryAPI } from '../app'
 
 const deleteChatRouter = express.Router()
 
@@ -24,7 +25,7 @@ deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => 
 	}
 	// Delete all the images from cloudinary
 
-	const chatRoom = await Chat.findById(chatId).populate('buyer','seller')
+	const chatRoom = await Chat.findById(chatId).populate('buyer', 'seller')
 	if (chatRoom === null) {
 		return res.status(404).send({ message: 'Chat not found' })
 	}
@@ -32,8 +33,8 @@ deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => 
 	await Message.updateMany({ chat: chatId }, { deletionDate: new Date() })
 	await chatRoom.save()
 
-	markChatMessagesAndSendNotification({ chatId: chatRoom._id, userId: chatRoom.seller.id });
-	markChatMessagesAndSendNotification({ chatId: chatRoom._id, userId: chatRoom.buyer.id });
+	markChatMessagesAndSendNotification({ chatId: chatRoom._id, userId: chatRoom.seller.id })
+	markChatMessagesAndSendNotification({ chatId: chatRoom._id, userId: chatRoom.buyer.id })
 
 	return res.status(200).send({ message: 'Chat deleted successfully' })
 })

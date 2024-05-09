@@ -1,23 +1,16 @@
-import getUnseenMessageCount from "../../function/get-unseen-message";
-import { MessageDocument } from "../../models/message";
-import { UserDocument } from "../../models/user";
+import getUnseenMessageCount from '../../function/get-unseen-message'
+import { MessageDocument } from '../../models/message'
+import { UserDocument } from '../../models/user'
 
-
-export const newMessageNotification = async (
-	receiverToken: string,
-	message: MessageDocument,
-	sender: UserDocument,
-) => {
-	
-	const unseenMessageCount = await getUnseenMessageCount(message.receiver._id.toString()) + 1;
+export const newMessageNotification = async (receiverToken: string, message: MessageDocument, sender: UserDocument) => {
+	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString())) + 1
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
-			body: message.messageType == 'image'?'Image' :message.message,
+			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			content:
-			`{
+			content: `{
 				"id":-1,
 				"badge":${unseenMessageCount},
 				"channelKey":"chats",
@@ -48,10 +41,10 @@ export const newMessageNotification = async (
 			payload: {
 				aps: {
 					'mutable-content': 1,
-					"badge": unseenMessageCount,
-				},  
+					badge: unseenMessageCount,
+				},
 			},
-			},
+		},
 		token: receiverToken,
 	}
 	return notificationPayload

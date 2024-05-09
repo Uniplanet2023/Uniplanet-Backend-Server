@@ -5,7 +5,7 @@ import { CREATE_CHAT } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
 import User from '../models/user'
 import Message from '../models/message'
-import { createChatProducer } from '..'
+import { createChatProducer } from '../app'
 
 const createChatRouter = express.Router()
 

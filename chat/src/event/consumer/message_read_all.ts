@@ -7,7 +7,7 @@ import markChatMessagesAndSendNotification from '../../function/mark-chat-messag
 import getUnseenMessageCount from '../../function/get-unseen-message'
 import { readNotification } from '../../notification/format/read-message'
 import { readMessageNotification } from '../../notification/notification-api/read-message'
-import { userUpdateProvider } from '../..'
+import { userUpdateProvider } from '../../app'
 
 // Extend the BaseConsumer for the user:created event
 export class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
@@ -27,7 +27,6 @@ export class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
 				throw new Error('Chat not found')
 			}
 
-			
 			// Fetch all unseen messages for the user
 			const seenMessages = await markChatMessagesAndSendNotification({ chatId: chat._id, userId: data.sender })
 
@@ -36,7 +35,6 @@ export class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
 				id: data.sender,
 				unSeenMessages: -(seenMessages.length as number),
 			})
-			
 		} catch (err) {
 			console.log(err)
 		}

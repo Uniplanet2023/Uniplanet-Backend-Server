@@ -24,7 +24,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		.sort({ updatedAt: -1 })
 		.limit(limit)
 		.skip(skip)
-	
+
 	if (!chats || chats.length === 0) {
 		return res.status(200).json([])
 	}

@@ -1,15 +1,7 @@
-
-export const readNotification = (
-	receiverToken: string,
-	totalCount: number,
-) => {
-	
-	
+export const readNotification = (receiverToken: string, totalCount: number) => {
 	const notificationPayload = {
-		
 		data: {
-			content:
-			`{
+			content: `{
 				"id":-1,
 				"badge":${totalCount},
 				"channelKey":"chats",
@@ -27,10 +19,10 @@ export const readNotification = (
 			payload: {
 				aps: {
 					'content-available': 1,
-					"badge": totalCount,
-				},  
+					badge: totalCount,
+				},
 			},
-			},
+		},
 		token: receiverToken,
 	}
 	return notificationPayload

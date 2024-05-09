@@ -1,18 +1,31 @@
 import express from 'express'
-import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
+import { errorHandler, kafkaClient, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@uniplanet-lib/common'
 import cors from 'cors'
 import 'express-async-errors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
+import { v2 as cloudinary } from 'cloudinary'
 
 if (process.env.NODE_ENV! == 'development') {
 	dotenv.config({
 		path: '.env.dev',
 	})
 }
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
+export const cloudinaryAPI = cloudinary
+export const createChatProducer = new CreateChatProducer(kafkaClient.kafka)
+export const userUpdateProvider = new UserUpdateProducer(kafkaClient.kafka)
+
+kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 // IMPORTS FROM OTHER FILES
 import chatRouter from './routes'
+import { UserUpdateProducer } from './event/producer/user-update'
+import { CreateChatProducer } from './event/producer/create_chat'
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 

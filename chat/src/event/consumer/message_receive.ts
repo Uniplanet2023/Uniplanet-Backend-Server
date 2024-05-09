@@ -35,10 +35,9 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 			const message = await msgModel.save()
 			await chat.updateOne({ lastMessage: message._id })
 			// Add UnSeen message to the receiver
-			await addUnSeenMessage({ userId: receiver._id,message })
+			await addUnSeenMessage({ userId: receiver._id, message })
 			// Send notification to the receiver
-			await sendingMessageNotification({ sender, receiver, message})
-			
+			await sendingMessageNotification({ sender, receiver, message })
 		} catch (err) {
 			console.log(err)
 		}
