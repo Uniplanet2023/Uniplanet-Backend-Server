@@ -1,12 +1,7 @@
-import { Topics, BaseConsumer, MessageReadAllEvent, redisClient } from '@uniplanet-lib/common'
-
+import { Topics, BaseConsumer, MessageReadAllEvent } from '@uniplanet-lib/common'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
-import User from '../../models/user'
 import markChatMessagesAndSendNotification from '../../function/mark-chat-messages'
-import getUnseenMessageCount from '../../function/get-unseen-message'
-import { readNotification } from '../../notification/format/read-message'
-import { readMessageNotification } from '../../notification/notification-api/read-message'
 import { userUpdateProvider } from '../../app'
 
 // Extend the BaseConsumer for the user:created event
