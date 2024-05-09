@@ -30,28 +30,9 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 
 		android: {
 			notification: {
-				title: sender.name as string,
-				body: message.messageType == 'image' ? 'Image' : message.message,
 				sound: 'default',
 				tag: 'new message',
 			},
-			data:{
-				content: `{
-					"id":-1,
-					"badge":${unseenMessageCount},
-					"channelKey":"chats",
-					"displayOnForeground":false,
-					"notificationLayout":"MessagingGroup",
-					"largeIcon":"${sender.profileImage}",
-					"bigPicture":"${sender.profileImage}",
-					"showWhen":true,
-					"autoDismissible":true,
-					"privacy":"Private",
-					"payload":{
-						"message":${JSON.stringify(message)},
-					}
-				}`
-			}
 		},
 		apns: {
 			headers: {
