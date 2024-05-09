@@ -25,7 +25,10 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		.sort({ updatedAt: -1 })
 		.limit(limit)
 		.skip(skip)
-
+	const user = await User.findById(req.user!.id);
+	if(user){
+		totalUnseenMessage = user.totalUnseenMessages;
+	}
 	if (!chats || chats.length === 0) {
 		return res.status(200).json([])
 	}
@@ -45,10 +48,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 			chatList.push({ chat: new GetChatInfo(chat, unseenMessage.unseenMessages).serializeRest() })
 		}
 	}
-	const user = await User.findById(req.user!.id);
-	if(user){
-		totalUnseenMessage = user.totalUnseenMessages;
-	}
+	
 	return res.status(200).json({ chatList: chatList, totalUnseenMessage: totalUnseenMessage }) // Changed status code to 200 for successful response
 })
 export default getChatRouter
