@@ -11,17 +11,21 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			id:"-1",
-			badge:unseenMessageCount.toString(),
-			channelKey:"chats",
-			displayOnForeground:"false",
-			notificationLayout:"MessagingGroup",
-			largeIcon: sender.profileImage,
-			bigPicture: sender.profileImage,
-			showWhen:"true",
-			autoDismissible:"true",
-			privacy:"Private",
-			payload: JSON.stringify(message),
+			content: `{
+				"id":-1,
+				"badge":${unseenMessageCount},
+				"channelKey":"chats",
+				"displayOnForeground":false,
+				"notificationLayout":"MessagingGroup",
+				"largeIcon":"${sender.profileImage}",
+				"bigPicture":"${sender.profileImage}",
+				"showWhen":true,
+				"autoDismissible":true,
+				"privacy":"Private",
+				"payload":{
+					"message":${JSON.stringify(message)},
+				}
+			}`,
 		},
 
 		android: {
