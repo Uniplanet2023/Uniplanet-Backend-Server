@@ -13,14 +13,14 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 		data: {
 			
 			id:"-1",
-			badge:unseenMessageCount,
+			badge:unseenMessageCount.toString(),
 			channelKey:"chats",
-			displayOnForeground:false,
+			displayOnForeground:"false",
 			notificationLayout:"MessagingGroup",
 			largeIcon:sender.profileImage,
 			bigPicture:sender.profileImage,
-			showWhen:true,
-			autoDismissible:true,
+			showWhen:"true",
+			autoDismissible:"true",
 			privacy:"Private",
 			payload:{
 				message:JSON.stringify(message),
