@@ -15,18 +15,17 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 		try {
 			console.log('Message Received')
 
-			const receiver = await User.findById(data.receiver)
-			const sender = await User.findById(data.sender)
-			const chat = await Chat.findById(data.chat)
-			if (!sender || !receiver) {
-				throw new Error('User not found')
-			}
+			const chat = await Chat.findById(data.chat).populate('buyer seller');
+						
 			if (!chat) {
 				throw new Error('Chat not found')
 			}
+			const sender = chat.buyer.id == data.sender ? chat.buyer : chat.seller;
+			const receiver = chat.buyer.id == data.sender ? chat.seller : chat.buyer;
+			
 			const msgModel = Message.build({
-				sender: sender._id,
-				receiver: receiver._id,
+				sender: data.sender,
+				receiver: data.receiver,
 				message: data.message,
 				messageType: data.messageType,
 				chat: chat._id,
@@ -35,9 +34,9 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 			const message = await msgModel.save()
 			await chat.updateOne({ lastMessage: message._id })
 			// Add UnSeen message to the receiver
-			await addUnSeenMessage({ userId: receiver._id, message })
+			await addUnSeenMessage({ userId: data.receiver, message })
 			// Send notification to the receiver
-			await sendingMessageNotification({ sender, receiver, message })
+			await sendingMessageNotification({ sender, receiver, message, chat })
 		} catch (err) {
 			console.log(err)
 		}
