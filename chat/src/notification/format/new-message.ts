@@ -16,14 +16,14 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			channelKey:"chats",
 			displayOnForeground:"false",
 			notificationLayout:"MessagingGroup",
-			largeIcon:`"${sender.profileImage}"`,
-			bigPicture:`"${sender.profileImage}"`,
+			largeIcon:`${sender.profileImage}`,
+			bigPicture:`${sender.profileImage}`,
 			showWhen:"true",
 			autoDismissible:"true",
 			privacy:"Private",
-			// payload:{
-			// 	message:JSON.stringify(message),
-			// }
+			payload:{
+				message:JSON.stringify(message),
+			}
 		},
 
 		android: {
