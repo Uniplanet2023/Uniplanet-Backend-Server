@@ -22,7 +22,8 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			autoDismissible:"true",
 			privacy:"Private",
 			payload:{
-				message:JSON.stringify(message),
+				// message:JSON.stringify(message),
+				message:`${message.message}`,
 			}
 		},
 
