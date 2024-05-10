@@ -21,10 +21,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			showWhen:"true",
 			autoDismissible:"true",
 			privacy:"Private",
-			payload:{
-				// message:JSON.stringify(message),
-				message:`${message.message}`,
-			}
+			payload: JSON.stringify(message),
 		},
 
 		android: {
