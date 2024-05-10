@@ -32,6 +32,15 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
+			notification:{
+				title: sender.name as string,
+				body: message.messageType == 'image' ? 'Image' : message.message,
+				sound: 'default',
+				priority: 'max' as 'min' | 'low' | 'default' | 'high' | 'max',
+				notificationCount: unseenMessageCount,
+				visibility: 'private' as 'private' | 'public' | 'secret',
+				channelId: 'chats',
+			}
 		},
 		apns: {
 			headers: {

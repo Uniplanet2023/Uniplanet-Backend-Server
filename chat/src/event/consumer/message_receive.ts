@@ -1,10 +1,7 @@
 import { Topics, BaseConsumer, MessageCreatedEvent, redisClient } from '@uniplanet-lib/common'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
-import User from '../../models/user'
 import { addUnSeenMessage } from '../../function/add-unseen-message'
-import admin from 'firebase-admin'
-import { newMessageNotification } from '../../notification/format/new-message'
 import { sendingMessageNotification } from '../../notification/notification-api/sending-message'
 // Extend the BaseConsumer for the user:created event
 export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
