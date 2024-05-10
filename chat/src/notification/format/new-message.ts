@@ -10,26 +10,24 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			title: sender.name as string,
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
-		data: `{
-			content: {
-				"id":-1,
-				"badge":${unseenMessageCount},
-				"channelKey":"chats",
-				"displayOnForeground":false,
-				"notificationLayout":"MessagingGroup",
-				"largeIcon":"${sender.profileImage}",
-				"bigPicture":"${sender.profileImage}",
-				"showWhen":true,
-				"autoDismissible":true,
-				"privacy":"Private",
-				"payload":{
-					"message":${JSON.stringify(message)},
-				}
-			},
-		}`,
+		data: {
+			id:"-1",
+			badge:unseenMessageCount.toString(),
+			channelKey:"chats",
+			displayOnForeground:"false",
+			notificationLayout:"MessagingGroup",
+			largeIcon:`"${sender.profileImage}"`,
+			bigPicture:`"${sender.profileImage}"`,
+			showWhen:"true",
+			autoDismissible:"true",
+			privacy:"Private",
+			// payload:{
+			// 	message:JSON.stringify(message),
+			// }
+		},
 
 		android: {
-			priority: 'high' as 'high' | 'normal',
+			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
 		},
 		apns: {
 			headers: {
