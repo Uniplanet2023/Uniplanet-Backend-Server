@@ -15,14 +15,14 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 		try {
 			console.log('Message Received')
 
-			const chat = await Chat.findById(data.chat).populate('buyer seller');
+			const chat = await Chat.findById(data.chat).populate('buyer seller lastMessage');
 						
 			if (!chat) {
 				throw new Error('Chat not found')
 			}
 			const sender = chat.buyer.id == data.sender ? chat.buyer : chat.seller;
 			const receiver = chat.buyer.id == data.sender ? chat.seller : chat.buyer;
-			
+
 			const msgModel = Message.build({
 				sender: data.sender,
 				receiver: data.receiver,

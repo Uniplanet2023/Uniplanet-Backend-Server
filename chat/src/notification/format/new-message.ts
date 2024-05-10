@@ -1,3 +1,4 @@
+import GetChatInfo from '../../event/serializer/get-chat'
 import getUnseenMessageCount from '../../function/get-unseen-message'
 import { ChatDocument } from '../../models/chat'
 import { MessageDocument } from '../../models/message'
@@ -6,6 +7,7 @@ import { UserDocument } from '../../models/user'
 export const newMessageNotification = async (receiverToken: string, message: MessageDocument, sender: UserDocument, chat: ChatDocument) => {
 	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString()))
 	console.log(sender.profileImage);
+	const chatData = new GetChatInfo( chat,0).serializeRest();
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -23,9 +25,9 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
-				"payload":${JSON.stringify(chat)}
+				"payload":${JSON.stringify(chatData)}
 			}`,
-			payload: JSON.stringify(chat),
+			payload: JSON.stringify(chatData),
 		},
 
 		android: {
