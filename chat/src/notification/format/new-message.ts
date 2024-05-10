@@ -27,10 +27,6 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				}
 			}`,
 		},
-
-		android: {
-			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
-		},
 		apns: {
 			headers: {
 				'apns-priority': '5',
