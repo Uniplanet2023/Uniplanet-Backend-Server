@@ -24,11 +24,11 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 	serializeRest(): GetChatRestPayload {
 		return {
 			id: this.chat._id,
-			seller: new GetUserInfo(this.chat.seller).serializeRest(),
-			buyer: new GetUserInfo(this.chat.buyer).serializeRest(),
+			seller: JSON.stringify(new GetUserInfo(this.chat.seller).serializeRest()),
+			buyer: JSON.stringify(new GetUserInfo(this.chat.buyer).serializeRest()),
 			productId: this.chat.productId.toString(),
 			productName: this.chat.productName,
-			lastMessage: this.chat.lastMessage ? new GetMessageInfo(this.chat.lastMessage).serializeRest() : undefined,
+			lastMessage: this.chat.lastMessage ? JSON.stringify(new GetMessageInfo(this.chat.lastMessage).serializeRest()) : undefined,
 			unseenMessageCount: this.unseenMessageCount ?? 0,
 		}
 	}

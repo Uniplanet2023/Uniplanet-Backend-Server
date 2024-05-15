@@ -8,11 +8,11 @@ export type GetUserRestPayload = {
 
 export type GetChatRestPayload = {
 	id: string
-	seller: GetUserRestPayload
-	buyer: GetUserRestPayload
+	seller: string
+	buyer: string
 	productId: string
 	productName: string
-	lastMessage?: GetMessageRestPayload
+	lastMessage?: string
 	unseenMessageCount: number
 }
 
