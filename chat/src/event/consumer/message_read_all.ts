@@ -1,7 +1,7 @@
 import { Topics, BaseConsumer, MessageReadAllEvent } from '@uniplanet-lib/common'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
-import markChatMessagesAndSendNotification from '../../function/mark-chat-messages'
+import {markChatMessagesAndSendNotification} from '../../function/mark-chat-messages'
 import { userUpdateProvider } from '../../app'
 
 // Extend the BaseConsumer for the user:created event
