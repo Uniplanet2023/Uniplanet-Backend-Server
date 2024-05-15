@@ -29,7 +29,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"autoDismissible":true,
 				"privacy":"Private",
 			}`,
-			payload: `"${JSON.stringify(chatData)}"`
+			payload: JSON.stringify(chatData)
 		},
 
 		android: {
