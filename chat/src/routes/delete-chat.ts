@@ -5,7 +5,7 @@ import { DELETE_CHAT_ROUTE } from './routes-def'
 
 import Message from '../models/message'
 import User from '../models/user'
-import markChatMessagesAndSendNotification from '../function/mark-chat-messages'
+import {markChatMessagesAndSendNotification} from '../function/mark-chat-messages'
 import { cloudinaryAPI } from '../app'
 
 const deleteChatRouter = express.Router()

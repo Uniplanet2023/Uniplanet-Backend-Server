@@ -29,7 +29,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 			productId: this.chat.productId.toString(),
 			productName: this.chat.productName,
 			lastMessage: this.chat.lastMessage ? JSON.stringify(new GetMessageInfo(this.chat.lastMessage).serializeRest()) : undefined,
-			unseenMessageCount: this.unseenMessageCount ?? 0,
+			unseenMessageCount: JSON.stringify(this.unseenMessageCount ?? 0),
 		}
 	}
 }

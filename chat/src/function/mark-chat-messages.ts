@@ -1,5 +1,4 @@
 import { redisClient } from '@uniplanet-lib/common'
-import { readMessageNotification } from '../notification/notification-api/read-message'
 
 async function markChatMessagesAndSendNotification({ userId, chatId }: { userId: string; chatId: string }) {
 	const unseenMessages = await getUnseenMessages({ userId, chatId });
