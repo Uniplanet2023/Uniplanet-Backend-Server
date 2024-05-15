@@ -28,15 +28,12 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
-				"payload":${JSON.stringify(chatData)}
 			}`,
+			payload: `"${JSON.stringify(chatData)}"`
 		},
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
-			data:{
-				"payload": `"${JSON.stringify(chatData)}"`
-			}
 		},
 		apns: {
 			headers: {
