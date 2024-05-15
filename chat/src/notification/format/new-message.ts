@@ -10,7 +10,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 	const currentChatUnseenMessage = await getUnseenMessages({ userId: message.receiver._id.toString(), chatId: message.chat.toString() });
 	
 	const chatData = new GetChatInfo( chat, currentChatUnseenMessage.length).serializeRest();
-	console.log(JSON.stringify(chatData));
+	console.log(JSON.stringify(chatData).toString());
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -28,12 +28,15 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
-				"payload":${JSON.stringify(chatData)}
+				"payload":${JSON.stringify(chatData).toString()}
 			}`,
 		},
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
+			data:{
+				"payload": JSON.stringify(chatData)
+			}
 		},
 		apns: {
 			headers: {

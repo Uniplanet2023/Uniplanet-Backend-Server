@@ -11,7 +11,6 @@ export class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 	async onMessage(data: UserUpdateEvent['data']): Promise<void> {
 		try {
 			console.log('consume UserUpdateEvent Kafka')
-			console.log(data)
 			if (data.name) {
 				await User.findByIdAndUpdate({ _id: data.id }, { name: data.name })
 			} else if (data.profileImage) {
