@@ -10,7 +10,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 	const currentChatUnseenMessage = await getUnseenMessages({ userId: message.receiver._id.toString(), chatId: message.chat.toString() });
 	
 	const chatData = new GetChatInfo( chat, currentChatUnseenMessage.length).serializeRest();
-	console.log('chatData', chatData);
+	console.log('chatData', JSON.stringify(chatData));
 
 	const notificationPayload = {
 		notification: {
