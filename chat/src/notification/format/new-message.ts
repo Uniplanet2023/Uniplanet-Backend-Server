@@ -10,6 +10,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 	const currentChatUnseenMessage = await getUnseenMessages({ userId: message.receiver._id.toString(), chatId: message.chat.toString() });
 	
 	const chatData = new GetChatInfo( chat, currentChatUnseenMessage.length).serializeRest();
+	console.log(JSON.stringify(chatData));
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -29,20 +30,10 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"privacy":"Private",
 				"payload":${JSON.stringify(chatData)}
 			}`,
-			payload:JSON.stringify(chatData)
 		},
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
-			notification:{
-				title: sender.name as string,
-				body: message.messageType == 'image' ? 'Image' : message.message,
-				sound: 'default',
-				priority: 'max' as 'min' | 'low' | 'default' | 'high' | 'max',
-				notificationCount: unseenMessageCount,
-				visibility: 'private' as 'private' | 'public' | 'secret',
-				channelId: 'chats',
-			}
 		},
 		apns: {
 			headers: {
