@@ -28,6 +28,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
+				"payload":${JSON.stringify(chatData)}
 			}`,
 			payload: JSON.stringify(chatData)
 		},
