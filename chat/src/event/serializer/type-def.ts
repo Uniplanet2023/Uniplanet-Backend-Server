@@ -13,7 +13,7 @@ export type GetChatRestPayload = {
 	productId: string
 	productName: string
 	lastMessage?: string
-	unseenMessageCount: number
+	unseenMessageCount: number | string
 }
 
 export type GetMessageRestPayload = {
