@@ -3,8 +3,6 @@ import Chat from '../models/chat'
 import { redisClient, tokenValidation } from '@uniplanet-lib/common'
 import { GET_CHAT_LIST } from './routes-def'
 import GetChatInfo from '../event/serializer/get-chat'
-import Message from '../models/message'
-import User from '../models/user'
 
 const getChatRouter = express.Router()
 getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
@@ -15,8 +13,8 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	const skip = (pageNumber - 1) * limit
 
 	const chatList = []
-	let totalUnseenMessage = await redisClient.redis.zCount(`user:${req.user!.id}:unseen`, '-inf', '+inf');
-	
+	const totalUnseenMessage = await redisClient.redis.zCount(`user:${req.user!.id}:unseen`, '-inf', '+inf')
+
 	const chats = await Chat.find({
 		$or: [{ seller: req.user!.id }, { buyer: req.user!.id }],
 		deletionDate: null,
@@ -33,13 +31,13 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 		const unseenMessages = await redisClient.redis.zRange(`user:${req.user!.id}:unseen`, 0, -1)
 
 		// Count unseen messages for the specific chat
-        const numberOfUnseenMessages = unseenMessages.reduce((count, msg) => {
-            const message = JSON.parse(msg);
-            if (message.chat == chat._id.toString()) {
-                count++;
-            }
-            return count;
-        }, 0);
+		const numberOfUnseenMessages = unseenMessages.reduce((count, msg) => {
+			const message = JSON.parse(msg)
+			if (message.chat == chat._id.toString()) {
+				count++
+			}
+			return count
+		}, 0)
 		chatList.push({ chat: new GetChatInfo(chat, numberOfUnseenMessages).serializeRest() })
 	}
 

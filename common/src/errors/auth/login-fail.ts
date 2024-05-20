@@ -4,7 +4,7 @@ import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class LoginFailedError extends BaseCustomError {
 	private statusCode = 401 // 401 Unauthorized
-	
+
 	private defaultErrorMessage = SignIn.LOGIN_FAILED
 
 	constructor() {

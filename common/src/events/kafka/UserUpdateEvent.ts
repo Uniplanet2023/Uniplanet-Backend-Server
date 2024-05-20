@@ -7,6 +7,6 @@ export interface UserUpdateEvent {
 		name?: string
 		profileImage?: string
 		deletionDate?: string
-		unSeenMessages? : number
+		unSeenMessages?: number
 	}
 }

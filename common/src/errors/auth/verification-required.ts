@@ -4,7 +4,7 @@ import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class VerificationRequiredError extends BaseCustomError {
 	private statusCode = 403 // 403 Forbidden is commonly used for lack of user verification
-	
+
 	private defaultErrorMessage = Signup.VERIFICATION_REQUIRED
 
 	constructor() {

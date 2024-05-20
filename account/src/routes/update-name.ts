@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { UPDATE_NAME_ROUTE } from './routes-def'
-import { kafkaClient, tokenValidation } from '@uniplanet-lib/common'
+import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import { userUpdateProducer } from '..'
@@ -17,7 +17,7 @@ updateNameRouter.put(UPDATE_NAME_ROUTE, tokenValidation, async (req: Request, re
 	await accountData.save()
 	//TODO: Update other db using kafka
 
-	const accountInfo = new GetAccountInfo(accountData)
+	const accountInfo = new GetAccountInfo(accountData, req.user!.type)
 
 	await userUpdateProducer.sendMessage({
 		id: req.user!.id,

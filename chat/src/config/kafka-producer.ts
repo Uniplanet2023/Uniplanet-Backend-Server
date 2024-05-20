@@ -1,5 +1,4 @@
-import { createChatProducer, userUpdateProvider } from "../app"
-
+import { createChatProducer, userUpdateProvider } from '../app'
 
 export async function initializeProducer(): Promise<void> {
 	await createChatProducer.connect()

@@ -36,6 +36,7 @@ const chatModel = new mongoose.Schema(
 )
 
 chatModel.statics.build = (attrs: ChatAttrs) => {
+	//eslint-disable-next-line @typescript-eslint/no-use-before-define
 	return new Chat(attrs)
 }
 

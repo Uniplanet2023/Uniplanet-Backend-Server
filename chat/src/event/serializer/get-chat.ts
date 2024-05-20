@@ -14,7 +14,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 	constructor(chat: ChatDocument, unseenMessageCount: number) {
 		super()
 		this.chat = chat
-		unseenMessageCount ? (this.unseenMessageCount = unseenMessageCount) : (this.unseenMessageCount = 0)
+		this.unseenMessageCount = unseenMessageCount
 	}
 
 	getStatusCode(): number {
@@ -28,7 +28,9 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 			buyer: JSON.stringify(new GetUserInfo(this.chat.buyer).serializeRest()),
 			productId: this.chat.productId.toString(),
 			productName: this.chat.productName,
-			lastMessage: this.chat.lastMessage ? JSON.stringify(new GetMessageInfo(this.chat.lastMessage).serializeRest()) : undefined,
+			lastMessage: this.chat.lastMessage
+				? JSON.stringify(new GetMessageInfo(this.chat.lastMessage).serializeRest())
+				: undefined,
 			unseenMessageCount: JSON.stringify(this.unseenMessageCount ?? 0),
 		}
 	}

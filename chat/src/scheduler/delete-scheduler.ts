@@ -1,4 +1,4 @@
-import { IScheduler, NodemailerSmtpServer, Scheduler, redisClient } from '@uniplanet-lib/common'
+import { IScheduler, Scheduler, redisClient } from '@uniplanet-lib/common'
 import User from '../models/user'
 import Chat from '../models/chat'
 import Message from '../models/message'

@@ -1,10 +1,12 @@
 import { BaseSerializeEvent } from '@uniplanet-lib/common'
-import { GetAccountRestPayload, UserRestPayload } from './type-def'
+import { GetAccountRestPayload } from './type-def'
 import { AccountDocument } from '../../models/account'
 
 export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPayload> {
 	private account: AccountDocument
+
 	private type: string
+
 	private statusCode = 201
 
 	constructor(account: AccountDocument, type: string) {

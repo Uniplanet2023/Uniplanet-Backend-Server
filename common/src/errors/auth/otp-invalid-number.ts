@@ -4,7 +4,7 @@ import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class OTPInvalidNumberError extends BaseCustomError {
 	private statusCode = 422 // 410 Gone might be appropriate for expired resources, or 400 Bad Request
-	
+
 	private defaultErrorMessage = Signup.OTP_INVALID_NUMBER
 
 	constructor() {

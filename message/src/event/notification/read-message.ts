@@ -1,4 +1,4 @@
-import getUnseenMessageCount from "../../functions/get-unseen-message";
+import getUnseenMessageCount from '../../functions/get-unseen-message'
 
 export const newMessageNotification = async (
 	receiverToken: string,
@@ -7,15 +7,14 @@ export const newMessageNotification = async (
 	senderJson: string,
 ) => {
 	const sender = JSON.parse(senderJson)
-	const unseenMessageCount = await getUnseenMessageCount(message.receiver) + 1;
+	const unseenMessageCount = (await getUnseenMessageCount(message.receiver)) + 1
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
-			body: message.messageType == 'image'?'Image' :message.message,
+			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			content:
-			`{
+			content: `{
 				"id":-1,
 				"badge":${unseenMessageCount},
 				"channelKey":"chats",
@@ -30,7 +29,7 @@ export const newMessageNotification = async (
 					"message":${messageJson},
 				}
 			}`,
-            actionButtons: `[
+			actionButtons: `[
 				{
 					"key":"REDIRECT",
 					"label":"Redirect",
@@ -43,7 +42,7 @@ export const newMessageNotification = async (
 					"isDangerousOption":true,
 					"autoDismissible":true
 				}
-			]`
+			]`,
 		},
 
 		android: {
@@ -62,10 +61,10 @@ export const newMessageNotification = async (
 			payload: {
 				aps: {
 					'mutable-content': 1,
-					"badge": unseenMessageCount,
-				},  
+					badge: unseenMessageCount,
+				},
 			},
-			},
+		},
 		token: receiverToken,
 	}
 	return notificationPayload

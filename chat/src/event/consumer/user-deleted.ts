@@ -1,4 +1,3 @@
-import { Kafka, EachMessagePayload } from 'kafkajs'
 import { Topics, BaseConsumer, UserDeletedEvent } from '@uniplanet-lib/common'
 import Chat from '../../models/chat'
 import User from '../../models/user'
@@ -8,9 +7,6 @@ import Message from '../../models/message'
 export class UserDeletedConsumer extends BaseConsumer<UserDeletedEvent> {
 	topic: Topics.UserDeleted = Topics.UserDeleted
 
-	constructor(kafka: Kafka, groupId: string) {
-		super(kafka, groupId)
-	}
 	// Implement the onMessage method
 	async onMessage(data: UserDeletedEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email

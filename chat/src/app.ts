@@ -26,7 +26,6 @@ export const cloudinaryAPI = cloudinary
 export const createChatProducer = new CreateChatProducer(kafkaClient.kafka)
 export const userUpdateProvider = new UserUpdateProducer(kafkaClient.kafka)
 
-
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 

@@ -4,7 +4,7 @@ import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class UserNotFoundError extends BaseCustomError {
 	private statusCode = 404 // 404 Not Found
-	
+
 	private defaultErrorMessage = SignIn.USER_NOT_FOUND
 
 	constructor() {

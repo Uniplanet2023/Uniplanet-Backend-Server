@@ -7,8 +7,7 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 		data: {
 			chat: chatJson,
 			type: 'creating chat',
-			content:
-			`{
+			content: `{
 				"id":-1,
 				"channelKey":"alerts",
 				"displayOnForeground":false,
@@ -19,7 +18,7 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 				"autoDismissible":true,
 				"privacy":"Private",
 			}`,
-            actionButtons: `[
+			actionButtons: `[
 				{
 					"key":"REDIRECT",
 					"label":"Redirect",
@@ -32,7 +31,7 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 					"isDangerousOption":true,
 					"autoDismissible":true
 				}
-			]`
+			]`,
 		},
 
 		android: {
@@ -51,9 +50,9 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 			payload: {
 				aps: {
 					'mutable-content': 1,
-				},  
+				},
 			},
-			},
+		},
 		token: receiverToken,
 	}
 	return notificationPayload

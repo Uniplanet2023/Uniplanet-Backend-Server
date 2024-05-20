@@ -5,12 +5,20 @@ import { ChatDocument } from '../../models/chat'
 import { MessageDocument } from '../../models/message'
 import { UserDocument } from '../../models/user'
 
-export const newMessageNotification = async (receiverToken: string, message: MessageDocument, sender: UserDocument, chat: ChatDocument) => {
-	const unseenMessageCount = (await getUnseenMessageCount(message.receiver._id.toString()))
-	const currentChatUnseenMessage = await getUnseenMessages({ userId: message.receiver._id.toString(), chatId: message.chat.toString() });
-	
-	const chatData = new GetChatInfo( chat, currentChatUnseenMessage.length).serializeRest();
-	
+export const newMessageNotification = async (
+	receiverToken: string,
+	message: MessageDocument,
+	sender: UserDocument,
+	chat: ChatDocument,
+) => {
+	const unseenMessageCount = await getUnseenMessageCount(message.receiver._id.toString())
+	const currentChatUnseenMessage = await getUnseenMessages({
+		userId: message.receiver._id.toString(),
+		chatId: message.chat.toString(),
+	})
+
+	const chatData = new GetChatInfo(chat, currentChatUnseenMessage.length).serializeRest()
+
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -30,7 +38,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 				"privacy":"Private",
 				"payload": ${JSON.stringify(chatData)}
 			}`,
-			payload: JSON.stringify(chatData)
+			payload: JSON.stringify(chatData),
 		},
 
 		android: {
@@ -43,7 +51,7 @@ export const newMessageNotification = async (receiverToken: string, message: Mes
 			payload: {
 				aps: {
 					'mutable-content': 1,
-					"badge": unseenMessageCount,
+					badge: unseenMessageCount,
 				},
 			},
 		},

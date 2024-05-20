@@ -8,11 +8,10 @@ interface Event {
 }
 
 export abstract class BaseConsumer<T extends Event> {
-
 	abstract topic: T['topic']
 
 	abstract onMessage(data: T['data']): void
-	
+
 	private client: Kafka
 
 	private consumer

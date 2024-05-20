@@ -1,24 +1,11 @@
-import { Kafka, EachMessagePayload } from 'kafkajs'
-import {
-	Topics,
-	BaseConsumer,
-	UserCreatedEvent,
-	redisClient,
-	IncNumberOfProductEvent,
-	IncNumberOfClickEvent,
-} from '@uniplanet-lib/common'
+import { Topics, BaseConsumer, IncNumberOfClickEvent } from '@uniplanet-lib/common'
 import Account from '../../models/account'
-import { profile } from 'console'
-import GetAccountInfo from '../serializer/get-account'
 import { postDeletionReqProducer, userPostBlockProducer } from '../..'
 
 // Extend the BaseConsumer for the user:created event
 export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClickEvent> {
 	topic: Topics.IncreaseClick = Topics.IncreaseClick
 
-	constructor(kafka: Kafka, groupId: string) {
-		super(kafka, groupId)
-	}
 	// Implement the onMessage method
 	async onMessage(data: IncNumberOfClickEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email

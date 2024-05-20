@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { redisClient, tokenValidation } from '@uniplanet-lib/common'
+import { tokenValidation } from '@uniplanet-lib/common'
 import { SIGNOUT_OUT_SIGNIN_ROUTE } from './routes-def'
 
 const signOutRouter = express.Router()

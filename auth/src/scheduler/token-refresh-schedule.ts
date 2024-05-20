@@ -1,5 +1,4 @@
 import { IScheduler, NodemailerSmtpServer, Scheduler } from '@uniplanet-lib/common'
-import { User } from '../models'
 
 class TokenRefreshScheduler extends Scheduler {
 	constructor() {

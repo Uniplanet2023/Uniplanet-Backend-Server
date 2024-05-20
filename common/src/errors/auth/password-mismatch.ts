@@ -4,7 +4,7 @@ import { SerializedErrorOutput } from '../type/serialized-error-output'
 
 export class PasswordMismatchError extends BaseCustomError {
 	private statusCode = 401
-	
+
 	private defaultErrorMessage = SignIn.PASSWORD_DOES_NOT_MATCH
 
 	constructor() {

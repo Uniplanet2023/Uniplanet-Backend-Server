@@ -37,6 +37,7 @@ const messageModel = new mongoose.Schema(
 )
 
 messageModel.statics.build = (attrs: MessageAttrs) => {
+	//eslint-disable-next-line @typescript-eslint/no-use-before-define
 	return new Message(attrs)
 }
 
