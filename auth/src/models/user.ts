@@ -4,6 +4,8 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { Document } from 'mongoose'
 
 export type UserDocument = Document & {
+	name: string
+	profileImage: string
 	email: string
 	school: string
 	verified: boolean
@@ -13,11 +15,14 @@ export type UserDocument = Document & {
 }
 
 type UserAttrs = {
+	name: string
+	profileImage: string
 	email: string
 	school: string
 	password: string
 	verified?: boolean
 	type?: string
+	deletionDate?: Date
 }
 
 interface UserModel extends Model<UserDocument> {
@@ -26,6 +31,16 @@ interface UserModel extends Model<UserDocument> {
 
 const userSchema: Schema = new Schema(
 	{
+		//temp name
+		name: {
+			type: String,
+			trim: true,
+		},
+		//temp profileImage
+		profileImage: {
+			type: String,
+			default: null,
+		},
 		email: {
 			required: true,
 			type: String,

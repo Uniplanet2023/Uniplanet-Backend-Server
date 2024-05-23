@@ -10,7 +10,7 @@ import {
 	validateRequest,
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
-import { userCreatedProducer } from '..'
+
 
 const signUpRouter = express.Router()
 
@@ -44,15 +44,8 @@ signUpRouter.post(
 
 		// Determine the user type based on the email suffix
 
-		const newUser = User.build({ email, password, school, type: userType })
+		const newUser = User.build({ name, profileImage,email, password, school, type: userType, deletionDate: new Date()})
 		await newUser.save()
-		userCreatedProducer.sendMessage({
-			id: newUser.id,
-			name: name,
-			email: email,
-			school: school,
-			profileImage: profileImage,
-		})
 		if (userType === 'visitor') {
 			return res
 				.status(404)
