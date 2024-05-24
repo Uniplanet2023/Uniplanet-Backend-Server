@@ -19,14 +19,14 @@ signUpRouter.post(
 	[...emailValidation, nameValidation, schoolValidation, ...passwordValidation],
 	validateRequest,
 	async (req: Request, res: Response) => {
-		const { name, email, password, school, profileImage } = req.body
+		const { name, email, password, school } = req.body
 		const existingUser = await User.findOne({ email })
 		const userType = email.endsWith('.edu') ? 'user' : 'visitor'
 		if (existingUser) {
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
 			}
-			if (userType === 'visitor') {
+			if (existingUser.type === 'visitor') {
 				return res
 					.status(404)
 					.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })

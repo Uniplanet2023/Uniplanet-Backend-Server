@@ -21,7 +21,7 @@ requestOTPRouter.post(SEND_OTP_ROUTE, [...emailValidation], validateRequest, asy
 	const user = await User.findOne({ email })
 	if (!user) throw new UserNotFoundError()
 	if (user.verified) throw new DuplicatedEmail()
-	if (!user.email.endsWith('.edu')) {
+	if (user.type == 'visitor') {
 		return res
 			.status(404)
 			.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })
