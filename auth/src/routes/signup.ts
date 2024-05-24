@@ -44,7 +44,7 @@ signUpRouter.post(
 
 		// Determine the user type based on the email suffix
 
-		const newUser = User.build({ name, profileImage,email, password, school, type: userType, deletionDate: new Date()})
+		const newUser = User.build({ name, email, password, school, type: userType, deletionDate: new Date()})
 		await newUser.save()
 		if (userType === 'visitor') {
 			return res

@@ -16,7 +16,6 @@ export type UserDocument = Document & {
 
 type UserAttrs = {
 	name: string
-	profileImage: string
 	email: string
 	school: string
 	password: string
