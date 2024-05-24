@@ -39,7 +39,8 @@ const userSchema: Schema = new Schema(
 		//temp profileImage
 		profileImage: {
 			type: String,
-			default: null,
+			default:
+			'https://res.cloudinary.com/dtgmmfv3d/image/upload/f_auto,q_auto,c_fill,w_300,h_300/v1698359487/defaultImage/uj24px95hnrhydxobjl1.jpg',
 		},
 		email: {
 			required: true,
