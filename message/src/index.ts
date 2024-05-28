@@ -112,7 +112,7 @@ io.on('connection', async socket => {
 			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`)
 			if (receiverToken) {
 				try {
-					const notification = creatingChatNotification(receiverToken, chatJson, chat)
+					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer)
 					const response = await admin.messaging().send(notification)
 					console.log('Successfully sent message:', response)
 				} catch (error) {
