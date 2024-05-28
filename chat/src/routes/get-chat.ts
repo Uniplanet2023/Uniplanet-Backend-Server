@@ -18,6 +18,7 @@ getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	const chats = await Chat.find({
 		$or: [{ seller: req.user!.id }, { buyer: req.user!.id }],
 		deletionDate: null,
+		deletedFrom: !req.user!.id,
 	})
 		.populate('buyer seller lastMessage')
 		.sort({ updatedAt: -1 })
