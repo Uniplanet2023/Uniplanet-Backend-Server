@@ -14,13 +14,6 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
 	if (!accountData) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
-	try {
-		const prefix = 'profile-image/' + accountData.school + '/'+ accountData.id + '/';
-		await deleteFilesByPrefix(prefix);
-		console.log(`Deleted files for product ${accountData.id}`);
-	  } catch (error) {
-		console.error(`Error deleting files for product ${accountData.id}:`, error);
-	  }
 
 	accountData.profileImage = profileImage
 	await accountData.save()
