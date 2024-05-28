@@ -12,6 +12,7 @@ import { PostDeletionReqProducer } from './event/producer/PostDeletionReqProduce
 import ClickIncreaseConsumer from './event/consumer/product-click-increase'
 import ProductIncreaseConsumer from './event/consumer/product-increase'
 import { initializeFirebase } from '../config/firebase'
+import AccountDeleteScheduler from './scheduler/account-delete-schedule'
 
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
@@ -47,6 +48,7 @@ app.listen(PORT, async () => {
 
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(async () => {
 		console.log('MongoDB is connected')
+		new AccountDeleteScheduler().taskInitializer()
 		await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
