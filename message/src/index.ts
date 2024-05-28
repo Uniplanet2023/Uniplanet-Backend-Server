@@ -89,6 +89,7 @@ io.on('connection', async socket => {
 		try {
 			const chat = JSON.parse(chatJson)
 			// Join chat rooms only if the socket is not already in them
+			
 			if (!socket.rooms.has(chat.id)) {
 				socket.chatRoomId.push(chat.id)
 				socket.join(chat.id)

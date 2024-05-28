@@ -71,6 +71,11 @@ spec:
                 secretKeyRef:
                   name: fcm-auth
                   key: FIREBASE_PRIVATE_KEY
+            - name: FIREBASE_STORAGE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: fcm-auth
+                  key: FIREBASE_STORAGE_BUCKET
 
 ---
 apiVersion: v1
