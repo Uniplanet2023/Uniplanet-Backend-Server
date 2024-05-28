@@ -38,7 +38,7 @@ class DeleteScheduler extends Scheduler {
   private async deleteChats(now: Date): Promise<any[]> {
     try {
       const chats = await Chat.find({ deletionDate: { $lte: now } });
-      await Chat.deleteMany({ chat: { $in: chats.map(chat => chat._id) } });
+      await Chat.deleteMany({ _id: { $in: chats.map(chat => chat._id) } });
       console.log('Deleted chats with deletionDate <=', now);
 
       for (const chat of chats) {
@@ -72,7 +72,7 @@ class DeleteScheduler extends Scheduler {
 
   private async deleteMessages(chats: any[]): Promise<void> {
     try {
-      await Message.deleteMany({ chatId: { $in: chats.map(chat => chat._id) } });
+      await Message.deleteMany({ chat: { $in: chats.map(chat => chat._id) } });
       console.log('Deleted messages for deleted chats');
     } catch (error) {
       console.error('Error deleting messages:', error);
