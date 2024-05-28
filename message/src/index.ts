@@ -127,7 +127,7 @@ io.on('connection', async socket => {
 		console.log('Deleting chat room:', chatRoom)
 		try {
 			await socket.leave(chatRoom)
-			io.to(chatRoom).emit('chat room deleted', { chatRoom })
+			io.to(chatRoom).emit('chat room deleted', { chatRoom, clientId })
 
 			// Assuming socket.chatRoomId is an array storing the user's chat rooms
 			const index = socket.chatRoomId.indexOf(chatRoom)

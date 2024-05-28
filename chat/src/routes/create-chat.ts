@@ -39,7 +39,8 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		let msg = 'existing chat'
 		if (existingChat.deletionDate !== null) {
 			msg = 'chat restored'
-			await existingChat.updateOne({ deletionDate: null })
+			await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false,})
+			await Message.updateMany({ chat: existingChat.id }, { deletionDate: null });;
 		}
 		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
 		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
