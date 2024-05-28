@@ -93,15 +93,11 @@ io.on('connection', async socket => {
 				socket.chatRoomId.push(chat.id)
 				socket.join(chat.id)
 				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id)
-				var chatJsonData = chat;
-				chatJsonData.buyer = JSON.stringify(chatJsonData.buyer);
-				chatJsonData.seller = JSON.stringify(chatJsonData.seller);
-				chatJsonData = JSON.stringify(chatJsonData);
-				io.to(chat.seller.id).emit('chat room created', chatJsonData, existingChat)
+				io.to(chat.seller.id).emit('chat room created', chatJson, existingChat)
 			} else {
 				console.log(`Socket already in chat room: ${chat.id}`)
 			}
-			
+
 			if (!socket.rooms.has(chat.seller.id)) {
 				socket.join(chat.seller.id)
 			} else {
@@ -116,7 +112,7 @@ io.on('connection', async socket => {
 			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`)
 			if (receiverToken) {
 				try {
-					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer)
+					const notification = creatingChatNotification(receiverToken, chatJson, chat)
 					const response = await admin.messaging().send(notification)
 					console.log('Successfully sent message:', response)
 				} catch (error) {
