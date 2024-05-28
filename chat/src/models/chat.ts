@@ -8,8 +8,8 @@ export type ChatDocument = mongoose.Document & {
 	buyer: UserDocument
 	seller: UserDocument
 	lastMessage: MessageDocument
-	deletionDate: Date
-	deletedFrom: string
+	deletionDate?: Date
+	deletedFrom?: string
 	perminentDelete: boolean
 }
 
