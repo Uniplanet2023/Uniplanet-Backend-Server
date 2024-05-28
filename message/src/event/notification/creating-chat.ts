@@ -1,8 +1,8 @@
-export const creatingChatNotification = (receiverToken: string, chatJson: string, chat: any) => {
+export const creatingChatNotification = (receiverToken: string, chatJson: string, buyer: any) => {
 	const notificationPayload = {
 		notification: {
 			title: 'New Chat',
-			body: chat.buyer.name + ' has started a chat with you',
+			body: buyer.name + ' has started a chat with you',
 		},
 		data: {
 			chat: chatJson,
@@ -12,8 +12,8 @@ export const creatingChatNotification = (receiverToken: string, chatJson: string
 				"channelKey":"alerts",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
-				"largeIcon":"${chat.buyer.profileImage}",
-				"bigPicture":"${chat.buyer.profileImage}",
+				"largeIcon":"${buyer.profileImage}",
+				"bigPicture":"${buyer.profileImage}",
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
