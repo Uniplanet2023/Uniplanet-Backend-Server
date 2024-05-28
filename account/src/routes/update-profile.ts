@@ -3,7 +3,8 @@ import { UPDATE_PROFILE_ROUTE } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
-import { cloudinaryAPI, userUpdateProducer } from '..'
+import { userUpdateProducer } from '..'
+import { deleteFilesByPrefix } from '../../config/firease-delete-files'
 
 const updateProfileRouter = express.Router()
 
@@ -13,11 +14,13 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
 	if (!accountData) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
-
-	if (accountData.profileImage) {
-		await cloudinaryAPI.api.delete_resources_by_prefix('profile-image/' + accountData.id + '/')
-		await cloudinaryAPI.api.delete_folder('product-images/' + accountData.id)
-	}
+	try {
+		const prefix = 'profile-image/' + accountData.school + '/'+ accountData.id + '/';
+		await deleteFilesByPrefix(prefix);
+		console.log(`Deleted files for product ${accountData.id}`);
+	  } catch (error) {
+		console.error(`Error deleting files for product ${accountData.id}:`, error);
+	  }
 
 	accountData.profileImage = profileImage
 	await accountData.save()

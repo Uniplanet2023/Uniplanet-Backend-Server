@@ -2,7 +2,7 @@ import { IScheduler, Scheduler, redisClient } from '@uniplanet-lib/common'
 import User from '../models/user'
 import Chat from '../models/chat'
 import Message from '../models/message'
-import { cloudinaryAPI } from '../app'
+import { deleteFilesByPrefix } from '../config/firebase-delete-files'
 
 class DeleteScheduler extends Scheduler {
 	constructor() {
@@ -22,8 +22,13 @@ class DeleteScheduler extends Scheduler {
 
 				for (const chat of chats) {
 					try {
-						await cloudinaryAPI.api.delete_resources_by_prefix('chat-images/' + chat.id + '/')
-						await cloudinaryAPI.api.delete_folder('chat-images/' + chat.id)
+						const prefix = 'chat-images/' + chat.id + '/';
+						await deleteFilesByPrefix(prefix);
+						console.log(`Deleted files for product ${chat.id}`);
+					  } catch (error) {
+						console.error(`Error deleting files for product ${chat.id}:`, error);
+					  }
+					try {
 						await redisClient.redis.del(`user:${chat.seller}:unseen`)
 						await redisClient.redis.del(`user:${chat.buyer}:unseen`)
 					} catch (err) {

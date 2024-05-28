@@ -4,7 +4,6 @@ import cors from 'cors'
 import 'express-async-errors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
-import { v2 as cloudinary } from 'cloudinary'
 // IMPORTS FROM OTHER FILES
 import chatRouter from './routes'
 import { UserUpdateProducer } from './event/producer/user-update'
@@ -15,14 +14,9 @@ if (process.env.NODE_ENV! == 'development') {
 		path: '.env.dev',
 	})
 }
-cloudinary.config({
-	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-	api_key: process.env.CLOUDINARY_API_KEY,
-	api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 
-export const cloudinaryAPI = cloudinary
 export const createChatProducer = new CreateChatProducer(kafkaClient.kafka)
 export const userUpdateProvider = new UserUpdateProducer(kafkaClient.kafka)
 
