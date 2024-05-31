@@ -5,9 +5,11 @@ import updateProfileRouter from './update-profile'
 import searchHistoryRouter from './get-search-history'
 import deleteSearchHistoryRouter from './delete-search-history'
 import deleteAllSearchHistoryRouter from './delete-all-search-history'
+import reportUser from './report-user'
 
 const accountRouter = express.Router()
 
+accountRouter.use(reportUser)
 accountRouter.use(deleteAllSearchHistoryRouter)
 accountRouter.use(deleteSearchHistoryRouter)
 accountRouter.use(searchHistoryRouter)

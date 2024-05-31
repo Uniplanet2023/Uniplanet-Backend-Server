@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express'
-import { UPDATE_NAME_ROUTE } from './routes-def'
+import { REPORT_USER } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import { userUpdateProducer } from '..'
 
-const updateNameRouter = express.Router()
+const reportUser = express.Router()
 
-updateNameRouter.put(UPDATE_NAME_ROUTE, tokenValidation, async (req: Request, res: Response) => {
+reportUser.put(REPORT_USER, tokenValidation, async (req: Request, res: Response) => {
 	const { name } = req.body
 	const accountData = await Account.findById(req.user!.id)
 	if (!accountData) {
@@ -27,4 +27,4 @@ updateNameRouter.put(UPDATE_NAME_ROUTE, tokenValidation, async (req: Request, re
 	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
 })
 
-export default updateNameRouter
+export default reportUser

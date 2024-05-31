@@ -16,6 +16,8 @@ export type AccountDocument = Document & {
 	maximumClick: number
 	numberOfClick: number
 	unSeenNotification: number
+	numberOfReports: number
+	status: string
 }
 
 type AccountAttrs = {
@@ -70,6 +72,14 @@ const accountSchema: Schema = new Schema(
 		unSeenNotification: {
 			type: Number,
 			default: 0,
+		},
+		numberOfReports:{
+			type: Number,
+			default: 0
+		},
+		status:{
+			type: String,
+			default: 'active'
 		},
 		deletionDate: { type: Date, default: null },
 		isBlocked: { type: Boolean, default: false },
