@@ -2,66 +2,61 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-srv
+  namespace: default
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    cert-manager.io/issuer: letsencrypt-nginx
+    nginx.ingress.kubernetes.io/upstream-fail-timeout: "1200"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      set $http_origin "${scheme}://${host}";
+      more_set_headers "server: hide";
+      more_set_headers "X-Content-Type-Options: nosniff";
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - www.uniplanet-back.autos
-        - auth.uniplanet-back.autos
-        - products.uniplanet-back.autos
-        - account.uniplanet-back.autos
-        - chat.uniplanet-back.autos
-        - message.uniplanet-back.autos
-      secretName: letsencrypt-nginx
   rules:
-    - host: auth.uniplanet-back.autos
+    - host: auth.uniplanet.xyz
       http:
         paths:
-          - path: /api/auth/?(.*)
+          - path: /api/auth/*
             pathType: ImplementationSpecific
             backend:
               service:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: products.uniplanet-back.autos
+    - host: products.uniplanet.xyz
       http:
         paths:
-          - path: /api/products/?(.*)
+          - path: /api/products/*
             pathType: ImplementationSpecific
             backend:
               service:
                 name: products-srv
                 port:
                   number: 3001
-    - host: account.uniplanet-back.autos
+    - host: account.uniplanet.xyz
       http:
         paths:
-          - path: /api/account/?(.*)
+          - path: /api/account/*
             pathType: ImplementationSpecific
             backend:
               service:
                 name: account-srv
                 port:
                   number: 3002
-    - host: chat.uniplanet-back.autos
+    - host: chat.uniplanet.xyz
       http:
         paths:
-          - path: /api/chat/?(.*)
+          - path: /api/chat/*
             pathType: ImplementationSpecific
             backend:
               service:
                 name: chat-srv
                 port:
                   number: 3003
-    - host: message.uniplanet-back.autos
+    - host: message.uniplanet.xyz
       http:
         paths:
-          - path: /?(.*)
+          - path: /*
             pathType: ImplementationSpecific
             backend:
               service:
@@ -74,23 +69,21 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
-    service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
-    service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "aeb7c4e5-cc42-4c12-ac3f-657c088a5f9e"
-    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.uniplanet-back.autos'
+    cloud.google.com/neg: '{"exposed_ports": {"80":{"name": "ingress-nginx-80-neg"}}}'
   labels:
-    helm.sh/chart: ingress-nginx-2.0.3
+    helm.sh/chart: ingress-nginx-4.0.15
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 0.32.0
+    app.kubernetes.io/version: 1.1.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  ipFamilies:
+    - IPv4
   ports:
     - name: http
       port: 80
@@ -104,3 +97,17 @@ spec:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/component: controller
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: ManagedCertificate
+# metadata:
+#   name: managed-cert-for-ingress
+# spec:
+#   domains:
+#     - www.uniplanet.xyz
+#     - auth.uniplanet.xyz
+#     - products.uniplanet.xyz
+#     - account.uniplanet.xyz
+#     - chat.uniplanet.xyz
+#     - message.uniplanet.xyz
+      

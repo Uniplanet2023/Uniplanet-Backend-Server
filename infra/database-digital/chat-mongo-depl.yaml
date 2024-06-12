@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-mongo-depl
+spec:
+  replicas:  1
+  selector:
+    matchLabels:
+      app: chat-mongo
+  template:
+    metadata:
+      labels:
+        app: chat-mongo
+    spec:
+      containers:
+        - name: chat-mongo
+          image: mongo
+          resources:
+            limits:
+              memory: 200Mi
+              cpu: "200m"
+            requests:
+              memory: 100Mi
+              cpu: "150m"
+          ports:
+          - containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-storage
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: chat-mongo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-mongo-srv 
+spec:
+  selector:
+    app: chat-mongo
+  ports:
+    - name: chat-db
+      protocol: TCP 
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: chat-mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: chat-mongo-storage
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: chat-mongo-storage
+provisioner: dobs.csi.digitalocean.com
+parameters:
+  type: ext4
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
