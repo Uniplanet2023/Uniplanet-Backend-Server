@@ -38,7 +38,7 @@ export const newMessageNotification = async (
 				"privacy":"Private",
 				"payload": ${JSON.stringify(chatData)}
 			}`,
-			payload: JSON.stringify(chatData),
+			// payload: JSON.stringify(chatData),
 		},
 
 		android: {
