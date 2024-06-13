@@ -20,6 +20,8 @@ export async function sendingMessageNotification({
 	try {
 		if (receiverToken) {
 			console.log(receiverToken);
+			console.log(message);
+			console.log(chat);
 			const messageNotification = await newMessageNotification(receiverToken, message, sender, chat)
 
 			admin
