@@ -38,20 +38,19 @@ export const newMessageNotification = async (
 				"privacy":"Private",
 				"payload": ${JSON.stringify(chatData)}
 			}`,
-			// payload: JSON.stringify(chatData),
 		},
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
 		},
 		apns: {
-			headers: {
-				'apns-priority': '5',
-			},
 			payload: {
 				aps: {
 					'mutable-content': 1,
 					badge: unseenMessageCount,
+				},
+				headers: {
+					'apns-priority': 5,
 				},
 			},
 		},
