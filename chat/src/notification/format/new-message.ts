@@ -49,11 +49,12 @@ export const newMessageNotification = async (
 				aps: {
 					'mutable-content': 1,
 					badge: unseenMessageCount,
-					channelKey: 'chats',
+					"channelKey": 'chats',
 				},
-				headers: {
-					'apns-priority': 5,
-				},
+				"channelKey": 'chats',
+			},
+			headers: {
+				'apns-priority': '5',
 			},
 		},
 		token: receiverToken,
