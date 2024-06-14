@@ -1,3 +1,4 @@
+import { channel } from 'diagnostics_channel'
 import GetChatInfo from '../../event/serializer/get-chat'
 import getUnseenMessageCount from '../../function/get-unseen-message'
 import { getUnseenMessages } from '../../function/mark-chat-messages'
@@ -48,6 +49,7 @@ export const newMessageNotification = async (
 				aps: {
 					'mutable-content': 1,
 					badge: unseenMessageCount,
+					channelKey: 'chats',
 				},
 				headers: {
 					'apns-priority': 5,
