@@ -36,8 +36,9 @@ export const newMessageNotification = async (
 			"content.showWhen": "true",
 			"content.autoDismissible": "true",
 			"content.privacy": "Private",
-			"content.payload": JSON.stringify(chatData),
+			// "content.payload": JSON.stringify(chatData),
 			"Android.content.payload.android": JSON.stringify(chatData),
+			"iOS.content.payload.ios": JSON.stringify(chatData),
 		},
 
 		android: {
