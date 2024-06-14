@@ -26,19 +26,29 @@ export const newMessageNotification = async (
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			content: `{
-				"id":-1,
-				"badge":${unseenMessageCount},
-				"channelKey":"chats",
-				"displayOnForeground":false,
-				"notificationLayout":"MessagingGroup",
-				"largeIcon":"${sender.profileImage}",
-				"bigPicture":"${sender.profileImage}",
-				"showWhen":true,
-				"autoDismissible":true,
-				"privacy":"Private",
-				"payload": ${JSON.stringify(chatData)}
-			}`,
+			"content.id": "1",
+			"content.badge": "42",
+			"content.channelKey": "chats",
+			"content.displayOnForeground": "true",
+			"content.notificationLayout": "BigPicture",
+			"content.largeIcon": "https://br.web.img3.acsta.net/pictures/19/06/18/17/09/0834720.jpg",
+			"content.bigPicture": "https://www.dw.com/image/49519617_303.jpg",
+			"content.showWhen": "true",
+			"content.autoDismissible": "true",
+			"content.privacy": "Private",
+			// content: `{
+			// 	"id":-1,
+			// 	"badge":${unseenMessageCount},
+			// 	"channelKey":"chats",
+			// 	"displayOnForeground":false,
+			// 	"notificationLayout":"MessagingGroup",
+			// 	"largeIcon":"${sender.profileImage}",
+			// 	"bigPicture":"${sender.profileImage}",
+			// 	"showWhen":true,
+			// 	"autoDismissible":true,
+			// 	"privacy":"Private",
+			// 	"payload": ${JSON.stringify(chatData)}
+			// }`,
 		},
 
 		android: {
@@ -48,13 +58,12 @@ export const newMessageNotification = async (
 			payload: {
 				aps: {
 					'mutable-content': 1,
-					badge: unseenMessageCount,
-					"channelKey": 'chats',
+					"badge": unseenMessageCount,
 				},
 				"channelKey": 'chats',
 			},
 			headers: {
-				'apns-priority': '5',
+				'apns-priority': "5"
 			},
 		},
 		token: receiverToken,
