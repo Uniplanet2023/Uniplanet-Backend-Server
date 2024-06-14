@@ -37,10 +37,10 @@ export const newMessageNotification = async (
 			"content.autoDismissible": "true",
 			"content.privacy": "Private",
 			"content.payload": `${JSON.stringify(chatData)}`,
-			
+			"iOS.content.title": message.messageType == 'image' ? 'Image' : message.message as string,
+			"iOS.content.payload.ios": `${JSON.stringify(chatData)}`,
+			"Android.content.title": sender.name as string,
 			"Android.content.payload.android": `${JSON.stringify(chatData)}`,
-			
-			
 		},
 
 		android: {
