@@ -36,11 +36,8 @@ export const newMessageNotification = async (
 			"content.showWhen": "true",
 			"content.autoDismissible": "true",
 			"content.privacy": "Private",
-			// "content.payload": `${JSON.stringify(chatData)}`,
-			// "iOS.content.title": message.messageType == 'image' ? 'Image' : message.message as string,
-			"iOS.content.payload.ios": `${JSON.stringify(chatData)}`,
-			// "Android.content.title": sender.name as string,
-			"Android.content.payload.android": `${JSON.stringify(chatData)}`,
+			"content.payload": `${JSON.stringify(chatData)}`, // Working on IOS, but not working on Android
+			// "Android.content.payload.android": `${JSON.stringify(chatData)}`, // Working on Android, but not working on IOS
 		},
 
 		android: {
