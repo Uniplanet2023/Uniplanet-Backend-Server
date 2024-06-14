@@ -40,14 +40,11 @@ export const newMessageNotification = async (
 			// "iOS.content.title": message.messageType == 'image' ? 'Image' : message.message as string,
 			// "iOS.content.payload.ios": `${JSON.stringify(chatData)}`,
 			// "Android.content.title": sender.name as string,
-			// "Android.content.payload.android": `${JSON.stringify(chatData)}`,
+			"Android.content.payload.android": `${JSON.stringify(chatData)}`,
 		},
 
 		android: {
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
-			data:{
-				"android": JSON.stringify(chatData)
-			}
 		},
 		apns: {
 			payload: {
