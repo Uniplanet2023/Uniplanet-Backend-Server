@@ -49,8 +49,7 @@ export const newMessageNotification = async (
 			// 	unseenMessageCount: JSON.parse(chatData.unseenMessageCount),
 			// 	deletedFrom: chatData.deletedFrom
 			//   }),
-			"Android.content.payload.android": "test",
-			"content.payload": "test",
+			// "Android.content.payload.android": "test",
 		},
 
 		android: {
