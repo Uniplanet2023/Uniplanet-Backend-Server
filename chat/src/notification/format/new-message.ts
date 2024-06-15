@@ -39,6 +39,8 @@ export const newMessageNotification = async (
 				privacy:'Private',
 				payload: "test",
 			}),
+			"iOS.content.payload.ios": "iOS custom content!",
+			"Android.content.payload.android": "android custom content!",
 		},
 
 		android: {
