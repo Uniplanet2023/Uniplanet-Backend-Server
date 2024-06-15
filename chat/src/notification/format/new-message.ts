@@ -39,8 +39,26 @@ export const newMessageNotification = async (
 				privacy:'Private',
 				// payload: JSON.stringify(chatData)
 			}),
-			"iOS.content.payload.ios": JSON.stringify(chatData),
-			"Android.content.payload.android": JSON.stringify(chatData),
+			"iOS.content.payload.ios": JSON.stringify({
+				id: chatData.id,
+				seller: JSON.parse(chatData.seller),
+				buyer: JSON.parse(chatData.buyer),
+				productId: chatData.productId,
+				productName: chatData.productName,
+				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
+				unseenMessageCount: JSON.parse(chatData.unseenMessageCount),
+				deletedFrom: chatData.deletedFrom
+			  }),
+			"Android.content.payload.android": JSON.stringify({
+				id: chatData.id,
+				seller: JSON.parse(chatData.seller),
+				buyer: JSON.parse(chatData.buyer),
+				productId: chatData.productId,
+				productName: chatData.productName,
+				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
+				unseenMessageCount: JSON.parse(chatData.unseenMessageCount),
+				deletedFrom: chatData.deletedFrom
+			  }),
 		},
 
 		android: {
