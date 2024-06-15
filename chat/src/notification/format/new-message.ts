@@ -26,9 +26,9 @@ export const newMessageNotification = async (
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			"content": `{
+			"content": JSON.stringify({
 				"id":-1,
-				"badge":${unseenMessageCount},
+				"badge":unseenMessageCount,
 				"channelKey":"chats",
 				"displayOnForeground":false,
 				"notificationLayout":"MessagingGroup",
@@ -37,8 +37,8 @@ export const newMessageNotification = async (
 				"showWhen":true,
 				"autoDismissible":true,
 				"privacy":"Private",
-				"payload": ${JSON.stringify(chatData)}
-			}`,
+				"payload": JSON.stringify(chatData)
+			}),
 			// "content.id": "-1",
 			// "content.badge": `${unseenMessageCount}`,
 			// "content.channelKey": "chats",

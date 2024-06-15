@@ -20,7 +20,7 @@ export async function sendingMessageNotification({
 	try {
 		if (receiverToken) {			
 			const messageNotification = await newMessageNotification(receiverToken, message, sender, chat)
-
+			console.log(messageNotification);
 			admin
 				.messaging()
 				.send(messageNotification)
