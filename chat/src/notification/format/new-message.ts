@@ -26,7 +26,7 @@ export const newMessageNotification = async (
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			content: JSON.stringify({
+			"content": JSON.stringify({
 				id:-1,
 				badge:unseenMessageCount,
 				channelKey:'chats',
