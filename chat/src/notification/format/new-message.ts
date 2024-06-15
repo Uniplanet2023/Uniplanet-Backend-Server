@@ -26,18 +26,31 @@ export const newMessageNotification = async (
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			"content.id": "-1",
-			"content.badge": `${unseenMessageCount}`,
-			"content.channelKey": "chats",
-			"content.displayOnForeground": "false",
-			"content.notificationLayout": "MessagingGroup",
-			"content.largeIcon": `${sender.profileImage}`,
-			"content.bigPicture": `${sender.profileImage}`,
-			"content.showWhen": "true",
-			"content.autoDismissible": "true",
-			"content.privacy": "Private",
-			"content.payload": `${JSON.stringify(chatData)}`, // Working on IOS, but not working on Android
-			// "Android.content.payload.android": `${JSON.stringify(chatData)}`, // Working on Android, but not working on IOS
+			content: `{
+				"id":-1,
+				"badge":${unseenMessageCount},
+				"channelKey":"chats",
+				"displayOnForeground":false,
+				"notificationLayout":"MessagingGroup",
+				"largeIcon":"${sender.profileImage}",
+				"bigPicture":"${sender.profileImage}",
+				"showWhen":true,
+				"autoDismissible":true,
+				"privacy":"Private",
+				"payload": ${JSON.stringify(chatData)}
+			}`,
+			// "content.id": "-1",
+			// "content.badge": `${unseenMessageCount}`,
+			// "content.channelKey": "chats",
+			// "content.displayOnForeground": "false",
+			// "content.notificationLayout": "MessagingGroup",
+			// "content.largeIcon": `${sender.profileImage}`,
+			// "content.bigPicture": `${sender.profileImage}`,
+			// "content.showWhen": "true",
+			// "content.autoDismissible": "true",
+			// "content.privacy": "Private",
+			// "content.payload": `${JSON.stringify(chatData)}`, // Working on IOS, but not working on Android
+			// // "Android.content.payload.android": `${JSON.stringify(chatData)}`, // Working on Android, but not working on IOS
 		},
 
 		android: {
@@ -51,7 +64,7 @@ export const newMessageNotification = async (
 				},
 			},
 			headers: {
-				'apns-priority': "5"
+				'apns-priority': 5
 			},
 		},
 		token: receiverToken,
