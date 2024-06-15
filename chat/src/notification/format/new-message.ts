@@ -62,9 +62,9 @@ export const newMessageNotification = async (
 					'mutable-content': 1,
 					"badge": unseenMessageCount,
 				},
-			},
-			headers: {
-				'apns-priority': 5
+				headers: {
+					'apns-priority': 5
+				},
 			},
 		},
 		token: receiverToken,
