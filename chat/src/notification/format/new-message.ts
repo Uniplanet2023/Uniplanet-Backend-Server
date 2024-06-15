@@ -45,12 +45,12 @@ export const newMessageNotification = async (
 			priority: 'high' as 'high' | 'normal', // or 'normal', or omit this property
 		},
 		apns: {
-			payload: {
-				aps: {
+			"payload": {
+				"aps": {
 					'mutable-content': 1,
 					"badge": unseenMessageCount,
 				},
-				headers: {
+				"headers": {
                     'apns-priority': 5
                 }
 			},
