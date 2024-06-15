@@ -32,7 +32,7 @@ export default class GetChatInfo extends BaseSerializeEvent<GetChatRestPayload> 
 				? JSON.stringify(new GetMessageInfo(this.chat.lastMessage).serializeRest())
 				: undefined,
 			unseenMessageCount: JSON.stringify(this.unseenMessageCount ?? 0),
-			deletedFrom: this.chat.deletedFrom,
+			deletedFrom: this.chat.deletedFrom ?? undefined
 		}
 	}
 }
