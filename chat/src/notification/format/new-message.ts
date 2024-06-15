@@ -37,12 +37,17 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				payload: "test",
+				payload: {
+					id: chatData.id,
+					seller: JSON.parse(chatData.seller),
+					buyer: JSON.parse(chatData.buyer),
+					productId: chatData.productId,
+					productName: chatData.productName,
+					lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
+					unseenMessageCount: JSON.parse(chatData.unseenMessageCount),
+					deletedFrom: chatData.deletedFrom
+				  }
 			}),
-			"iOS.content.payload.ios": "iOS custom content!",
-			"Android.content.payload.android": "android custom content!",
-			"content.payload": "custom content!",
-			"content.payload.secret": "secret",
 		},
 
 		android: {
