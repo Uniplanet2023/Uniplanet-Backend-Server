@@ -37,7 +37,7 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				payload: chatData
+				// payload: chatData
 			}),
 		},
 
