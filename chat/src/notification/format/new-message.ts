@@ -26,7 +26,7 @@ export const newMessageNotification = async (
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			content: `{
+			"content": `{
 				"id":-1,
 				"badge":${unseenMessageCount},
 				"channelKey":"chats",
@@ -62,9 +62,12 @@ export const newMessageNotification = async (
 					'mutable-content': 1,
 					"badge": unseenMessageCount,
 				},
-				headers: {
-					'apns-priority': 5
-				},
+				"headers": {
+                    "apns-priority": 5
+                }
+			},
+			headers: {
+				'apns-priority': "5"
 			},
 		},
 		token: receiverToken,
