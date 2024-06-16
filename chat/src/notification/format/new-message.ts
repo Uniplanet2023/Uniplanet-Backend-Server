@@ -26,14 +26,15 @@ export const newMessageNotification = async (
 	const parsedUnseenMessageCount = JSON.parse(chatData.unseenMessageCount);
   
 	const payload = {
+		"secret": "secret",
 		id: chatData.id,
 		// seller: parsedSeller,
 		// buyer: parsedBuyer,
-		productId: chatData.productId,
-		productName: chatData.productName,
+		// productId: chatData.productId,
+		// productName: chatData.productName,
 		// lastMessage: parsedLastMessage,
-		unseenMessageCount: parsedUnseenMessageCount,
-		deletedFrom: chatData.deletedFrom,
+		// unseenMessageCount: parsedUnseenMessageCount,
+		// deletedFrom: chatData.deletedFrom,
 	  };
 	const notificationPayload = {
 		notification: {
