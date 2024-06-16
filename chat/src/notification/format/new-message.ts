@@ -31,13 +31,12 @@ export const newMessageNotification = async (
 	console.log("message");
 	console.log(parsedLastMessage);
 	const payload = {
-		"secret": "secret",
 		id: chatData.id,
-		// seller: parsedSeller,
-		// buyer: parsedBuyer,
+		seller: chatData.seller,//np
+		buyer: chatData.buyer,//np
 		productId: chatData.productId,
 		productName: chatData.productName,
-		// lastMessage: parsedLastMessage,
+		lastMessage: chatData.lastMessage,//np
 		unseenMessageCount: chatData.unseenMessageCount.toString(),
 		deletedFrom: chatData.deletedFrom,
 	  };
@@ -67,7 +66,7 @@ export const newMessageNotification = async (
 				productId: chatData.productId,
 				productName: chatData.productName,
 				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
-				unseenMessageCount: JSON.parse(chatData.unseenMessageCount),
+				unseenMessageCount: chatData.unseenMessageCount,
 				deletedFrom: chatData.deletedFrom
 			  }),
 		},
