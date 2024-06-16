@@ -24,17 +24,22 @@ export const newMessageNotification = async (
 	const parsedBuyer = JSON.parse(chatData.buyer);
 	const parsedLastMessage = chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined;
 	const parsedUnseenMessageCount = JSON.parse(chatData.unseenMessageCount);
-  
+	console.log("buyer");
+	console.log(parsedBuyer);
+	console.log("seller");
+	console.log(parsedSeller);
+	console.log("message");
+	console.log(parsedLastMessage);
 	const payload = {
 		"secret": "secret",
 		id: chatData.id,
 		// seller: parsedSeller,
 		// buyer: parsedBuyer,
-		// productId: chatData.productId,
-		// productName: chatData.productName,
+		productId: chatData.productId,
+		productName: chatData.productName,
 		// lastMessage: parsedLastMessage,
-		// unseenMessageCount: parsedUnseenMessageCount,
-		// deletedFrom: chatData.deletedFrom,
+		unseenMessageCount: chatData.unseenMessageCount.toString(),
+		deletedFrom: chatData.deletedFrom,
 	  };
 	const notificationPayload = {
 		notification: {
