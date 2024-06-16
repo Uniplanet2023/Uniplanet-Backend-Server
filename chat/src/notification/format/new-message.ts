@@ -19,27 +19,8 @@ export const newMessageNotification = async (
 	})
 
 	const chatData = new GetChatInfo(chat, currentChatUnseenMessage.length).serializeRest()
-
-	const parsedSeller = JSON.parse(chatData.seller);
-	const parsedBuyer = JSON.parse(chatData.buyer);
-	const parsedLastMessage = chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined;
-	const parsedUnseenMessageCount = JSON.parse(chatData.unseenMessageCount);
-	console.log("buyer");
-	console.log(parsedBuyer);
-	console.log("seller");
-	console.log(parsedSeller);
-	console.log("message");
-	console.log(parsedLastMessage);
-	const payload = {
-		id: chatData.id,
-		seller: chatData.seller,//np
-		buyer: chatData.buyer,//np
-		productId: chatData.productId,
-		productName: chatData.productName,
-		lastMessage: chatData.lastMessage,//np
-		unseenMessageCount: chatData.unseenMessageCount.toString(),
-		deletedFrom: chatData.deletedFrom,
-	  };
+	
+	
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
@@ -57,7 +38,16 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				payload: payload
+				payload: {
+					id: chatData.id,
+					seller: chatData.seller,//np
+					buyer: chatData.buyer,//np
+					productId: chatData.productId,
+					productName: chatData.productName,
+					lastMessage: chatData.lastMessage,//np
+					unseenMessageCount: chatData.unseenMessageCount.toString(),
+					deletedFrom: chatData.deletedFrom,
+				  }
 			}),
 			"iOS.content.payload.ios": JSON.stringify({
 				id: chatData.id,
