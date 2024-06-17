@@ -40,11 +40,11 @@ export const newMessageNotification = async (
 				privacy:'Private',
 				payload: {
 					id: chatData.id,
-					seller: chatData.seller,//np
-					buyer: chatData.buyer,//np
+					seller: chatData.seller,
+					buyer: chatData.buyer,
 					productId: chatData.productId,
 					productName: chatData.productName,
-					lastMessage: chatData.lastMessage,//np
+					lastMessage: chatData.lastMessage,
 					unseenMessageCount: chatData.unseenMessageCount.toString(),
 					deletedFrom: chatData.deletedFrom,
 				  }

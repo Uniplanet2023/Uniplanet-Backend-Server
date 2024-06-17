@@ -19,18 +19,19 @@ signUpRouter.post(
 	[...emailValidation, nameValidation, schoolValidation, ...passwordValidation],
 	validateRequest,
 	async (req: Request, res: Response) => {
-		const { name, email, password, school } = req.body
+		const { name, email, password, school, isStudent } = req.body
 		const existingUser = await User.findOne({ email })
-		const userType = email.endsWith('.edu') ? 'user' : 'visitor'
+		const userType = email.endsWith('.edu') ? 'student' : 'advertiser'
+		if(userType === 'student' && !isStudent) {
+			return res
+				.status(404)
+				.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })
+		}
 		if (existingUser) {
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
 			}
-			if (existingUser.type === 'visitor') {
-				return res
-					.status(404)
-					.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })
-			}
+			
 			await existingUser.updateOne({ password, school })
 			// User exists but not verified, resend verification email
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
@@ -46,11 +47,7 @@ signUpRouter.post(
 
 		const newUser = User.build({ name, email, password, school, type: userType, deletionDate: new Date()})
 		await newUser.save()
-		if (userType === 'visitor') {
-			return res
-				.status(404)
-				.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })
-		}
+		
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
 			return res.status(201).json({ newUser })
 		} else {
