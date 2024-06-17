@@ -31,7 +31,7 @@ export const newMessageNotification = async (
 				id:-1,
 				badge:unseenMessageCount,
 				channelKey:'chats',
-				displayOnForeground:false,
+				displayOnForeground:true,
 				notificationLayout:'MessagingGroup',
 				largeIcon:sender.profileImage,
 				bigPicture:sender.profileImage,
