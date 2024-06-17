@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { REPORT_USER } from './routes-def'
+import { UPDATE_NAME_ROUTE } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
@@ -7,7 +7,7 @@ import { userUpdateProducer } from '..'
 
 const reportUser = express.Router()
 
-reportUser.put(REPORT_USER, tokenValidation, async (req: Request, res: Response) => {
+reportUser.put(UPDATE_NAME_ROUTE, tokenValidation, async (req: Request, res: Response) => {
 	const { name } = req.body
 	const accountData = await Account.findById(req.user!.id)
 	if (!accountData) {
