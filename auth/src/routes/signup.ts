@@ -22,7 +22,7 @@ signUpRouter.post(
 		const { name, email, password, school, isStudent } = req.body
 		const existingUser = await User.findOne({ email })
 		const userType = email.endsWith('.edu') ? 'student' : 'advertiser'
-		if(userType === 'student' && !isStudent) {
+		if( isStudent && userType === 'advertiser' ) {
 			return res
 				.status(404)
 				.send({ error: 'Please use your school email to sign up. Or Contact with Admin for more information.' })
