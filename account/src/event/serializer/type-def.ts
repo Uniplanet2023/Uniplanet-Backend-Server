@@ -11,7 +11,14 @@ export type GetAccountRestPayload = {
 }
 export type GetAdvertiserRestPayload = {
 	id: string
-	account: GetAccountRestPayload
+	name: string
+	email: string
+	profileImage: string
+	school: string
+	type: string
+	isBlocked: boolean
+	isBlockedPost: boolean
+	isBlockedChat: boolean
 	maximumPost: number
 	numberOfPost: number
 	costPerClick: number

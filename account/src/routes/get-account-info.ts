@@ -13,17 +13,18 @@ accountInfoRouter.get(GET_ACCOUNT_INFO, tokenValidation, async (req: Request, re
 	if (!account) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
-	const accountInfo = new GetAccountInfo(account, req.user!.type)
-	if(account.type === 'advertiser' ){
-		const advertiser = await Advertiser.findOne({account:req.user!.id});
-		if (!advertiser) {
+	const accountInfo = new GetAccountInfo(account)
+
+	if(req.user!.type === 'advertiser'){
+		const advertiser = await Advertiser.findOne({account:req.user!.id}).populate('account');
+		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
+
 	}
 	
-
 	return res.status(accountInfo.getStatusCode()).send(JSON.stringify(accountInfo.serializeRest()))
 })
 

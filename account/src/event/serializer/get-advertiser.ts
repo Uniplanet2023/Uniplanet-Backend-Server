@@ -21,8 +21,15 @@ export default class GetAdvertiserInfo extends BaseSerializeEvent<GetAdvertiserR
 
 	serializeRest(): GetAdvertiserRestPayload {
 		return {
-			id: this.advertiser._id,
-            account: this.account,
+            id: this.account.id,
+            name: this.account.name,
+            email: this.account.email,
+            profileImage: this.account.profileImage,
+            school: this.account.school,
+            type: this.account.type,
+            isBlocked: this.account.isBlocked,
+            isBlockedPost: this.account.isBlockedPost,
+            isBlockedChat: this.account.isBlockedChat,
 			maximumPost: this.advertiser.maximumPost,
             numberOfPost: this.advertiser.numberOfPost,
             costPerClick: this.advertiser.costPerClick,
