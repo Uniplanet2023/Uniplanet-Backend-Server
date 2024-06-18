@@ -15,7 +15,7 @@ accountInfoRouter.get(GET_ACCOUNT_INFO, tokenValidation, async (req: Request, re
 	}
 	const accountInfo = new GetAccountInfo(account, req.user!.type)
 	if(account.type === 'advertiser' ){
-		const advertiser = await Advertiser.findById(req.user!.id);
+		const advertiser = await Advertiser.findOne({account:req.user!.id});
 		if (!advertiser) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
