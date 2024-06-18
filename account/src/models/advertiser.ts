@@ -6,7 +6,7 @@ export type AdvertiserDocument = Document & {
 	maximumPost: number
 	numberOfPost: number
 	myCredit: number
-    buget: number
+    budget: number
     spent: number
 	costPerClick: number
 }
@@ -16,7 +16,7 @@ type AdvertiserAttrs = {
 	maximumPost?: number
 	numberOfPost?: number
 	myCredit?: number
-    buget?: number
+    budget?: number
     spent?: number
 }
 interface AdvertiserModel extends Model<AdvertiserDocument> {
@@ -30,7 +30,7 @@ const advertiserSchema: Schema = new Schema(
 		numberOfPost: { type: Number, default: 0 },
         costPerClick: { type: Number , default: 0.4},
 		myCredit: { type: Number, default: 0 },
-        buget: { type: Number, default: 0 },
+        budget: { type: Number, default: 0 },
         spent: { type: Number, default: 0 },
 	},
 	{
