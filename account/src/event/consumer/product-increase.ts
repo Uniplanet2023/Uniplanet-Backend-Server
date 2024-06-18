@@ -1,6 +1,7 @@
 import { Topics, BaseConsumer, IncNumberOfProductEvent } from '@uniplanet-lib/common'
 import Account from '../../models/account'
 import { userPostBlockProducer } from '../..'
+import Advertiser from '../../models/advertiser'
 
 // Extend the BaseConsumer for the user:created event
 export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfProductEvent> {
@@ -14,8 +15,12 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 		if (!account) {
 			throw new Error('Account not found')
 		}
-		account.numberOfPost += 1
-		if (account.maximumPost && account.numberOfPost >= account.maximumPost) {
+		const advertiser = await Advertiser.findOne({ account: account.id })
+		if (!advertiser) {
+			throw new Error('Advertiser not found')
+		}
+		advertiser.numberOfPost += 1
+		if ( advertiser.numberOfPost >= advertiser.maximumPost) {
 			account.isBlockedPost = true
 			// Product Upload Block
 			userPostBlockProducer.sendMessage({

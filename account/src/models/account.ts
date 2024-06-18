@@ -11,13 +11,10 @@ export type AccountDocument = Document & {
 	isBlocked: boolean
 	isBlockedPost: boolean
 	isBlockedChat: boolean
-	maximumPost: number
-	numberOfPost: number
-	maximumClick: number
-	numberOfClick: number
 	unSeenNotification: number
 	numberOfReports: number
 	status: string
+	type: string
 }
 
 type AccountAttrs = {
@@ -30,11 +27,8 @@ type AccountAttrs = {
 	isBlocked?: boolean
 	isBlockedPost?: boolean
 	isBlockedChat?: boolean
-	maximumPost?: number
-	numberOfPost?: number
-	maximumClick?: number
-	numberOfClick?: number
 	unSeenNotification?: number
+	type?: string
 }
 interface AccountModel extends Model<AccountDocument> {
 	build(attrs: AccountAttrs): AccountDocument
@@ -67,7 +61,7 @@ const accountSchema: Schema = new Schema(
 		type: {
 			type: String,
 			required: true,
-			default: 'user',
+			default: 'student',
 		},
 		unSeenNotification: {
 			type: Number,
@@ -85,11 +79,6 @@ const accountSchema: Schema = new Schema(
 		isBlocked: { type: Boolean, default: false },
 		isBlockedPost: { type: Boolean, default: false },
 		isBlockedChat: { type: Boolean, default: false },
-		// this is for advertisement User
-		maximumPost: { type: Number },
-		numberOfPost: { type: Number, default: 0 },
-		maximumClick: { type: Number },
-		numberOfClick: { type: Number, default: 0 },
 	},
 	{
 		toJSON: {

@@ -1,6 +1,8 @@
 import { Topics, BaseConsumer, IncNumberOfClickEvent } from '@uniplanet-lib/common'
 import Account from '../../models/account'
 import { postDeletionReqProducer, userPostBlockProducer } from '../..'
+import Advertiser from '../../models/advertiser'
+import AdInteraction from '../../models/ad-interaction'
 
 // Extend the BaseConsumer for the user:created event
 export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClickEvent> {
@@ -14,18 +16,48 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 		if (!account) {
 			throw new Error('Account not found')
 		}
-		account.numberOfClick += 1
-		if (account.maximumClick && account.numberOfClick >= account.maximumClick) {
-			account.isBlockedPost = true
-			// Product Deletion Request
-			postDeletionReqProducer.sendMessage({
-				id: account._id,
-			})
-			// Product Upload Block
-			userPostBlockProducer.sendMessage({
-				id: account._id,
-			})
+		if(account.type === 'advertiser') {
+			const advertiser = await Advertiser.findOne({ account: account.id });
+			if(!advertiser) {
+				throw new Error('Advertiser not found')
+			}
+			const adInteraction = await AdInteraction.findOne({ account: account.id });
+			if(!adInteraction) {
+				await AdInteraction.build({
+					advertiser: advertiser.id,
+					account: account.id,
+					advertisement: 'test',
+				}).save();
+			}else{
+				await adInteraction.save();
+			}
+
+			advertiser.totalClick += 1;
+			advertiser.spent += advertiser.costPerClick;
+			// Check if the advertiser has credit, if so, use the credit first
+			if(advertiser.myCredit > 0){
+				advertiser.myCredit -= advertiser.costPerClick;
+			}else{
+				advertiser.buget -= advertiser.costPerClick;
+			}
+			// Check if the advertiser's budget is less than or equal to 0
+			// If so, block the account
+			if(advertiser.buget + advertiser.myCredit <= 0) {
+				account.isBlocked = true;
+				account.isBlockedPost = true;
+				account.isBlockedChat = true;
+				// Post Deletion Request
+				postDeletionReqProducer.sendMessage({
+					id: account._id,
+				})
+				// Product Upload Block
+				userPostBlockProducer.sendMessage({
+					id: account._id,
+				})
+			}
+			await advertiser.save();
 		}
+
 		await account.save()
 		console.log('account number of click increase successfully')
 	}
