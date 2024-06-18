@@ -32,7 +32,6 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 				await adInteraction.save();
 			}
 
-			advertiser.totalClick += 1;
 			advertiser.spent += advertiser.costPerClick;
 			// Check if the advertiser has credit, if so, use the credit first
 			if(advertiser.myCredit > 0){
