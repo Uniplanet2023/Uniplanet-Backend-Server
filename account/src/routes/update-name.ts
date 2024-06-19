@@ -17,7 +17,7 @@ reportUser.put(UPDATE_NAME_ROUTE, tokenValidation, async (req: Request, res: Res
 	await accountData.save()
 	//TODO: Update other db using kafka
 
-	const accountInfo = new GetAccountInfo(accountData, req.user!.type)
+	const accountInfo = new GetAccountInfo(accountData)
 
 	await userUpdateProducer.sendMessage({
 		id: req.user!.id,

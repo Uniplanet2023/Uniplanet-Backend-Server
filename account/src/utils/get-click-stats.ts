@@ -78,13 +78,13 @@ export async function getClickStats(advertiserId:ObjectId) {
     },
     { $sort: { _id: 1 } }
   ]);
-  console.log(recent7DaysStats);
+  
   const recent7DaysData = recent7Days.map(date => {
     const dateString = new Date(date).toISOString().split('T')[0];
     const dayStats = recent7DaysStats.find(s => s._id === dateString);
     return { date: dateString, clickCount: dayStats ? dayStats.clickCount : 0 };
   });
-  console.log(recent7DaysStats);
+  
   return {
     today: todayStats,
     thisWeek: weekStats,

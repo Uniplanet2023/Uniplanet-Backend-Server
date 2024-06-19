@@ -14,6 +14,7 @@ adStatisticRouter.get(GET_AD_STATISTIC, tokenValidation, async (req: Request, re
   }
 
   const stats = await getClickStats(advertiser._id);
+  console.log(stats);
   return res.status(200).send(stats);
 });
 

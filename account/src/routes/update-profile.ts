@@ -4,7 +4,6 @@ import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import { userUpdateProducer } from '..'
-import { deleteFilesByPrefix } from '../../config/firease-delete-files'
 
 const updateProfileRouter = express.Router()
 
