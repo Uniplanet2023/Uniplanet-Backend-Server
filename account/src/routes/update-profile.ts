@@ -20,7 +20,7 @@ updateProfileRouter.put(UPDATE_PROFILE_ROUTE, tokenValidation, async (req: Reque
 
 	//TODO: Update other db using kafka
 
-	const accountInfo = new GetAccountInfo(accountData, req.user!.type)
+	const accountInfo = new GetAccountInfo(accountData)
 	await userUpdateProducer.sendMessage({
 		id: req.user!.id,
 		profileImage: profileImage,
