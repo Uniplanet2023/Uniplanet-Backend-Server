@@ -1,8 +1,9 @@
 import { model, Model, ObjectId, Schema } from 'mongoose';
 import { Document } from 'mongoose';
+import { AccountDocument } from './account';
 
 export type AdInteractionDocument = Document & {
-  account: ObjectId;
+  account: AccountDocument;
   advertiser: ObjectId;
   advertisement: string;
 };
