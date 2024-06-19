@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongoose';
 import AdInteraction from '../models/ad-interaction';
 import { getRecent7Days, getStartOfDay, getStartOfMonth, getStartOfWeek, getStartOfYear } from './date-calculate';
+import AdDailyStats from '../models/ad-daily-stats';
 
 export async function getClickStats(advertiserId:ObjectId) {
   const now = new Date();
@@ -54,14 +55,14 @@ export async function getClickStats(advertiserId:ObjectId) {
     }
   ];
 
-  const stats = await AdInteraction.aggregate(pipeline);
+  const stats = await AdDailyStats.aggregate(pipeline);
   console.log(stats);
   const todayStats = stats.length ? stats[0].today : 0;
   const weekStats = stats.length ? stats[0].thisWeek : 0;
   const monthStats = stats.length ? stats[0].thisMonth : 0;
   const yearStats = stats.length ? stats[0].thisYear : 0;
   
-  const recent7DaysStats = await AdInteraction.aggregate([
+  const recent7DaysStats = await AdDailyStats.aggregate([
     {
       $match: {
         advertiser: advertiserId,
