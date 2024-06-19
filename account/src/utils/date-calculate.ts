@@ -19,8 +19,9 @@ export function getStartOfWeek(date: Date) {
   export function getRecent7Days(date: Date) {
     const days = [];
     for (let i = 0; i < 7; i++) {
-      date.setDate(date.getDate() - i);
-      days.push(getStartOfDay(date));
+      const day = new Date(date);
+      day.setDate(day.getDate() + i);
+      days.push(getStartOfDay(day));
     }
     return days;
   }
