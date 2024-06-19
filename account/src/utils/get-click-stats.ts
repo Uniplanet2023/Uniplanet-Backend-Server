@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongoose';
-import AdDailyStats from '../models/ad-daily-stats';
+import AdInteraction from '../models/ad-interaction';
 import { getRecent7Days, getStartOfDay, getStartOfMonth, getStartOfWeek, getStartOfYear } from './date-calculate';
 
 export async function getClickStats(advertiserId:ObjectId) {
@@ -10,51 +10,86 @@ export async function getClickStats(advertiserId:ObjectId) {
   const startOfMonth = getStartOfMonth(now);
   const startOfYear = getStartOfYear(now);
   const recent7Days = getRecent7Days(now);
-  
+
   // Aggregation pipeline for different date ranges
   const pipeline = [
     {
       $match: {
         advertiser: advertiserId,
-        date: { $gte: startOfYear }
+        createdAt: { $gte: startOfYear }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        today: {
+          $sum: {
+            $cond: [
+              { $gte: ["$createdAt", startOfDay] }, 1, 0
+            ]
+          }
+        },
+        thisWeek: {
+          $sum: {
+            $cond: [
+              { $gte: ["$createdAt", startOfWeek] }, 1, 0
+            ]
+          }
+        },
+        thisMonth: {
+          $sum: {
+            $cond: [
+              { $gte: ["$createdAt", startOfMonth] }, 1, 0
+            ]
+          }
+        },
+        thisYear: {
+          $sum: {
+            $cond: [
+              { $gte: ["$createdAt", startOfYear] }, 1, 0
+            ]
+          }
+        }
+      }
+    }
+  ];
+
+  const stats = await AdInteraction.aggregate(pipeline);
+  
+  const todayStats = stats.length ? stats[0].today : 0;
+  const weekStats = stats.length ? stats[0].thisWeek : 0;
+  const monthStats = stats.length ? stats[0].thisMonth : 0;
+  const yearStats = stats.length ? stats[0].thisYear : 0;
+  
+  const recent7DaysStats = await AdInteraction.aggregate([
+    {
+      $match: {
+        advertiser: advertiserId,
+        createdAt: { $gte: recent7Days[6] }
       }
     },
     {
       $group: {
         _id: {
-          $cond: [
-            { $gte: ["$date", startOfDay] }, "day",
-            { $cond: [
-              { $gte: ["$date", startOfWeek] }, "week",
-              { $cond: [
-                { $gte: ["$date", startOfMonth] }, "month",
-                "year"
-              ]}
-            ]}
-          ]
+          $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
         },
-        clickCount: { $sum: "$clickCount" }
+        clickCount: { $sum: 1 }
       }
-    }
-  ];
+    },
+    { $sort: { _id: 1 } }
+  ]);
 
-  const stats = await AdDailyStats.aggregate(pipeline);
-  
-  const todayStats = stats.find(s => s._id === "day") || { clickCount: 0 };
-  const weekStats = stats.find(s => s._id === "week") || { clickCount: 0 };
-  const monthStats = stats.find(s => s._id === "month") || { clickCount: 0 };
-  const yearStats = stats.find(s => s._id === "year") || { clickCount: 0 };
-  
-  const recent7DaysStats = await AdDailyStats.find({
-    advertiser: advertiserId,
-    date: { $in: recent7Days }
-  }).sort({ date: 1 });
+  const recent7DaysData = recent7Days.map(date => {
+    const dateString = date.toISOString().split('T')[0];
+    const dayStats = recent7DaysStats.find(s => s._id === dateString);
+    return { date: dateString, clickCount: dayStats ? dayStats.clickCount : 0 };
+  });
 
   return {
-    today: todayStats.clickCount,
-    thisWeek: weekStats.clickCount,
-    thisMonth: monthStats.clickCount,
-    thisYear: yearStats.clickCount,
-    recent7Days: recent7DaysStats.map(s => ({ date: s.date, clickCount: s.clickCount }))
+    today: todayStats,
+    thisWeek: weekStats,
+    thisMonth: monthStats,
+    thisYear: yearStats,
+    recent7Days: recent7DaysData
   };
 }
