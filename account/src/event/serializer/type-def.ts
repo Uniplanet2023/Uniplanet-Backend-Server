@@ -22,7 +22,8 @@ export type GetAdvertiserRestPayload = {
 	maximumPost: number
 	numberOfPost: number
 	costPerClick: number
-	myCredit: number
+	usedCredit: number
+	givenCredit: number
 	budget: number
 	spent: number
 }

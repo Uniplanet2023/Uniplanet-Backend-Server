@@ -33,7 +33,8 @@ export default class GetAdvertiserInfo extends BaseSerializeEvent<GetAdvertiserR
 			maximumPost: this.advertiser.maximumPost,
             numberOfPost: this.advertiser.numberOfPost,
             costPerClick: this.advertiser.costPerClick,
-            myCredit: this.advertiser.myCredit,
+            usedCredit: this.advertiser.usedCredit,
+            givenCredit: this.advertiser.givenCredit,
             budget: this.advertiser.budget,
             spent: this.advertiser.spent,
 		}
