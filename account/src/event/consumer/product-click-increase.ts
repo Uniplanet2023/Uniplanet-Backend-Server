@@ -3,7 +3,36 @@ import Account from '../../models/account'
 import { postDeletionReqProducer, userPostBlockProducer } from '../..'
 import Advertiser from '../../models/advertiser'
 import AdInteraction from '../../models/ad-interaction'
+import AdDailyStats from '../../models/ad-daily-stats'
+import { ObjectId } from 'mongoose'
 
+
+// Inside your click event handler
+async function handleAdClick(advertiserId:ObjectId, advertisementTitle:string) {
+  const today = new Date();
+  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  const adDailyStats = await AdDailyStats.findOneAndUpdate(
+    {
+      advertiser: advertiserId,
+      advertisement: advertisementTitle,
+      date: startOfDay,
+    },
+    {
+      $inc: { clickCount: 1 },
+    },
+    { upsert: true, new: true }
+  );
+
+  if (!adDailyStats) {
+    await AdDailyStats.build({
+      advertiser: advertiserId,
+      advertisement: advertisementTitle,
+      date: startOfDay,
+      clickCount: 1,
+    }).save();
+  }
+}
 // Extend the BaseConsumer for the user:created event
 export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClickEvent> {
 	topic: Topics.IncreaseClick = Topics.IncreaseClick
@@ -21,12 +50,15 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			if(!advertiser) {
 				throw new Error('Advertiser not found')
 			}
-			await AdInteraction.build({
-				advertiser: advertiser.id,
-				account: account.id,
-				advertisement: data.title,
-			}).save();
-
+			const existingUser = await AdInteraction.findOne({ advertiser: advertiser.id, advertisement: data.title, account: account.id });
+			if(!existingUser) {
+				await AdInteraction.build({
+					advertiser: advertiser.id,
+					account: account.id,
+					advertisement: data.title,
+				}).save();
+			}
+			handleAdClick(advertiser.id, data.title);
 			// Check if the advertiser has credit, if so, use the credit first
 			if(advertiser.usedCredit < advertiser.givenCredit){
 				advertiser.usedCredit += advertiser.costPerClick;
