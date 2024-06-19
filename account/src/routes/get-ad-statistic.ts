@@ -13,7 +13,7 @@ adStatisticRouter.get(GET_AD_STATISTIC, tokenValidation, async (req: Request, re
     return res.status(404).send({ message: 'Advertiser not found' });
   }
 
-  const stats = await getClickStats(advertiser._id, 'Ad Title'); // Replace 'Ad Title' with your dynamic title if needed
+  const stats = await getClickStats(advertiser._id);
   console.log(stats);
   return res.status(200).send(stats);
 });

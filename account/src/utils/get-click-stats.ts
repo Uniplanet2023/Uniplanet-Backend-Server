@@ -2,7 +2,7 @@ import { ObjectId } from 'mongoose';
 import AdDailyStats from '../models/ad-daily-stats';
 import { getRecent7Days, getStartOfDay, getStartOfMonth, getStartOfWeek, getStartOfYear } from './date-calculate';
 
-export async function getClickStats(advertiserId:ObjectId, advertisementTitle:string) {
+export async function getClickStats(advertiserId:ObjectId) {
   const now = new Date();
   
   const startOfDay = getStartOfDay(now);
@@ -10,13 +10,12 @@ export async function getClickStats(advertiserId:ObjectId, advertisementTitle:st
   const startOfMonth = getStartOfMonth(now);
   const startOfYear = getStartOfYear(now);
   const recent7Days = getRecent7Days(now);
-
+  
   // Aggregation pipeline for different date ranges
   const pipeline = [
     {
       $match: {
         advertiser: advertiserId,
-        advertisement: advertisementTitle,
         date: { $gte: startOfYear }
       }
     },
@@ -48,7 +47,6 @@ export async function getClickStats(advertiserId:ObjectId, advertisementTitle:st
   
   const recent7DaysStats = await AdDailyStats.find({
     advertiser: advertiserId,
-    advertisement: advertisementTitle,
     date: { $in: recent7Days }
   }).sort({ date: 1 });
 
