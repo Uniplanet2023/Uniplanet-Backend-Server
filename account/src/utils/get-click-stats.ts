@@ -25,28 +25,28 @@ export async function getClickStats(advertiserId: ObjectId) {
         today: {
           $sum: {
             $cond: [
-              { $gte: ["$date", startOfDay] }, 1, 0
+              { $gte: ["$date", startOfDay] }, "$clickCount", 0
             ]
           }
         },
         thisWeek: {
           $sum: {
             $cond: [
-              { $gte: ["$date", startOfWeek] }, 1, 0
+              { $gte: ["$date", startOfWeek] }, "$clickCount", 0
             ]
           }
         },
         thisMonth: {
           $sum: {
             $cond: [
-              { $gte: ["$date", startOfMonth] }, 1, 0
+              { $gte: ["$date", startOfMonth] }, "$clickCount", 0
             ]
           }
         },
         thisYear: {
           $sum: {
             $cond: [
-              { $gte: ["$date", startOfYear] }, 1, 0
+              { $gte: ["$date", startOfYear] }, "$clickCount", 0
             ]
           }
         }
@@ -74,7 +74,7 @@ export async function getClickStats(advertiserId: ObjectId) {
         _id: {
           $dateToString: { format: "%Y-%m-%d", date: "$date" }
         },
-        clickCount: { $sum: 1 }
+        clickCount: { $sum: "$clickCount" }
       }
     },
     { $sort: { _id: 1 } }
