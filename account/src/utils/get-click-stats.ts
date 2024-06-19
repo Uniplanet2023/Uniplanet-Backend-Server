@@ -4,23 +4,13 @@ import { getRecent7Days, getStartOfDay, getStartOfMonth, getStartOfWeek, getStar
 
 export async function getClickStats(advertiserId:ObjectId) {
   const now = new Date();
-  console.log(now);
+  
   const startOfDay = getStartOfDay(now);
   const startOfWeek = getStartOfWeek(now);
   const startOfMonth = getStartOfMonth(now);
   const startOfYear = getStartOfYear(now);
   const recentWeekDays = getRecent7Days(now);
-  console.log('start of day')
-  console.log(startOfDay);
-  console.log('start of week')
-  console.log(startOfWeek);
-  console.log('start of month')
-  console.log(startOfMonth);
-  console.log('start of year')
-  console.log(startOfYear);
-  console.log('recent 7 days')
-  console.log(recentWeekDays );
-  console.log('advertiser id')
+  
   // Aggregation pipeline for different date ranges
   const pipeline = [
     {
@@ -65,7 +55,7 @@ export async function getClickStats(advertiserId:ObjectId) {
   ];
 
   const stats = await AdInteraction.aggregate(pipeline);
-  
+  console.log(stats);
   const todayStats = stats.length ? stats[0].today : 0;
   const weekStats = stats.length ? stats[0].thisWeek : 0;
   const monthStats = stats.length ? stats[0].thisMonth : 0;
@@ -88,7 +78,7 @@ export async function getClickStats(advertiserId:ObjectId) {
     },
     { $sort: { _id: 1 } }
   ]);
-  console.log(recent7DaysStats);
+  
   const recent7DaysData = recentWeekDays.map(date => {
     const dateString = date.toISOString().split('T')[0];
     const dayStats = recent7DaysStats.find(s => s._id === dateString);
