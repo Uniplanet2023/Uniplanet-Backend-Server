@@ -5,7 +5,8 @@ export type AdvertiserDocument = Document & {
     account: ObjectId
 	maximumPost: number
 	numberOfPost: number
-	myCredit: number
+	usedCredit: number
+	givenCredit: number
     budget: number
     spent: number
 	costPerClick: number
@@ -15,7 +16,8 @@ type AdvertiserAttrs = {
     account: ObjectId
 	maximumPost?: number
 	numberOfPost?: number
-	myCredit?: number
+	usedCredit?: number
+	givenCredit?: number
     budget?: number
     spent?: number
 }
@@ -29,9 +31,10 @@ const advertiserSchema: Schema = new Schema(
 		maximumPost: { type: Number, default: 3},
 		numberOfPost: { type: Number, default: 0 },
         costPerClick: { type: Number , default: 0.4},
-		myCredit: { type: Number, default: 0 },
+		usedCredit: { type: Number, default: 0 },
+		givenCredit: { type: Number, default: 0 },
+		spent: { type: Number, default: 0 },
         budget: { type: Number, default: 0 },
-        spent: { type: Number, default: 0 },
 	},
 	{
 		toJSON: {

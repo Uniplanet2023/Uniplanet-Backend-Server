@@ -27,24 +27,23 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 				advertisement: data.title,
 			}).save();
 
-			advertiser.spent += advertiser.costPerClick;
 			// Check if the advertiser has credit, if so, use the credit first
-			if(advertiser.myCredit > 0){
-				advertiser.myCredit -= advertiser.costPerClick;
+			if(advertiser.usedCredit < advertiser.givenCredit){
+				advertiser.usedCredit += advertiser.costPerClick;
 			}else{
-				advertiser.budget -= advertiser.costPerClick;
+				advertiser.spent += advertiser.costPerClick;
 			}
 			// Check if the advertiser's budget is less than or equal to 0
 			// If so, block the account
-			if(advertiser.budget + advertiser.myCredit <= 0) {
+			if(advertiser.usedCredit >= advertiser.givenCredit && advertiser.budget <= 0) {
 				account.isBlocked = true;
 				account.isBlockedPost = true;
 				account.isBlockedChat = true;
-				// Post Deletion Request
+				// Product Deletion Request
 				postDeletionReqProducer.sendMessage({
 					id: account._id,
 				})
-				// Product Upload Block
+				// User Upload Block
 				userPostBlockProducer.sendMessage({
 					id: account._id,
 				})

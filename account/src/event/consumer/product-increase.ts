@@ -27,6 +27,7 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 				id: account._id,
 			})
 		}
+		await advertiser.save();
 		await account.save()
 		console.log('account number of product increase successfully')
 	}
