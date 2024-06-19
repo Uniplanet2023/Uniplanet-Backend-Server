@@ -26,7 +26,7 @@ interface AdvertiserModel extends Model<AdvertiserDocument> {
 const advertiserSchema: Schema = new Schema(
 	{
         account: { type: Schema.Types.ObjectId, ref: 'Account' },
-		maximumPost: { type: Number, default: 0},
+		maximumPost: { type: Number, default: 3},
 		numberOfPost: { type: Number, default: 0 },
         costPerClick: { type: Number , default: 0.4},
 		myCredit: { type: Number, default: 0 },

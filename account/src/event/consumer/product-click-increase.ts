@@ -26,7 +26,7 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 				await AdInteraction.build({
 					advertiser: advertiser.id,
 					account: account.id,
-					advertisement: 'test',
+					advertisement: data.title,
 				}).save();
 			}else{
 				await adInteraction.save();
@@ -37,11 +37,11 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			if(advertiser.myCredit > 0){
 				advertiser.myCredit -= advertiser.costPerClick;
 			}else{
-				advertiser.buget -= advertiser.costPerClick;
+				advertiser.budget -= advertiser.costPerClick;
 			}
 			// Check if the advertiser's budget is less than or equal to 0
 			// If so, block the account
-			if(advertiser.buget + advertiser.myCredit <= 0) {
+			if(advertiser.budget + advertiser.myCredit <= 0) {
 				account.isBlocked = true;
 				account.isBlockedPost = true;
 				account.isBlockedChat = true;

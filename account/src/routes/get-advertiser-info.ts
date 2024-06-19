@@ -16,10 +16,11 @@ advertiserInfoRouter.get(GET_ADVERTISER_INFO, tokenValidation, async (req: Reque
 	const accountInfo = new GetAccountInfo(account)
 
 	if(req.user!.type === 'advertiser'){
-		const advertiser = await Advertiser.findOne({account:req.user!.id}).populate('account');
+		const advertiser = await Advertiser.findOne({account:req.user!.id});
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
+        
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
 
