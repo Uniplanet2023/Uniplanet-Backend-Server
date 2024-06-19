@@ -2,7 +2,7 @@ import { ObjectId } from 'mongoose';
 import AdDailyStats from '../models/ad-daily-stats';
 import { getRecent7Days, getStartOfDay, getStartOfMonth, getStartOfWeek, getStartOfYear } from './date-calculate';
 
-export async function getClickStats(advertiserId:ObjectId, advertisementTitle:string) {
+async function getClickStats(advertiserId:ObjectId, advertisementTitle:string) {
   const now = new Date();
   
   const startOfDay = getStartOfDay(now);
@@ -25,9 +25,13 @@ export async function getClickStats(advertiserId:ObjectId, advertisementTitle:st
         _id: {
           $cond: [
             { $gte: ["$date", startOfDay] }, "day",
-            { $gte: ["$date", startOfWeek] }, "week",
-            { $gte: ["$date", startOfMonth] }, "month",
-            "year"
+            { $cond: [
+              { $gte: ["$date", startOfWeek] }, "week",
+              { $cond: [
+                { $gte: ["$date", startOfMonth] }, "month",
+                "year"
+              ]}
+            ]}
           ]
         },
         clickCount: { $sum: "$clickCount" }

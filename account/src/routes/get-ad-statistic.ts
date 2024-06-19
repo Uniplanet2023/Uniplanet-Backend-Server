@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { GET_AD_STATISTIC } from './routes-def';
 import { tokenValidation } from '@uniplanet-lib/common';
 import Advertiser from '../models/advertiser';
-import { getClickStats } from '../utils/get-click-stats';
+
 
 const adStatisticRouter = express.Router();
 
@@ -18,3 +18,7 @@ adStatisticRouter.get(GET_AD_STATISTIC, tokenValidation, async (req: Request, re
 });
 
 export default adStatisticRouter;
+
+function getClickStats(_id: any, arg1: string) {
+    throw new Error('Function not implemented.');
+}
