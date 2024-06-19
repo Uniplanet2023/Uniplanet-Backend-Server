@@ -10,7 +10,17 @@ export async function getClickStats(advertiserId:ObjectId) {
   const startOfMonth = getStartOfMonth(now);
   const startOfYear = getStartOfYear(now);
   const recent7Days = getRecent7Days(now);
+  console.log('start of day')
+  console.log(startOfDay);
+  console.log('start of week')
+  console.log(startOfWeek);
+  console.log('start of month')
+  console.log(startOfMonth);
+  console.log('start of year')
+  console.log(startOfYear);
+  console.log('recent 7 days')
   console.log(recent7Days );
+  console.log('advertiser id')
   // Aggregation pipeline for different date ranges
   const pipeline = [
     {
@@ -84,7 +94,7 @@ export async function getClickStats(advertiserId:ObjectId) {
     const dayStats = recent7DaysStats.find(s => s._id === dateString);
     return { date: dateString, clickCount: dayStats ? dayStats.clickCount : 0 };
   });
-  console.log(recent7DaysStats);
+  
   return {
     today: todayStats,
     thisWeek: weekStats,
