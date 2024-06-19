@@ -21,16 +21,11 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			if(!advertiser) {
 				throw new Error('Advertiser not found')
 			}
-			const adInteraction = await AdInteraction.findOne({ account: account.id });
-			if(!adInteraction) {
-				await AdInteraction.build({
-					advertiser: advertiser.id,
-					account: account.id,
-					advertisement: data.title,
-				}).save();
-			}else{
-				await adInteraction.save();
-			}
+			await AdInteraction.build({
+				advertiser: advertiser.id,
+				account: account.id,
+				advertisement: data.title,
+			}).save();
 
 			advertiser.spent += advertiser.costPerClick;
 			// Check if the advertiser has credit, if so, use the credit first
