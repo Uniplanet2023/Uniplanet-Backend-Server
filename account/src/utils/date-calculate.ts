@@ -8,7 +8,7 @@ export function getStartOfWeek(date: Date) {
     return getStartOfDay(new Date(date.setDate(diff)));
   }
   
-  export function getStartOfMonth(date: Date) {
+export function getStartOfMonth(date: Date) {
     return new Date(date.getFullYear(), date.getMonth(), 1);
   }
   
