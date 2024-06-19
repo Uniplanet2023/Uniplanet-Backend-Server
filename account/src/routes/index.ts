@@ -7,10 +7,11 @@ import deleteSearchHistoryRouter from './delete-search-history'
 import deleteAllSearchHistoryRouter from './delete-all-search-history'
 import reportUser from './report-user'
 import advertiserInfoRouter from './get-advertiser-info'
-
+import adStatisticRouter from './get-ad-statistic'
 
 const accountRouter = express.Router()
 
+accountRouter.use(adStatisticRouter)
 accountRouter.use(advertiserInfoRouter)
 accountRouter.use(reportUser)
 accountRouter.use(deleteAllSearchHistoryRouter)
