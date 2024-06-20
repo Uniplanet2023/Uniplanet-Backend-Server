@@ -50,7 +50,7 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			if(!advertiser) {
 				throw new Error('Advertiser not found')
 			}
-			const existingUser = await AdInteraction.findOne({ advertiser: advertiser.id, advertisement: data.title, account: account.id });
+			const existingUser = await AdInteraction.findOne({ advertiser: advertiser.id, advertisement: data.title, account: data.clickedUserId });
 			if(!existingUser) {
 				const client = await Account.findById(data.clickedUserId);
 				if(client){
