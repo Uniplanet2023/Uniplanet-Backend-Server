@@ -4,7 +4,7 @@ import { postDeletionReqProducer, userPostBlockProducer } from '../..'
 import Advertiser from '../../models/advertiser'
 import AdInteraction from '../../models/ad-interaction'
 import AdDailyStats from '../../models/ad-daily-stats'
-import { ObjectId } from 'mongoose'
+import mongoose, { ObjectId, Types } from 'mongoose'
 
 
 // Inside your click event handler
@@ -52,11 +52,14 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			}
 			const existingUser = await AdInteraction.findOne({ advertiser: advertiser.id, advertisement: data.title, account: account.id });
 			if(!existingUser) {
-				await AdInteraction.build({
-					advertiser: advertiser.id,
-					account: account.id,
-					advertisement: data.title,
-				}).save();
+				const client = await Account.findById(data.clickedUserId);
+				if(client){
+					await AdInteraction.build({
+						advertiser: advertiser.id,
+						account: client.id,
+						advertisement: data.title,
+					}).save();		
+				}
 			}
 			handleAdClick(advertiser.id, data.title);
 			// Check if the advertiser has credit, if so, use the credit first
