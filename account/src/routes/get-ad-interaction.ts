@@ -34,7 +34,7 @@ adInteractionRouter.get(GET_AD_INTERACTION, tokenValidation, async (req: Request
         };
     });
 
-    res.status(200).send(adInteractionListSerializedList);
+    res.status(200).send(JSON.stringify(adInteractionListSerializedList));
 });
 
 export default adInteractionRouter;
