@@ -20,12 +20,14 @@ adInteractionRouter.get(GET_AD_INTERACTION, tokenValidation, async (req: Request
     if (!advertiser) {
         return res.status(404).send({ message: 'Advertiser not found' });
     }
+    console.log('skip', skip);
+    console.log('limit', limit);
 
     const adInteractionList = await AdInteraction.find({ advertiser: advertiser._id })
         .skip(skip)
         .limit(limit)
         .populate('account')
-        .sort('-updatedAt'); // Sorting in descending order of update time
+        .sort('updatedAt'); // Sorting in descending order of update time
 
     const adInteractionListSerializedList = adInteractionList.map((adInteraction) => {
         return {
