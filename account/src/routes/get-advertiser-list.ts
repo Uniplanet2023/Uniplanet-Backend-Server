@@ -16,8 +16,6 @@ advertiserListRouter.get(GET_ADVERTISER_LIST, tokenValidation, async (req: Reque
     if (!account) {
         return res.status(404).send({ message: 'Account not found' });
     }
-
-    const accountInfo = new GetAccountInfo(account);
     
     const advertiserListData: GetAdvertiserRestPayload[] = [];
 
@@ -32,7 +30,8 @@ advertiserListRouter.get(GET_ADVERTISER_LIST, tokenValidation, async (req: Reque
             .sort('updatedAt');
 
         advertiserList.forEach((advertiser: AdvertiserDocument) => {
-            advertiserListData.push(new GetAdvertiserInfo(advertiser, accountInfo.serializeRest()).serializeRest());
+            const advertiserAccount= new GetAccountInfo(advertiser.account);
+            advertiserListData.push(new GetAdvertiserInfo(advertiser, advertiserAccount.serializeRest()).serializeRest());
         });
         
         return res.status(200).send(JSON.stringify(advertiserListData));
