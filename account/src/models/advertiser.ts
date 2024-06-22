@@ -1,8 +1,9 @@
 import { model, Model, ObjectId, Schema } from 'mongoose'
 import { Document } from 'mongoose'
+import { AccountDocument } from './account'
 
 export type AdvertiserDocument = Document & {
-    account: ObjectId
+    account: AccountDocument
 	maximumPost: number
 	numberOfPost: number
 	usedCredit: number
