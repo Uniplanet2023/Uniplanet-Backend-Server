@@ -35,7 +35,7 @@ advertiserListRouter.get(GET_ADVERTISER_LIST, tokenValidation, async (req: Reque
             advertiserListData.push(new GetAdvertiserInfo(advertiser, accountInfo.serializeRest()).serializeRest());
         });
         
-        return res.status(200).send(advertiserListData);
+        return res.status(200).send(JSON.stringify(advertiserListData));
     } else {
         return res.status(404).send({ message: 'Advertiser not found' });
     }
