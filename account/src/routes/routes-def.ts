@@ -1,5 +1,7 @@
 export const GET_ACCOUNT_INFO = '/api/account/myinfo'
 export const GET_ADVERTISER_INFO = '/api/account/advertiser-info'
+export const INCREASE_CREDIT = '/api/account/increase-credit'
+export const AUTH_CONTROL = '/api/account/auth-control'
 export const GET_AD_STATISTIC = '/api/account/ad-statistic'
 export const GET_ADVERTISER_LIST = '/api/account/advertiser-list/:page'
 export const GET_AD_INTERACTION = '/api/account/ad-interaction/:page'
