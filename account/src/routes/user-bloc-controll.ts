@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express'
-import { AUTH_CONTROL } from './routes-def'
+import { POST_BLOCK_CONTROL } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import Advertiser from '../models/advertiser'
 import GetAdvertiserInfo from '../event/serializer/get-advertiser'
 
-const authControlRouter = express.Router()
+const postBlockRouter = express.Router()
 
-authControlRouter.post(AUTH_CONTROL, tokenValidation, async (req: Request, res: Response) => {
+postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, res: Response) => {
     const { accountId, postBlock} = req.body;
     if(!accountId || postBlock === undefined){
         return res.status(400).send({ message: 'Invalid request' })
@@ -30,7 +30,7 @@ authControlRouter.post(AUTH_CONTROL, tokenValidation, async (req: Request, res: 
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
 
-        advertiser.account.isBlockedPost = postBlock;
+        account.isBlockedPost = postBlock;
         await advertiser.save();
 
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
@@ -41,4 +41,4 @@ authControlRouter.post(AUTH_CONTROL, tokenValidation, async (req: Request, res: 
     }
 })
 
-export default authControlRouter
+export default postBlockRouter
