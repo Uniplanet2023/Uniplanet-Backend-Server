@@ -9,8 +9,8 @@ import GetAdvertiserInfo from '../event/serializer/get-advertiser'
 const increaseCreditRouter = express.Router()
 
 increaseCreditRouter.post(INCREASE_CREDIT, tokenValidation, async (req: Request, res: Response) => {
-    const { accountId, credit, deposit} = req.body;
-    if(!accountId || !credit || !deposit){
+    const { accountId, freeCredit, credit} = req.body;
+    if(!accountId || !freeCredit || !credit){
         return res.status(400).send({ message: 'Invalid request' })
     }
 	const account = await Account.findById(accountId)
@@ -29,8 +29,8 @@ increaseCreditRouter.post(INCREASE_CREDIT, tokenValidation, async (req: Request,
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
-        advertiser.freeCredit = advertiser.freeCredit + credit;
-        advertiser.credit = advertiser.credit + deposit;
+        advertiser.freeCredit = advertiser.freeCredit + freeCredit;
+        advertiser.credit = advertiser.credit + credit;
         await advertiser.save();
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
