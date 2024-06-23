@@ -6,10 +6,10 @@ export type AdvertiserDocument = Document & {
     account: AccountDocument
 	maximumPost: number
 	numberOfPost: number
-	usedCredit: number
-	givenCredit: number
-    budget: number
-    spent: number
+	freeCreditUsed: number
+	freeCredit: number
+    credit: number
+    creditUsed: number
 	costPerClick: number
 }
 
@@ -17,10 +17,10 @@ type AdvertiserAttrs = {
     account: ObjectId
 	maximumPost?: number
 	numberOfPost?: number
-	usedCredit?: number
-	givenCredit?: number
-    budget?: number
-    spent?: number
+	freeCreditUsed?: number
+	freeCredit?: number
+    credit?: number
+    creditUsed?: number
 }
 interface AdvertiserModel extends Model<AdvertiserDocument> {
 	build(attrs: AdvertiserAttrs): AdvertiserDocument
@@ -32,10 +32,10 @@ const advertiserSchema: Schema = new Schema(
 		maximumPost: { type: Number, default: 10},
 		numberOfPost: { type: Number, default: 0 },
         costPerClick: { type: Number , default: 0.4},
-		usedCredit: { type: Number, default: 0 },
-		givenCredit: { type: Number, default: 0 },
-		spent: { type: Number, default: 0 },
-        budget: { type: Number, default: 0 },
+		freeCreditUsed: { type: Number, default: 0 },
+		freeCredit: { type: Number, default: 0 },
+		creditUsed: { type: Number, default: 0 },
+        credit: { type: Number, default: 0 },
 	},
 	{
 		toJSON: {
