@@ -22,10 +22,10 @@ export type GetAdvertiserRestPayload = {
 	maximumPost: number
 	numberOfPost: number
 	costPerClick: number
-	usedCredit: number
-	givenCredit: number
-	budget: number
-	spent: number
+	freeCreditUsed: number
+	freeCredit: number
+	credit: number
+	creditUsed: number
 }
 
 export type UserRestPayload = {

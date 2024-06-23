@@ -29,8 +29,8 @@ increaseCreditRouter.post(INCREASE_CREDIT, tokenValidation, async (req: Request,
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
-        advertiser.givenCredit = advertiser.givenCredit + credit;
-        advertiser.budget = advertiser.budget + deposit;
+        advertiser.freeCredit = advertiser.freeCredit + credit;
+        advertiser.credit = advertiser.credit + deposit;
         await advertiser.save();
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
