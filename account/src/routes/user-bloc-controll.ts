@@ -1,16 +1,16 @@
 import express, { Request, Response } from 'express'
-import { POST_BLOCK_CONTROL } from './routes-def'
+import { BLOCK_CONTROL } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import Advertiser from '../models/advertiser'
 import GetAdvertiserInfo from '../event/serializer/get-advertiser'
 
-const postBlockRouter = express.Router()
+const blockRouter = express.Router()
 
-postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, res: Response) => {
-    const { accountId, isPostBlock} = req.body;
-    if(accountId == undefined|| isPostBlock == undefined){
+blockRouter.post(BLOCK_CONTROL, tokenValidation, async (req: Request, res: Response) => {
+    const { accountId, isPostBlock, isChatBlock, isBlock} = req.body;
+    if(accountId == undefined){
         return res.status(400).send({ message: 'Invalid request' })
     }
 	const account = await Account.findById(accountId)
@@ -29,9 +29,20 @@ postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, r
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
+		if(isBlock != undefined){
+			account.isBlocked = isBlock;
+			advertiser.account.isBlocked = isBlock;
+		}
+		if(isChatBlock != undefined){
+			account.isBlockedChat = isChatBlock;
+			advertiser.account.isBlockedChat = isChatBlock;
+		}
 
-        account.isBlockedPost = isPostBlock;
-		advertiser.account.isBlockedPost = isPostBlock;
+		if(isPostBlock != undefined){
+			account.isBlockedPost = isPostBlock;
+			advertiser.account.isBlockedPost = isPostBlock;
+		}
+		
         await account.save();
 
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
@@ -42,4 +53,4 @@ postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, r
     }
 })
 
-export default postBlockRouter
+export default blockRouter

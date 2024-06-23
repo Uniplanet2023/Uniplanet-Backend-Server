@@ -11,11 +11,11 @@ import adStatisticRouter from './get-ad-statistic'
 import adInteractionRouter from './get-ad-interaction'
 import advertiserListRouter from './get-advertiser-list'
 import increaseCreditRouter from './increase-credit'
-import postBlockRouter from './user-bloc-controll'
+import blockRouter from './user-bloc-controll'
 
 const accountRouter = express.Router()
 
-accountRouter.use(postBlockRouter)
+accountRouter.use(blockRouter)
 accountRouter.use(increaseCreditRouter)
 accountRouter.use(advertiserListRouter)
 accountRouter.use(adInteractionRouter)
