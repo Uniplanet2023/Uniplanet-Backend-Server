@@ -10,8 +10,7 @@ const increaseCreditRouter = express.Router()
 
 increaseCreditRouter.post(INCREASE_CREDIT, tokenValidation, async (req: Request, res: Response) => {
     const { accountId, freeCredit, credit} = req.body;
-    console.log(req.body);
-    if(!accountId || !freeCredit || !credit){
+    if(accountId == undefined || freeCredit == undefined || credit == undefined){
         return res.status(400).send({ message: 'Invalid request' })
     }
 	const account = await Account.findById(accountId)
