@@ -9,8 +9,8 @@ import GetAdvertiserInfo from '../event/serializer/get-advertiser'
 const postBlockRouter = express.Router()
 
 postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, res: Response) => {
-    const { accountId, postBlock} = req.body;
-    if(accountId == undefined|| postBlock == undefined){
+    const { accountId, isPostBlock} = req.body;
+    if(accountId == undefined|| isPostBlock == undefined){
         return res.status(400).send({ message: 'Invalid request' })
     }
 	const account = await Account.findById(accountId)
@@ -25,13 +25,14 @@ postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, r
             return res.status(404).send({ message: 'Admin not found' })
         }
         
-		const advertiser = await Advertiser.findOne({account:req.user!.id});
+		const advertiser = await Advertiser.findOne({account:account.id});
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
 
-        account.isBlockedPost = postBlock;
-        await advertiser.save();
+        account.isBlockedPost = isPostBlock;
+		advertiser.account.isBlockedPost = isPostBlock;
+        await account.save();
 
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
