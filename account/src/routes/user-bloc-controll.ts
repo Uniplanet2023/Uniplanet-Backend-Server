@@ -10,7 +10,7 @@ const postBlockRouter = express.Router()
 
 postBlockRouter.post(POST_BLOCK_CONTROL, tokenValidation, async (req: Request, res: Response) => {
     const { accountId, postBlock} = req.body;
-    if(!accountId || postBlock === undefined){
+    if(accountId == undefined|| postBlock == undefined){
         return res.status(400).send({ message: 'Invalid request' })
     }
 	const account = await Account.findById(accountId)
