@@ -5,6 +5,7 @@ import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
 import Advertiser from '../models/advertiser'
 import GetAdvertiserInfo from '../event/serializer/get-advertiser'
+import { userPostBlockProducer } from '..'
 
 const blockRouter = express.Router()
 
@@ -41,6 +42,10 @@ blockRouter.post(BLOCK_CONTROL, tokenValidation, async (req: Request, res: Respo
 		if(isPostBlock != undefined){
 			account.isBlockedPost = isPostBlock;
 			advertiser.account.isBlockedPost = isPostBlock;
+			userPostBlockProducer.sendMessage({
+				id: account._id,
+				postBlock: isPostBlock,
+			})
 		}
 		
         await account.save();

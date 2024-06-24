@@ -81,6 +81,7 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 				// User Upload Block
 				userPostBlockProducer.sendMessage({
 					id: account._id,
+					postBlock: true,
 				})
 			}
 			await advertiser.save();

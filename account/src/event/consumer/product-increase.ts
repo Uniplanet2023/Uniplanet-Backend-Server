@@ -25,6 +25,7 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 			// Product Upload Block
 			userPostBlockProducer.sendMessage({
 				id: account._id,
+				postBlock: true,
 			})
 		}
 		await advertiser.save();
