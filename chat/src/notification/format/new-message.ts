@@ -38,16 +38,16 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				// payload: {
-				// 	id: chatData.id,
-				// 	seller: chatData.seller,
-				// 	buyer: chatData.buyer,
-				// 	productId: chatData.productId,
-				// 	productName: chatData.productName,
-				// 	lastMessage: chatData.lastMessage,
-				// 	unseenMessageCount: chatData.unseenMessageCount.toString(),
-				// 	deletedFrom: chatData.deletedFrom,
-				//   }
+				payload: JSON.stringify({
+					id: chatData.id,
+					seller: chatData.seller,
+					buyer: chatData.buyer,
+					productId: chatData.productId,
+					productName: chatData.productName,
+					lastMessage: chatData.lastMessage,
+					unseenMessageCount: chatData.unseenMessageCount.toString(),
+					deletedFrom: chatData.deletedFrom,
+				  }),
 			}),
 			"iOS.content.payload.ios": JSON.stringify({
 				id: chatData.id,
