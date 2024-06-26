@@ -19,7 +19,17 @@ export const newMessageNotification = async (
 	})
 
 	const chatData = new GetChatInfo(chat, currentChatUnseenMessage.length).serializeRest()
-	
+	var payload = {
+		id: chatData.id,
+		seller: chatData.seller,
+		buyer: chatData.buyer,
+		productId: chatData.productId,
+		productName: chatData.productName,
+		lastMessage: chatData.lastMessage,
+		unseenMessageCount: chatData.unseenMessageCount.toString(),
+		deletedFrom: chatData.deletedFrom,
+	  }
+	  console.log('payload', payload)
 	
 	const notificationPayload = {
 		notification: {
@@ -38,16 +48,7 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				payload: JSON.stringify({
-					id: chatData.id,
-					seller: chatData.seller,
-					buyer: chatData.buyer,
-					productId: chatData.productId,
-					productName: chatData.productName,
-					lastMessage: chatData.lastMessage,
-					unseenMessageCount: chatData.unseenMessageCount.toString(),
-					deletedFrom: chatData.deletedFrom,
-				  }),
+				payload: payload
 			}),
 			"iOS.content.payload.ios": JSON.stringify({
 				id: chatData.id,
