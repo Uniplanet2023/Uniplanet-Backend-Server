@@ -76,9 +76,9 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "97ee61f2-5505-450c-b2d5-8b93cd14bd80"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "c3d1b9b1-7c11-4ea7-b40e-693f3c403854"
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'www.uniplanet-back.autos'
+    service.beta.kubernetes.io/do-loadbalancer-hostname: 'uniplanet-back.autos'
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx

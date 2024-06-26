@@ -58,7 +58,7 @@ export const newMessageNotification = async (
 				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
 				unseenMessageCount: chatData.unseenMessageCount,
 				deletedFrom: chatData.deletedFrom
-			  }),
+			}),
 		},
 
 		android: {
@@ -68,7 +68,7 @@ export const newMessageNotification = async (
 			payload: {
 				"aps": {
 					'mutable-content': 1,
-					"badge": unseenMessageCount,
+					// "badge": unseenMessageCount,
 				},
 				"headers": {
                     'apns-priority': 5
