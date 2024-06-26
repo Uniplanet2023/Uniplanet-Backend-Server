@@ -29,7 +29,6 @@ export const newMessageNotification = async (
 		unseenMessageCount: chatData.unseenMessageCount.toString(),
 		deletedFrom: chatData.deletedFrom,
 	  }
-	  console.log('payload', payload)
 	
 	const notificationPayload = {
 		notification: {
@@ -41,7 +40,7 @@ export const newMessageNotification = async (
 				id:-1,
 				badge:unseenMessageCount,
 				channelKey:'chats',
-				displayOnForeground:true,
+				displayOnForeground:false,
 				notificationLayout:'MessagingGroup',
 				largeIcon:sender.profileImage,
 				bigPicture:sender.profileImage,
