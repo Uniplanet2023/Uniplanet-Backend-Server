@@ -175,8 +175,9 @@ io.on('connection', async socket => {
 	})
 	socket.on('new message', async ({ messageJson,senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
+		
 		try {
-			io.to(message.chat).emit('message received', messageJson, senderJson)
+			io.to(message.chat).emit('message received', {messageJson, senderJson})
 			userUpdateProvider.sendMessage({ id: message.receiver, unSeenMessages: 1 })
 			messageCreateProvider.sendMessage(message)
 			callback(message)
