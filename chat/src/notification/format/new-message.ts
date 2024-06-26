@@ -31,7 +31,7 @@ export const newMessageNotification = async (
 				id:-1,
 				badge:unseenMessageCount,
 				channelKey:'chats',
-				displayOnForeground:true,
+				displayOnForeground:false,
 				notificationLayout:'MessagingGroup',
 				largeIcon:sender.profileImage,
 				bigPicture:sender.profileImage,
@@ -68,7 +68,7 @@ export const newMessageNotification = async (
 			payload: {
 				"aps": {
 					'mutable-content': 1,
-					// "badge": unseenMessageCount,
+					"badge": unseenMessageCount,
 				},
 				"headers": {
                     'apns-priority': 5
