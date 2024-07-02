@@ -10,13 +10,15 @@ import advertiserInfoRouter from './get-advertiser-info'
 import adStatisticRouter from './get-ad-statistic'
 import adInteractionRouter from './get-ad-interaction'
 import advertiserListRouter from './get-advertiser-list'
-import increaseCreditRouter from './increase-credit'
+import increaseCreditRouter from './increase-credit-admin'
 import blockRouter from './user-bloc-controll'
 import getStripePublicKeyRouter from './payment-config'
 import getStripeClientSecret from './create-payment-intent'
+import increaseCreditRequestRouter from './increase-credit-request'
 
 const accountRouter = express.Router()
 
+accountRouter.use(increaseCreditRequestRouter)
 accountRouter.use(getStripeClientSecret)
 accountRouter.use(getStripePublicKeyRouter)
 accountRouter.use(blockRouter)

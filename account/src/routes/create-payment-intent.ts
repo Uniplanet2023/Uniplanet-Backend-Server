@@ -1,18 +1,32 @@
 import express, { Request, Response } from 'express';
-import { GET_PAYMENT_INTENT } from './routes-def';
 import { stripe } from '../app';
-
+import { GET_PAYMENT_INTENT } from './routes-def';
+import jwt from 'jsonwebtoken';
+import { tokenValidation } from '@uniplanet-lib/common';
 const getStripeClientSecret = express.Router();
 
-getStripeClientSecret.post(GET_PAYMENT_INTENT, async (req: Request, res: Response) => {
+getStripeClientSecret.post(GET_PAYMENT_INTENT, tokenValidation, async (req: Request, res: Response) => {
+    const { creditValue } = req.body;
+    if (!creditValue) {
+        return res.status(400).send({ error: 'Credit value is required' });
+    }
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: 1099,
+        amount: parseFloat(creditValue), // Ensure amount is in cents
         currency: 'usd',
         automatic_payment_methods: {
             enabled: true,
         },
     });
-  return res.status(201).send({clientSecret: paymentIntent.client_secret});
+    const userJwt = await jwt.sign(
+        {id: req.user!.id, paymentIntentId: paymentIntent.id, creditValue},
+        process.env.JWT_TOKEN_SECRET as string,
+        {expiresIn: '30m'});
+    
+    return res.status(201).send({
+        clientSecret: paymentIntent.client_secret,
+        token:userJwt,
+    });
+    
 });
 
 export default getStripeClientSecret;
