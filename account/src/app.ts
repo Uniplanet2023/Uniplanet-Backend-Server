@@ -4,6 +4,8 @@ import { errorHandler, NotFoundError, URL_LIST_DEV, URL_LIST_PROD } from '@unipl
 import cors from 'cors'
 import cookieSession from 'cookie-session'
 import dotenv from 'dotenv-safe'
+import accountRouter from './routes'
+import Stripe from 'stripe'
 
 if (process.env.NODE_ENV! == 'development') {
 	dotenv.config({
@@ -11,8 +13,10 @@ if (process.env.NODE_ENV! == 'development') {
 	})
 }
 
-// IMPORTS FROM OTHER FILES
-import accountRouter from './routes'
+
+
+export const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY!);
+	
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 
