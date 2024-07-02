@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import { GET_PAYMENT_INTENT } from './routes-def';
 import { stripe } from '../app';
 
-const getStripePublicKeyRouter = express.Router();
+const getStripeClientSecret = express.Router();
 
-getStripePublicKeyRouter.post(GET_PAYMENT_INTENT, async (req: Request, res: Response) => {
+getStripeClientSecret.post(GET_PAYMENT_INTENT, async (req: Request, res: Response) => {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: 1099,
         currency: 'usd',
@@ -15,4 +15,4 @@ getStripePublicKeyRouter.post(GET_PAYMENT_INTENT, async (req: Request, res: Resp
   return res.status(201).send({clientSecret: paymentIntent.client_secret});
 });
 
-export default getStripePublicKeyRouter;
+export default getStripeClientSecret;

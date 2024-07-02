@@ -13,9 +13,11 @@ import advertiserListRouter from './get-advertiser-list'
 import increaseCreditRouter from './increase-credit'
 import blockRouter from './user-bloc-controll'
 import getStripePublicKeyRouter from './payment-config'
+import getStripeClientSecret from './create-payment-intent'
 
 const accountRouter = express.Router()
 
+accountRouter.use(getStripeClientSecret)
 accountRouter.use(getStripePublicKeyRouter)
 accountRouter.use(blockRouter)
 accountRouter.use(increaseCreditRouter)
