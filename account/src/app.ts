@@ -25,7 +25,9 @@ app.use(express.json())
 app.use(
 	cors({
 		origin: process.env.DEVELOPMENT_MODE == 'production' ? URL_LIST_PROD : URL_LIST_DEV,
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
 		credentials: true,
+		optionsSuccessStatus: 204,
 	}),
 )
 app.use(
