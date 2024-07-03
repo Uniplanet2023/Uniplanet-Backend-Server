@@ -8,7 +8,6 @@ export const URL_LIST_DEV = [
 ]
 
 export const URL_LIST_PROD = [
-	'http://localhost:3000',
 	'https://uniplanet.shop',
 	'https://auth.uniplanet-back.autos',
 	'https://products.uniplanet-back.autos',
