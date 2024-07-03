@@ -35,6 +35,7 @@ app.use(
 )
 app.use(
 	cookieSession({
+		name: 'session',
 		signed: process.env.DEVELOPMENT_MODE == 'production',
 		keys: [process.env.COOKIE_SESSION_KEY!],
 		secure: process.env.DEVELOPMENT_MODE == 'production',
