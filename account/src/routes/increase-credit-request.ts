@@ -36,11 +36,12 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async
 
         // Verify the payment intent status
         const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        console.log('payment status', paymentIntent.status);
         if (paymentIntent.status !== 'succeeded') {
         return res.status(400).send({ success: false, error: 'Payment not confirmed' });
         }
 
-        advertiser.credit = advertiser.credit + creditValue;
+        advertiser.credit = advertiser.credit + creditValue/100;
         await advertiser.save();
 		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
