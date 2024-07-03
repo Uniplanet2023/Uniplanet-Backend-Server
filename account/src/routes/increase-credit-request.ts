@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { INCREASE_CREDIT } from './routes-def'
+import { INCREASE_CREDIT_REQUEST } from './routes-def'
 import { tokenValidation } from '@uniplanet-lib/common'
 import Account from '../models/account'
 import GetAccountInfo from '../event/serializer/get-account'
@@ -9,7 +9,7 @@ import { stripe } from '../app'
 import jwt from 'jsonwebtoken'
 const increaseCreditRequestRouter = express.Router()
 
-increaseCreditRequestRouter.post(INCREASE_CREDIT, tokenValidation, async (req: Request, res: Response) => {
+increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async (req: Request, res: Response) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.status(401).send({ success: false, error: 'No token provided' });
