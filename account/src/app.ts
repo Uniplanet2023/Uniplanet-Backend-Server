@@ -20,11 +20,20 @@ export const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY!);
 const app = express()
 app.set('trust proxy', true) // proxy ingress nginx
 
+const allowedOrigins = process.env.DEVELOPMENT_MODE == 'production' ? URL_LIST_PROD : URL_LIST_DEV;
+
 // middleware
 app.use(express.json())
 app.use(
 	cors({
-		origin: process.env.DEVELOPMENT_MODE == 'production' ? URL_LIST_PROD : URL_LIST_DEV,
+		origin: (origin, callback) => {
+			if (allowedOrigins.includes(origin!) || !origin) {
+			  callback(null, true);
+			} else {
+				console.log('origin', origin)
+			  callback(new Error('Not allowed by CORS'));
+			}
+		  },
 		methods: ['GET', 'POST', 'PUT', 'DELETE'],
 		credentials: true,
 		optionsSuccessStatus: 204,
