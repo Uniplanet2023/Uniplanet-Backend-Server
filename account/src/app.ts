@@ -48,7 +48,6 @@ app.use(
 		domain: process.env.DEVELOPMENT_MODE == 'production' ? '.uniplanet-back.autos' : '.uniplanet-back.auto',
 	}),
 )
-app.use(cors())
 app.use(accountRouter)
 app.all('*', () => {
 	throw new NotFoundError()

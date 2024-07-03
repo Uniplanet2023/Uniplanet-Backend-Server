@@ -1,6 +1,5 @@
 export const URL_LIST_DEV = [
 	'http://localhost:3000',
-	'http://uniplanet.shop',
 	'http://auth.uniplanet-back.autos',
 	'http://products.uniplanet-back.autos',
 	'http://account.uniplanet-back.autos',
