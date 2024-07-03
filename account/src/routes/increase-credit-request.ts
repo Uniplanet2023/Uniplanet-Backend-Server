@@ -14,12 +14,14 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT, tokenValidation, async (req: R
     if (!authHeader) {
         return res.status(401).send({ success: false, error: 'No token provided' });
     }
+    console.log('authHeader', authHeader);
 	const account = await Account.findById(req.user!.id)
 	if (!account) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
 
     const token = authHeader.split(' ')[1];
+    console.log('token', token);
 	const accountInfo = new GetAccountInfo(account)
 
 	if(req.user!.type === 'advertiser'){
@@ -29,6 +31,7 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT, tokenValidation, async (req: R
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
         const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET as string);
+        console.log('decoded', decoded);
         const { paymentIntentId, creditValue } = decoded as any;
 
         // Verify the payment intent status

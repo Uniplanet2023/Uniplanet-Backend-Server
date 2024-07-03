@@ -17,14 +17,14 @@ getStripeClientSecret.post(GET_PAYMENT_INTENT, tokenValidation, async (req: Requ
             enabled: true,
         },
     });
-    const userJwt = await jwt.sign(
+    const paymentIntentJwt = await jwt.sign(
         {id: req.user!.id, paymentIntentId: paymentIntent.id, creditValue},
         process.env.JWT_TOKEN_SECRET as string,
         {expiresIn: '30m'});
-    
+    console.log(paymentIntentJwt);
     return res.status(201).send({
         clientSecret: paymentIntent.client_secret,
-        token:userJwt,
+        token:paymentIntentJwt,
     });
     
 });
