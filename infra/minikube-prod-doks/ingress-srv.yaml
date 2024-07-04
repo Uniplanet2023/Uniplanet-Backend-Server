@@ -75,7 +75,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: payment-srv
+                name: client-srv
                 port:
                   number: 3005
 ---
