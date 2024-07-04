@@ -2,9 +2,11 @@
   "name": "client",
   "version": "1.0.0",
   "description": "",
-  "main": "/src/index.tsx",
+  "main": "/src/pages/index.tsx",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "eslintConfig": {
     "extends": [

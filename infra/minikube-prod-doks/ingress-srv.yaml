@@ -86,7 +86,7 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "c3d1b9b1-7c11-4ea7-b40e-693f3c403854"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "1cef9a25-5c63-4ed8-800c-9560a2d182b1"
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
     service.beta.kubernetes.io/do-loadbalancer-hostname: 'uniplanet-back.autos'
   labels:
