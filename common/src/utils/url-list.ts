@@ -1,5 +1,5 @@
 export const URL_LIST_DEV = [
-	'http://localhost:3000',
+	'https://payment.uniplanet-back.autos',
 	'http://auth.uniplanet-back.autos',
 	'http://products.uniplanet-back.autos',
 	'http://account.uniplanet-back.autos',
@@ -8,7 +8,7 @@ export const URL_LIST_DEV = [
 ]
 
 export const URL_LIST_PROD = [
-	'https://uniplanet.shop',
+	'https://payment.uniplanet-back.autos',
 	'https://auth.uniplanet-back.autos',
 	'https://products.uniplanet-back.autos',
 	'https://account.uniplanet-back.autos',
