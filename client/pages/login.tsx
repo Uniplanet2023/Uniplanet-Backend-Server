@@ -1,11 +1,10 @@
+// pages/login.tsx
 import React from 'react';
+import LoginBody from '../components/LoginBody';
+
 
 const Login: React.FC = () => {
-  return (
-    <div>
-      <h1>Login Page</h1>
-    </div>
-  );
+  return <LoginBody />;
 };
 
 export default Login;
