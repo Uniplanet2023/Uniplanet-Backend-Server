@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector: # letting deployment know what app should dealing with
+    matchLabels:
+      app: client
+  template: # specify exact configuration of the pod we want to deployment to create
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: uniplanet/client:latest
+          resources:
+            limits:
+              memory: 250Mi
+              cpu: "200m"
+            requests:
+               memory: 200Mi
+               cpu: "150m"
+          env:
+            
+            - name: COOKIE_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret
+                  key: COOKIE_SESSION_KEY
+
+            - name: JWT_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_TOKEN_SECRET
+
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_HOST
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_PORT
+            - name: SMTP_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-config
+                  key: SMTP_MODE
+
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec: 
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3005
+      targetPort: 3005
