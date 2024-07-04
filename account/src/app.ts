@@ -45,7 +45,7 @@ app.use(
 		signed: process.env.DEVELOPMENT_MODE == 'production',
 		keys: [process.env.COOKIE_SESSION_KEY!],
 		secure: process.env.DEVELOPMENT_MODE == 'production',
-		sameSite: 'none',
+		sameSite: 'lax',
 		domain: process.env.DEVELOPMENT_MODE == 'production' ? '.uniplanet-back.autos' : '.uniplanet-back.auto',
 	}),
 )

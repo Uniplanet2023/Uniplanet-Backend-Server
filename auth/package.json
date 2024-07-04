@@ -25,7 +25,7 @@
 	"author": "Sije Park",
 	"license": "ISC",
 	"dependencies": {
-		"@uniplanet-lib/common": "^1.0.98",
+		"@uniplanet-lib/common": "^1.0.99",
 		"bull": "4.12.2",
 		"cookie-session": "^2.1.0",
 		"cors": "2.8.5",
