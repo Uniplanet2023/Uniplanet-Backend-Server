@@ -38,9 +38,9 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async
         const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
         console.log('payment status', paymentIntent);
         
-        if (paymentIntent.status !== 'succeeded') {
-        return res.status(400).send({ success: false, error: 'Payment not confirmed' });
-        }
+        // if (paymentIntent.status !== 'succeeded') {
+        // return res.status(400).send({ success: false, error: 'Payment not confirmed' });
+        // }
 
         advertiser.credit = advertiser.credit + creditValue/100;
         await advertiser.save();
