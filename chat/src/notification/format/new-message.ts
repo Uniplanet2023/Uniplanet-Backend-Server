@@ -47,7 +47,7 @@ export const newMessageNotification = async (
 				showWhen:true,
 				autoDismissible:true,
 				privacy:'Private',
-				payload: payload
+				// payload: payload
 			}),
 			"iOS.content.payload.ios": JSON.stringify({
 				id: chatData.id,
