@@ -19,6 +19,7 @@ export const newMessageNotification = async (
 	})
 
 	const chatData = new GetChatInfo(chat, currentChatUnseenMessage.length).serializeRest()
+	
 	var payload = {
 		id: chatData.id,
 		seller: chatData.seller,
