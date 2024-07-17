@@ -23,6 +23,7 @@ export default class GetUserInfo extends BaseSerializeEvent<GetUserRestPayload> 
 			email: this.user.email,
 			profileImage: this.user.profileImage,
 			school: this.user.school,
+			type: this.user.type,
 		}
 	}
 }

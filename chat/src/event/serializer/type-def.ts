@@ -4,6 +4,7 @@ export type GetUserRestPayload = {
 	email: string
 	profileImage: string
 	school: string
+	type: string
 }
 
 export type GetChatRestPayload = {
