@@ -8,5 +8,6 @@ export interface UserCreatedEvent {
 		email: string
 		school: string
 		profileImage: string
+		type: string
 	}
 }

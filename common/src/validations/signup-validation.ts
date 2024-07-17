@@ -67,4 +67,5 @@ export const userTypeValidation: ValidationChain = body('userType')
     return true;
   })
   .withMessage('User type must be one of the following: student, local, admin, advertiser');
+  
 
