@@ -1,10 +1,10 @@
 export const URL_LIST_DEV = [
-	'https://payment.uniplanet-back.autos',
-	'http://auth.uniplanet-back.autos',
-	'http://products.uniplanet-back.autos',
-	'http://account.uniplanet-back.autos',
-	'http://chat.uniplanet-back.autos',
-	'http://message.uniplanet-back.autos',
+	'https://payment.uniplanet-back.auto',
+	'http://auth.uniplanet-back.auto',
+	'http://products.uniplanet-back.auto',
+	'http://account.uniplanet-back.auto',
+	'http://chat.uniplanet-back.auto',
+	'http://message.uniplanet-back.auto',
 ]
 
 export const URL_LIST_PROD = [

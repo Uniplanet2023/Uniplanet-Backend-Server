@@ -30,7 +30,7 @@ export class NodemailerSmtpServer implements SmtpServer {
 			}
 			this.configAuth = {
 				type: 'OAuth2',
-				user: 'uniplanet.info@gmail.com',
+				user: process.env.DEVELOPMENT_MODE == 'production' ? 'uniplanet.info@gmail.com' : 'sije.park@uniplanet.shop',
 				clientId: this.smtpPublic,
 				clientSecret: this.smtpPrivate,
 				refreshToken: this.smtpRefreshToken,
