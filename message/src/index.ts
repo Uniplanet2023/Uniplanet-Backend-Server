@@ -87,43 +87,46 @@ io.on('connection', async socket => {
 	})
 	socket.on('chat room created', async (chatJson, existingChat, callback) => {
 		try {
-			const chat = JSON.parse(chatJson)
+			const chat = JSON.parse(chatJson);
+	
 			// Join chat rooms only if the socket is not already in them
-			
 			if (!socket.rooms.has(chat.id)) {
-				socket.chatRoomId.push(chat.id)
-				socket.join(chat.id)
-				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id)
-				io.to(chat.seller.id).emit('chat room created', chatJson, existingChat)
+				socket.chatRoomId.push(chat.id);
+				socket.join(chat.id);
+				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id);
+				io.to(chat.seller.id).emit('chat room created', chatJson, existingChat);
 			} else {
-				console.log(`Socket already in chat room: ${chat.id}`)
+				console.log(`Socket already in chat room: ${chat.id}`);
 			}
-
+	
 			if (!socket.rooms.has(chat.seller.id)) {
-				socket.join(chat.seller.id)
+				socket.join(chat.seller.id);
 			} else {
-				console.log(`Socket already in seller's room: ${chat.seller.id}`)
+				console.log(`Socket already in seller's room: ${chat.seller.id}`);
 			}
-
+	
+			// Log the type and value of chat.seller.id
+			console.log(`chat.seller.id: ${chat.seller.id} (type: ${typeof chat.seller.id})`);
+	
 			// Check if the seller is online and send notification if not
-			const isOnline = await redisClient.redis.sIsMember(`Online User`, chat.seller.id)
-			callback(isOnline)
-
+			const isOnline = await redisClient.redis.sIsMember('Online User', chat.seller.id);
+			callback(isOnline);
+	
 			// Send notification to seller if they are offline
-			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`)
+			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`);
 			if (receiverToken) {
 				try {
-					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer)
-					const response = await admin.messaging().send(notification)
-					console.log('Successfully sent message:', response)
+					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer);
+					const response = await admin.messaging().send(notification);
+					console.log('Successfully sent message:', response);
 				} catch (error) {
-					console.error('Error sending message:', error)
+					console.error('Error sending message:', error);
 				}
 			}
 		} catch (error) {
-			console.error('Error processing chat room creation:', error)
+			console.error('Error processing chat room creation:', error);
 		}
-	})
+	});
 	socket.on('chat room deleted', async ({ chatRoom, clientId }, callback) => {
 		console.log('Deleting chat room:', chatRoom)
 		try {
