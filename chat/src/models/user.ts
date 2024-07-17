@@ -7,6 +7,7 @@ export type UserDocument = Document & {
 	email: string
 	profileImage: string
 	school: string
+	type: string
 }
 
 type UserAttrs = {
@@ -15,6 +16,7 @@ type UserAttrs = {
 	email: string
 	profileImage: string
 	school: string
+	type: string
 }
 interface UserModel extends Model<UserDocument> {
 	build(attrs: UserAttrs): UserDocument
@@ -45,6 +47,11 @@ const userSchema: Schema = new Schema(
 			required: true,
 		},
 		deletionDate: { type: Date, default: null },
+		type:{
+			type: String,
+			required: true,
+			default: 'local',
+		}
 	},
 	{
 		toJSON: {
@@ -67,6 +74,7 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 		email: attrs.email,
 		profileImage: attrs.profileImage,
 		school: attrs.school,
+		type: attrs.type,
 	})
 	return user
 }
