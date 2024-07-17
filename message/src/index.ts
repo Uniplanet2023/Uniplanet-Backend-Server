@@ -89,6 +89,9 @@ io.on('connection', async socket => {
 		try {
 			const chat = JSON.parse(chatJson);
 	
+			// Log the entire chat object
+			console.log(`chat: ${JSON.stringify(chat)}`);
+	
 			// Join chat rooms only if the socket is not already in them
 			if (!socket.rooms.has(chat.id)) {
 				socket.chatRoomId.push(chat.id);
@@ -105,15 +108,16 @@ io.on('connection', async socket => {
 				console.log(`Socket already in seller's room: ${chat.seller.id}`);
 			}
 	
-			// Log the type and value of chat.seller.id
-			console.log(`chat.seller.id: ${chat.seller.id} (type: ${typeof chat.seller.id})`);
+			// Ensure chat.seller.id is a string
+			const sellerId = String(chat.seller?.id);
+			console.log(`chat.seller.id: ${sellerId} (type: ${typeof sellerId})`);
 	
 			// Check if the seller is online and send notification if not
-			const isOnline = await redisClient.redis.sIsMember('Online User', chat.seller.id);
+			const isOnline = await redisClient.redis.sIsMember('Online User', sellerId);
 			callback(isOnline);
 	
 			// Send notification to seller if they are offline
-			const receiverToken = await redisClient.redis.get(`firebaseToken:${chat.seller.id}`);
+			const receiverToken = await redisClient.redis.get(`firebaseToken:${sellerId}`);
 			if (receiverToken) {
 				try {
 					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer);
