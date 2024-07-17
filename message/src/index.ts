@@ -89,28 +89,34 @@ io.on('connection', async socket => {
 		try {
 			const chat = JSON.parse(chatJson);
 	
+			// Parse the seller and buyer JSON strings
+			const seller = JSON.parse(chat.seller);
+			const buyer = JSON.parse(chat.buyer);
+	
 			// Log the entire chat object
 			console.log(`chat: ${JSON.stringify(chat)}`);
+			console.log(`seller: ${JSON.stringify(seller)}`);
+			console.log(`buyer: ${JSON.stringify(buyer)}`);
 	
 			// Join chat rooms only if the socket is not already in them
 			if (!socket.rooms.has(chat.id)) {
 				socket.chatRoomId.push(chat.id);
 				socket.join(chat.id);
 				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id);
-				io.to(chat.seller.id).emit('chat room created', chatJson, existingChat);
+				io.to(seller.id).emit('chat room created', chatJson, existingChat);
 			} else {
 				console.log(`Socket already in chat room: ${chat.id}`);
 			}
 	
-			if (!socket.rooms.has(chat.seller.id)) {
-				socket.join(chat.seller.id);
+			if (!socket.rooms.has(seller.id)) {
+				socket.join(seller.id);
 			} else {
-				console.log(`Socket already in seller's room: ${chat.seller.id}`);
+				console.log(`Socket already in seller's room: ${seller.id}`);
 			}
 	
-			// Ensure chat.seller.id is a string
-			const sellerId = String(chat.seller?.id);
-			console.log(`chat.seller.id: ${sellerId} (type: ${typeof sellerId})`);
+			// Ensure seller.id is a string
+			const sellerId = String(seller.id);
+			console.log(`seller.id: ${sellerId} (type: ${typeof sellerId})`);
 	
 			// Check if the seller is online and send notification if not
 			const isOnline = await redisClient.redis.sIsMember('Online User', sellerId);
@@ -120,7 +126,7 @@ io.on('connection', async socket => {
 			const receiverToken = await redisClient.redis.get(`firebaseToken:${sellerId}`);
 			if (receiverToken) {
 				try {
-					const notification = creatingChatNotification(receiverToken, chatJson, chat.buyer);
+					const notification = creatingChatNotification(receiverToken, chatJson, buyer);
 					const response = await admin.messaging().send(notification);
 					console.log('Successfully sent message:', response);
 				} catch (error) {
