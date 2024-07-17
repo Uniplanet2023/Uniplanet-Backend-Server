@@ -11,6 +11,7 @@ export type UserDocument = Document & {
 	verified: boolean
 	password: string
 	type: string
+	phoneNumber: string
 	deletionDate?: Date
 }
 
@@ -21,6 +22,7 @@ type UserAttrs = {
 	password: string
 	verified?: boolean
 	type?: string
+	phoneNumber?: string
 	deletionDate?: Date
 }
 
@@ -34,6 +36,7 @@ const userSchema: Schema = new Schema(
 		name: {
 			type: String,
 			trim: true,
+			required: true,
 		},
 		//temp profileImage
 		profileImage: {
@@ -58,13 +61,17 @@ const userSchema: Schema = new Schema(
 		},
 		type: {
 			type: String,
-			default: 'user',
+			required: true,
 		},
 		verified: {
 			type: Boolean,
 			default: false,
 		},
 		deletionDate: { type: Date, default: null },
+		phoneNumber: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		toJSON: {

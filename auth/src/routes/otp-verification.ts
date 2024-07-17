@@ -21,6 +21,7 @@ otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) =
 				email: user.email,
 				school: user.school,
 				profileImage: user.profileImage,
+				type: user.type,
 			})
 			return res.status(200).json({ message: result })
 		case Signup.OTP_EXPIRED:
