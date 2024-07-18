@@ -19,5 +19,4 @@
 		"strict": true
 	},
 	"include": ["**/*.ts", ".eslintrc.js"],
-	"exclude": ["node_modules", "**/*.test.ts"]
 }
