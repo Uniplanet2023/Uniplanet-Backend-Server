@@ -10,7 +10,8 @@ COPY package.json .
 RUN npm cache clean --force
 
 # Install dependencies using npm ci
-RUN npm install --omit=dev || cat /root/.npm/_logs/*.log
+RUN npm install --omit=dev
+RUN cat /root/.npm/_logs/*.log
 
 # Copy the rest of the application
 COPY . .
