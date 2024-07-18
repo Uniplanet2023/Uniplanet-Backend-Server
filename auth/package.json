@@ -4,6 +4,7 @@
 	"description": "Uniplanet BackEnd Server",
 	"main": "index.ts",
 	"scripts": {
+		"build": "tsc",
 		"lint": "eslint src",
 		"lint:staged": "lint-staged",
 		"prettier:check": "prettier --check .",
