@@ -10,7 +10,7 @@ COPY package.json .
 RUN npm cache clean --force
 
 # Install dependencies using npm ci
-RUN npm install
+RUN npm install --omit=dev
 
 # Copy the rest of the application
 COPY . .
