@@ -1,7 +1,4 @@
-FROM node:20-alpine
-
-# Update npm to the latest version
-RUN npm install -g npm@latest
+FROM node:alpine
 
 # Clean the cache to prevent issues
 RUN npm cache clean --force
@@ -11,11 +8,10 @@ WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
 COPY package.json .
-COPY package-lock.json .
 
 
 # Install dependencies using npm ci
-RUN npm ci --legacy-peer-deps --omit=dev
+RUN npm install --legacy-peer-deps --omit=dev
 
 # Copy the rest of the application
 COPY . .
