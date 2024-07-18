@@ -18,7 +18,7 @@ const PaymentPage: React.FC = () => {
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const fetchPaymentIntent = async (value: string) => {
-    const response = await fetch('https://account.uniplanet-back.autos/api/account/payment-intent', {
+    const response = await fetch('https://account.uniplanet.shop/api/account/payment-intent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -10,15 +10,15 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - payment.uniplanet-back.autos
-        - auth.uniplanet-back.autos
-        - products.uniplanet-back.autos
-        - account.uniplanet-back.autos
-        - chat.uniplanet-back.autos
-        - message.uniplanet-back.autos
+        - uniplanet.shop
+        - auth.uniplanet.shop
+        - products.uniplanet.shop
+        - account.uniplanet.shop
+        - chat.uniplanet.shop
+        - message.uniplanet.shop
       secretName: letsencrypt-nginx
   rules:
-    - host: auth.uniplanet-back.autos
+    - host: auth.uniplanet.shop
       http:
         paths:
           - path: /api/auth/?(.*)
@@ -28,7 +28,7 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: products.uniplanet-back.autos
+    - host: products.uniplanet.shop
       http:
         paths:
           - path: /api/products/?(.*)
@@ -38,7 +38,7 @@ spec:
                 name: products-srv
                 port:
                   number: 3001
-    - host: account.uniplanet-back.autos
+    - host: account.uniplanet.shop
       http:
         paths:
           - path: /api/account/?(.*)
@@ -48,7 +48,7 @@ spec:
                 name: account-srv
                 port:
                   number: 3002
-    - host: chat.uniplanet-back.autos
+    - host: chat.uniplanet.shop
       http:
         paths:
           - path: /api/chat/?(.*)
@@ -58,7 +58,7 @@ spec:
                 name: chat-srv
                 port:
                   number: 3003
-    - host: message.uniplanet-back.autos
+    - host: message.uniplanet.shop
       http:
         paths:
           - path: /?(.*)
@@ -68,7 +68,7 @@ spec:
                 name: message-srv
                 port:
                   number: 3004
-    - host: payment.uniplanet-back.autos
+    - host: uniplanet.shop
       http:
         paths:
           - path: /?(.*)
@@ -86,9 +86,9 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "1cef9a25-5c63-4ed8-800c-9560a2d182b1"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "14854808-54c8-4e23-8e68-235e7d2a52cf"
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: 'uniplanet-back.autos'
+    service.beta.kubernetes.io/do-loadbalancer-hostname: 'uniplanet.shop'
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx

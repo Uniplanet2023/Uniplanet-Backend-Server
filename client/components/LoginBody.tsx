@@ -54,7 +54,7 @@ const LoginBody = () => {
   useEffect(() => {
     const tokenLogin = async () => {
       try {
-        const response = await fetch('https://auth.uniplanet-back.autos/api/auth/token-login', {
+        const response = await fetch('https://auth.uniplanet.shop/api/auth/token-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const LoginBody = () => {
   const handleLogin = async () => {
     console.log('Logging in:', { email, password, rememberMe });
     try {
-      const response = await fetch('https://auth.uniplanet-back.autos/api/auth/signin', {
+      const response = await fetch('https://auth.uniplanet.shop/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

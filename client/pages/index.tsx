@@ -1,7 +1,15 @@
 import React from 'react';
+import HomeBody from '../components/HomeBody';
+import HomeBanner from '../components/HomeBanner';
 
-const TestComponent: React.FC = () => {
-  return <h1>Test</h1>;
+
+const Home: React.FC = () => {
+  return (
+    <>
+      <HomeBody />
+      <HomeBanner />
+    </>
+  );
 };
 
-export default TestComponent;
+export default Home;

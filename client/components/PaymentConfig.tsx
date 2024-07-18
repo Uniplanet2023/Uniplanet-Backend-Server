@@ -15,7 +15,7 @@ const PaymentConfig: React.FC<PaymentProps> = ({ clientSecret, paymentToken }) =
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch('https://account.uniplanet-back.autos/api/account/stripe-public-key', {
+        const response = await fetch('https://account.uniplanet.shop/api/account/stripe-public-key', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

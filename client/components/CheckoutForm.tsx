@@ -26,7 +26,7 @@ const CheckoutForm: React.FC<PaymentProps> = ({ paymentToken }) => {
     console.log('test');
 
     try {
-      const response = await fetch('https://account.uniplanet-back.autos/api/account/increase-credit-request', {
+      const response = await fetch('https://account.uniplanet.shop/api/account/increase-credit-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
