@@ -4,7 +4,7 @@ FROM node:22-alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 
 # Clean the cache to prevent issues
@@ -18,6 +18,9 @@ COPY . .
 
 # Build the TypeScript code
 RUN npm run build
+
+# Remove global TypeScript (optional but recommended)
+RUN npm uninstall -g typescript
 
 # Expose the port the app runs on
 EXPOSE 3000
