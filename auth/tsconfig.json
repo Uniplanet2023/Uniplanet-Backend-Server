@@ -18,5 +18,6 @@
 		"skipLibCheck": true,
 		"strict": true
 	},
-	"include": ["**/*.ts", ".eslintrc.js"]
+	"include": ["**/*.ts", ".eslintrc.js"],
+	"exclude": ["node_modules", "**/*.test.ts"]
 }
