@@ -47,11 +47,11 @@ const userSchema: Schema = new Schema(
 			required: true,
 		},
 		deletionDate: { type: Date, default: null },
-		type:{
+		type: {
 			type: String,
 			required: true,
 			default: 'local',
-		}
+		},
 	},
 	{
 		toJSON: {

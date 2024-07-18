@@ -7,7 +7,7 @@ import { UserCreatedProducer, UserRestoreProducer } from './events'
 import { UserDeletedProducer } from './events/producer/user-deleteted'
 import TokenRefreshScheduler from './scheduler/token-refresh-schedule'
 
-const { PORT = 3000, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST, DEVELOPMENT_MODE,} = process.env
+const { PORT = 3000, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST, DEVELOPMENT_MODE } = process.env
 
 const emailSender = EmailSender.getInstance()
 emailSender.activate()

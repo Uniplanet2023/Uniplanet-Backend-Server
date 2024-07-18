@@ -13,23 +13,29 @@ import {
 } from '@uniplanet-lib/common'
 import { sendVerificationEmail } from '../utils/send-verification-email'
 
-
 const signUpRouter = express.Router()
 
 signUpRouter.post(
 	SIGNUP_ROUTE,
-	[...emailValidation, nameValidation, schoolValidation, ...passwordValidation, userTypeValidation, phoneNumberValidation],
+	[
+		...emailValidation,
+		nameValidation,
+		schoolValidation,
+		...passwordValidation,
+		userTypeValidation,
+		phoneNumberValidation,
+	],
 	validateRequest,
 	async (req: Request, res: Response) => {
 		const { name, email, password, school, userType, phoneNumber } = req.body
 
 		const existingUser = await User.findOne({ email })
-		
+
 		if (existingUser) {
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
 			}
-			
+
 			await existingUser.updateOne({ password, school })
 			// User exists but not verified, resend verification email
 			if (process.env.SMTP_HOST === 'kubernetes-env') {
@@ -43,9 +49,9 @@ signUpRouter.post(
 
 		// Determine the user type based on the email suffix
 
-		const newUser = User.build({ name, email, password, school, type: userType, phoneNumber, deletionDate: new Date()})
+		const newUser = User.build({ name, email, password, school, type: userType, phoneNumber, deletionDate: new Date() })
 		await newUser.save()
-		
+
 		if (process.env.SMTP_HOST === 'kubernetes-env') {
 			return res.status(201).json({ newUser })
 		} else {

@@ -67,13 +67,13 @@ const accountSchema: Schema = new Schema(
 			type: Number,
 			default: 0,
 		},
-		numberOfReports:{
+		numberOfReports: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
-		status:{
+		status: {
 			type: String,
-			default: 'active'
+			default: 'active',
 		},
 		deletionDate: { type: Date, default: null },
 		isBlocked: { type: Boolean, default: false },

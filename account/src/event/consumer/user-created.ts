@@ -10,7 +10,7 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
 	async onMessage(data: UserCreatedEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email
 		console.log(`user Created ${data.email} -- account server`)
-		
+
 		const account = Account.build({
 			_id: data.id,
 			name: data.name,
@@ -22,15 +22,14 @@ export default class UserCreatedConsumer extends BaseConsumer<UserCreatedEvent> 
 			isBlockedPost: false,
 			type: data.type,
 		})
-		await account.save();
-		if(data.type === 'advertiser') {
+		await account.save()
+		if (data.type === 'advertiser') {
 			const advertiser = Advertiser.build({
 				account: account.id,
-			});
-			await advertiser.save();
+			})
+			await advertiser.save()
 		}
-		
-		
+
 		console.log('account created successfully')
 	}
 }

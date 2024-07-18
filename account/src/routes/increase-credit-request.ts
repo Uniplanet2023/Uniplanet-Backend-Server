@@ -10,46 +10,45 @@ import jwt from 'jsonwebtoken'
 const increaseCreditRequestRouter = express.Router()
 
 increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async (req: Request, res: Response) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).send({ success: false, error: 'No token provided' });
-    }
-    console.log('authHeader', authHeader);
+	const authHeader = req.headers.authorization
+	if (!authHeader) {
+		return res.status(401).send({ success: false, error: 'No token provided' })
+	}
+	console.log('authHeader', authHeader)
 	const account = await Account.findById(req.user!.id)
 	if (!account) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
 
-    const token = authHeader.split(' ')[1];
-    console.log('token', token);
+	const token = authHeader.split(' ')[1]
+	console.log('token', token)
 	const accountInfo = new GetAccountInfo(account)
 
-	if(req.user!.type === 'advertiser'){
-        // Increase credit
-		const advertiser = await Advertiser.findOne({account:req.user!.id});
+	if (req.user!.type === 'advertiser') {
+		// Increase credit
+		const advertiser = await Advertiser.findOne({ account: req.user!.id })
 		if (!advertiser || !advertiser.account) {
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
-        const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET as string);
-        console.log('decoded', decoded);
-        const { paymentIntentId, creditValue } = decoded as any;
+		const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET as string)
+		console.log('decoded', decoded)
+		const { paymentIntentId, creditValue } = decoded as any
 
-        // Verify the payment intent status
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        console.log('payment status', paymentIntent);
-        
-        // if (paymentIntent.status !== 'succeeded') {
-        // return res.status(400).send({ success: false, error: 'Payment not confirmed' });
-        // }
+		// Verify the payment intent status
+		const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
+		console.log('payment status', paymentIntent)
 
-        advertiser.credit = advertiser.credit + creditValue/100;
-        await advertiser.save();
-		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest());
+		// if (paymentIntent.status !== 'succeeded') {
+		// return res.status(400).send({ success: false, error: 'Payment not confirmed' });
+		// }
+
+		advertiser.credit = advertiser.credit + creditValue / 100
+		await advertiser.save()
+		const advertiserInfo = new GetAdvertiserInfo(advertiser, accountInfo.serializeRest())
 		return res.status(advertiserInfo.getStatusCode()).send(JSON.stringify(advertiserInfo.serializeRest()))
-
-	}else{
-        return res.status(404).send({ message: 'Advertiser not found' })
-    }
+	} else {
+		return res.status(404).send({ message: 'Advertiser not found' })
+	}
 })
 
 export default increaseCreditRequestRouter

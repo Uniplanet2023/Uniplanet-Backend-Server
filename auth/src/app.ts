@@ -18,19 +18,19 @@ app.set('trust proxy', true) // proxy ingress nginx
 
 // middleware
 app.use(express.json())
-console.log('\nDEVELOPMENT_MODE:', process.env.DEVELOPMENT_MODE);
-const allowedOrigins = process.env.DEVELOPMENT_MODE === 'production' ? URL_LIST_PROD : URL_LIST_DEV;
+console.log('\nDEVELOPMENT_MODE:', process.env.DEVELOPMENT_MODE)
+const allowedOrigins = process.env.DEVELOPMENT_MODE === 'production' ? URL_LIST_PROD : URL_LIST_DEV
 app.use(
 	cors({
 		origin: (origin, callback) => {
 			if (!origin || allowedOrigins.includes(origin)) {
-			  callback(null, true);
+				callback(null, true)
 			} else {
-			  callback(new Error('Not allowed by CORS'));
+				callback(new Error('Not allowed by CORS'))
 			}
-		  },
-		  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-		  credentials: true,
+		},
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
+		credentials: true,
 	}),
 )
 app.use(

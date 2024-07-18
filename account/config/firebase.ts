@@ -6,7 +6,6 @@ export function initializeFirebase(): void {
 			projectId: process.env.FIREBASE_PROJECT_ID,
 			privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
 			clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-			
 		}),
 		projectId: process.env.FIREBASE_PROJECT_ID,
 		serviceAccountId: process.env.FIREBASE_CLIENT_EMAIL,
@@ -16,5 +15,5 @@ export function initializeFirebase(): void {
 
 // Function to get the bucket
 export function getBucket() {
-	return admin.storage().bucket();
-  }
+	return admin.storage().bucket()
+}

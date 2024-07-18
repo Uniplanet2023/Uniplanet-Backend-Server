@@ -20,7 +20,7 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 			throw new Error('Advertiser not found')
 		}
 		advertiser.numberOfPost += 1
-		if ( advertiser.numberOfPost >= advertiser.maximumPost) {
+		if (advertiser.numberOfPost >= advertiser.maximumPost) {
 			account.isBlockedPost = true
 			// Product Upload Block
 			userPostBlockProducer.sendMessage({
@@ -28,7 +28,7 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 				postBlock: true,
 			})
 		}
-		await advertiser.save();
+		await advertiser.save()
 		await account.save()
 		console.log('account number of product increase successfully')
 	}

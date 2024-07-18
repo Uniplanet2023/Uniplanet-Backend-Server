@@ -25,7 +25,7 @@ export const postDeletionReqProducer = new PostDeletionReqProducer(kafkaClient.k
 
 app.listen(PORT, async () => {
 	console.log(`BackEnd Connection : BackEnd Server connected at port ${PORT}`)
-	
+
 	// secretCheck()
 	if (process.env.NODE_ENV == 'production') {
 		console.log('Kafka Broker', process.env.KAFKA_BROKER!)

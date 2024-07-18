@@ -5,7 +5,6 @@ import { AccountDocument } from '../../models/account'
 export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPayload> {
 	private account: AccountDocument
 
-
 	private statusCode = 201
 
 	constructor(account: AccountDocument) {

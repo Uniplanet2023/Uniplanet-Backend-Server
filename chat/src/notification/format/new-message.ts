@@ -19,7 +19,7 @@ export const newMessageNotification = async (
 	})
 
 	const chatData = new GetChatInfo(chat, currentChatUnseenMessage.length).serializeRest()
-	
+
 	var payload = {
 		id: chatData.id,
 		seller: chatData.seller,
@@ -29,28 +29,28 @@ export const newMessageNotification = async (
 		lastMessage: chatData.lastMessage,
 		unseenMessageCount: chatData.unseenMessageCount.toString(),
 		deletedFrom: chatData.deletedFrom,
-	  }
-	
+	}
+
 	const notificationPayload = {
 		notification: {
 			title: sender.name as string,
 			body: message.messageType == 'image' ? 'Image' : message.message,
 		},
 		data: {
-			"content": JSON.stringify({
-				id:-1,
-				badge:unseenMessageCount,
-				channelKey:'chats',
-				displayOnForeground:false,
-				notificationLayout:'MessagingGroup',
-				largeIcon:sender.profileImage,
-				bigPicture:sender.profileImage,
-				showWhen:true,
-				autoDismissible:true,
-				privacy:'Private',
+			content: JSON.stringify({
+				id: -1,
+				badge: unseenMessageCount,
+				channelKey: 'chats',
+				displayOnForeground: false,
+				notificationLayout: 'MessagingGroup',
+				largeIcon: sender.profileImage,
+				bigPicture: sender.profileImage,
+				showWhen: true,
+				autoDismissible: true,
+				privacy: 'Private',
 				payload: payload.toString(),
 			}),
-			"iOS.content.payload.ios": JSON.stringify({
+			'iOS.content.payload.ios': JSON.stringify({
 				id: chatData.id,
 				seller: JSON.parse(chatData.seller),
 				buyer: JSON.parse(chatData.buyer),
@@ -58,7 +58,7 @@ export const newMessageNotification = async (
 				productName: chatData.productName,
 				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
 				unseenMessageCount: chatData.unseenMessageCount,
-				deletedFrom: chatData.deletedFrom
+				deletedFrom: chatData.deletedFrom,
 			}),
 		},
 
@@ -67,13 +67,13 @@ export const newMessageNotification = async (
 		},
 		apns: {
 			payload: {
-				"aps": {
+				aps: {
 					'mutable-content': 1,
-					"badge": unseenMessageCount,
+					badge: unseenMessageCount,
 				},
-				"headers": {
-                    'apns-priority': 5
-                }
+				headers: {
+					'apns-priority': 5,
+				},
 			},
 		},
 		token: receiverToken,

@@ -18,12 +18,12 @@ deleteChatRouter.delete(DELETE_CHAT_ROUTE, tokenValidation, async (req, res) => 
 	if (chatRoom === null) {
 		return res.status(404).send({ message: 'Chat not found' })
 	}
-	if(chatRoom.deletedFrom){
-		chatRoom.perminentDelete = true;
-		chatRoom.deletionDate = new Date();
-		await Message.updateMany({ chat: chatId }, { deletionDate: new Date() });
-	}else{
-		chatRoom.deletedFrom = req.user!.id;	
+	if (chatRoom.deletedFrom) {
+		chatRoom.perminentDelete = true
+		chatRoom.deletionDate = new Date()
+		await Message.updateMany({ chat: chatId }, { deletionDate: new Date() })
+	} else {
+		chatRoom.deletedFrom = req.user!.id
 	}
 
 	await chatRoom.save()

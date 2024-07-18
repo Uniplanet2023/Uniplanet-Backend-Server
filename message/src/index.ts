@@ -87,56 +87,56 @@ io.on('connection', async socket => {
 	})
 	socket.on('chat room created', async (chatJson, existingChat, callback) => {
 		try {
-			const chat = JSON.parse(chatJson);
-	
+			const chat = JSON.parse(chatJson)
+
 			// Parse the seller and buyer JSON strings
-			const seller = JSON.parse(chat.seller);
-			const buyer = JSON.parse(chat.buyer);
-	
+			const seller = JSON.parse(chat.seller)
+			const buyer = JSON.parse(chat.buyer)
+
 			// Log the entire chat object
-			console.log(`chat: ${JSON.stringify(chat)}`);
-			console.log(`seller: ${JSON.stringify(seller)}`);
-			console.log(`buyer: ${JSON.stringify(buyer)}`);
-	
+			console.log(`chat: ${JSON.stringify(chat)}`)
+			console.log(`seller: ${JSON.stringify(seller)}`)
+			console.log(`buyer: ${JSON.stringify(buyer)}`)
+
 			// Join chat rooms only if the socket is not already in them
 			if (!socket.rooms.has(chat.id)) {
-				socket.chatRoomId.push(chat.id);
-				socket.join(chat.id);
-				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id);
-				io.to(seller.id).emit('chat room created', chatJson, existingChat);
+				socket.chatRoomId.push(chat.id)
+				socket.join(chat.id)
+				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id)
+				io.to(seller.id).emit('chat room created', chatJson, existingChat)
 			} else {
-				console.log(`Socket already in chat room: ${chat.id}`);
+				console.log(`Socket already in chat room: ${chat.id}`)
 			}
-	
+
 			if (!socket.rooms.has(seller.id)) {
-				socket.join(seller.id);
+				socket.join(seller.id)
 			} else {
-				console.log(`Socket already in seller's room: ${seller.id}`);
+				console.log(`Socket already in seller's room: ${seller.id}`)
 			}
-	
+
 			// Ensure seller.id is a string
-			const sellerId = String(seller.id);
-			console.log(`seller.id: ${sellerId} (type: ${typeof sellerId})`);
-	
+			const sellerId = String(seller.id)
+			console.log(`seller.id: ${sellerId} (type: ${typeof sellerId})`)
+
 			// Check if the seller is online and send notification if not
-			const isOnline = await redisClient.redis.sIsMember('Online User', sellerId);
-			callback(isOnline);
-	
+			const isOnline = await redisClient.redis.sIsMember('Online User', sellerId)
+			callback(isOnline)
+
 			// Send notification to seller if they are offline
-			const receiverToken = await redisClient.redis.get(`firebaseToken:${sellerId}`);
+			const receiverToken = await redisClient.redis.get(`firebaseToken:${sellerId}`)
 			if (receiverToken) {
 				try {
-					const notification = creatingChatNotification(receiverToken, chatJson, buyer);
-					const response = await admin.messaging().send(notification);
-					console.log('Successfully sent message:', response);
+					const notification = creatingChatNotification(receiverToken, chatJson, buyer)
+					const response = await admin.messaging().send(notification)
+					console.log('Successfully sent message:', response)
 				} catch (error) {
-					console.error('Error sending message:', error);
+					console.error('Error sending message:', error)
 				}
 			}
 		} catch (error) {
-			console.error('Error processing chat room creation:', error);
+			console.error('Error processing chat room creation:', error)
 		}
-	});
+	})
 	socket.on('chat room deleted', async ({ chatRoom, clientId }, callback) => {
 		console.log('Deleting chat room:', chatRoom)
 		try {
@@ -186,11 +186,11 @@ io.on('connection', async socket => {
 			console.error('Error in join chat:', error)
 		}
 	})
-	socket.on('new message', async ({ messageJson,senderJson }, callback) => {
+	socket.on('new message', async ({ messageJson, senderJson }, callback) => {
 		const message = JSON.parse(messageJson)
-		
+
 		try {
-			io.to(message.chat).emit('message received', {messageJson, senderJson})
+			io.to(message.chat).emit('message received', { messageJson, senderJson })
 			userUpdateProvider.sendMessage({ id: message.receiver, unSeenMessages: 1 })
 			messageCreateProvider.sendMessage(message)
 			callback(message)

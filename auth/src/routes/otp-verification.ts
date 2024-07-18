@@ -26,19 +26,19 @@ otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) =
 				type: user.type,
 			})
 			// Generate JWT
-		const userJwt = await generateToken(user)
-		if (user.deletionDate) {
-			await User.findByIdAndUpdate({ _id: user.id }, { deletionDate: null }, { new: true })
-			userRestoreProducer.sendMessage({
-				id: user.id,
-				deletionDate: user.deletionDate.toString(),
-			})
-		}
+			const userJwt = await generateToken(user)
+			if (user.deletionDate) {
+				await User.findByIdAndUpdate({ _id: user.id }, { deletionDate: null }, { new: true })
+				userRestoreProducer.sendMessage({
+					id: user.id,
+					deletionDate: user.deletionDate.toString(),
+				})
+			}
 
-		// Store it on session object
-		req.session = { jwt: userJwt }
-		const userInfo = new UserSerializer(user)
-			return res.status(userInfo.getStatusCode()).send( userInfo.serializeRest() )
+			// Store it on session object
+			req.session = { jwt: userJwt }
+			const userInfo = new UserSerializer(user)
+			return res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
 		case Signup.OTP_EXPIRED:
 			throw new OTPExpiredError()
 		case Signup.OTP_INVALID_NUMBER:
