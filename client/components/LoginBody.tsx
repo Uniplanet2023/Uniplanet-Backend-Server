@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography, Link } from '@mui/material';
 import { styled } from '@mui/system';
+import { useAuth } from '../context/auth_provider';
 
 const BackgroundBox = styled(Box)({
   display: 'flex',
@@ -50,53 +51,23 @@ const LoginBody = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
-
+  const { login, tokenLogin, isLoggedIn} = useAuth();
   useEffect(() => {
-    const tokenLogin = async () => {
-      try {
-        const response = await fetch('https://auth.uniplanet.shop/api/auth/token-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'charset': 'UTF-8'
-          },
-          body: JSON.stringify({}), 
-          credentials: 'include'
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Login successful", data);
-          router.push('/payment');
-        } else {
-          console.log("Login failed", response.statusText);
-        }
-      } catch (e) {
-        console.log("Error during login", e);
-      }
-    };
-
-    tokenLogin();
+    console.log('LoginBody useEffect');
+    handleTokenLogin();
   }, [router]);
-  
+
+  const handleTokenLogin = async () => {
+    const data = await tokenLogin();
+    if (data && isLoggedIn) {
+      router.push('/delete-account-conform');
+    }
+  } 
+
   const handleLogin = async () => {
-    console.log('Logging in:', { email, password, rememberMe });
-    try {
-      const response = await fetch('https://auth.uniplanet.shop/api/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'charset':'UTF-8'
-        },
-        body: JSON.stringify({email, password}), 
-        credentials: 'include'
-      });
-      if(response.ok) {
-        const data = await response.json();
-        router.push('/payment');
-      }
-    } catch (e) {
-      console.log("Error during login", e);
+    await login(email,password);
+    if ( isLoggedIn) {
+      router.push('/delete-account-conform');
     }
   };
 

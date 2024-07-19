@@ -1,17 +1,14 @@
-FROM node:alpine
-
-# Clean the cache to prevent issues
-RUN npm cache clean --force
+FROM --platform=linux/amd64 node:20-alpine
 
 # Create and change to the app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json .
-
+# Copy the package.json and package-lock.json
+COPY package.json package-lock.json ./
 
 # Install dependencies using npm ci
-RUN npm install --legacy-peer-deps --omit=dev
+RUN npm ci --legacy-peer-deps --omit=dev
+
 
 # Copy the rest of the application
 COPY . .

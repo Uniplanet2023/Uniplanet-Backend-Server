@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Link } from '@mui/material';
 
 const PrivacyPolicyContent: React.FC = () => {
   return (
@@ -320,7 +320,7 @@ const PrivacyPolicyContent: React.FC = () => {
       Navigate to the Help section.
     </Typography>
     <Typography variant="body1" paragraph>
-      Scroll to the bottom and click on the Delete Account button.
+      Scroll to the bottom and click on the <Link href="/delete-account">Delete Account Link</Link>.
     </Typography>
     <Typography variant="body1" paragraph>
       Your data will be permanently removed from our system after 7 days. If you log in during this period, the deletion request will be canceled, and your data will be retained.

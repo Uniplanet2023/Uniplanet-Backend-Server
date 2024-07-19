@@ -1,5 +1,8 @@
 {
     "configurations": [
+        
+
+    
         {
             "name": "Flutter: Attach to Device",
             "type": "dart",
@@ -14,10 +17,10 @@
         },
         {
             "command": "npm run dev",
-            "name": "Run mail server",
+            "name": "Run client",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceFolder}/mail"
+            "cwd": "${workspaceFolder}/client"
         },
         {
             "command": "npm run dev",

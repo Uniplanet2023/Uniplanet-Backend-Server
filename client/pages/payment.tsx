@@ -28,8 +28,7 @@ const PaymentPage: React.FC = () => {
     });
 
     const { clientSecret, token } = await response.json();
-    console.log('token', token);
-    console.log('clientSecret', clientSecret);
+    
     setPaymentToken(token);
     setClientSecret(clientSecret);
   };

@@ -21,11 +21,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": [
-    "src",
-    "pages",
-    "components"
-  ],
+  // "include": [
+  //   "src",
+  //   "pages",
+  //   "components"
+  // ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules"
   ]
