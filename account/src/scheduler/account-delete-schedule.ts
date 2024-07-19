@@ -1,6 +1,6 @@
 import { IScheduler, Scheduler } from '@uniplanet-lib/common'
 import Account from '../models/account'
-import { deleteFilesByPrefix } from '../../config/firease-delete-files'
+import { deleteFilesByPrefix } from '../config/firease-delete-files'
 
 class UserDeleteScheduler extends Scheduler {
 	constructor() {

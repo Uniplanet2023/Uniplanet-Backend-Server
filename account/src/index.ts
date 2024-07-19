@@ -11,7 +11,7 @@ import { UserPostBlockProducer } from './event/producer/UserPostBlockProducer'
 import { PostDeletionReqProducer } from './event/producer/PostDeletionReqProducer'
 import ClickIncreaseConsumer from './event/consumer/product-click-increase'
 import ProductIncreaseConsumer from './event/consumer/product-increase'
-import { initializeFirebase } from '../config/firebase'
+import { initializeFirebase } from './config/firebase'
 import AccountDeleteScheduler from './scheduler/account-delete-schedule'
 
 const PORT = process.env.PORT || 3002
