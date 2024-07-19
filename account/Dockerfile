@@ -9,7 +9,6 @@ COPY package.json package-lock.json ./
 # Install dependencies using npm ci
 RUN npm ci --legacy-peer-deps --omit=dev
 
-
 # Copy the rest of the application
 COPY . .
 
