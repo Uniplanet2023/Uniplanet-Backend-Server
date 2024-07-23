@@ -11,6 +11,7 @@ export type ChatDocument = mongoose.Document & {
 	deletionDate?: Date
 	deletedFrom?: string
 	perminentDelete: boolean
+	type: string
 }
 
 type ChatAttrs = {
@@ -19,6 +20,7 @@ type ChatAttrs = {
 	buyer: string
 	seller: string
 	lastMessage?: string
+	type: string
 }
 
 interface ChatModel extends mongoose.Model<ChatDocument> {
@@ -35,6 +37,7 @@ const chatModel = new mongoose.Schema(
 		deletionDate: { type: Date, default: null },
 		deletedFrom: { type: String, default: null },
 		perminentDelete: { type: Boolean, default: false },
+		type: { type: String, required: true },
 	},
 	{ timestamps: true },
 )

@@ -16,6 +16,7 @@ export type GetChatRestPayload = {
 	lastMessage?: string
 	unseenMessageCount: string
 	deletedFrom?: string
+	type: string
 }
 
 export type GetMessageRestPayload = {

@@ -10,7 +10,7 @@ import { createChatProducer } from '../app'
 const createChatRouter = express.Router()
 
 createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-	const { productId, productName, seller, buyer } = req.body
+	const { productId, productName, seller, buyer, type } = req.body
 
 	const sellerParsed = JSON.parse(seller)
 	const buyerParsed = JSON.parse(buyer)
@@ -49,19 +49,21 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
 		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg })
 	}
-
+	
 	// Create and save the chat
 	const chat = Chat.build({
 		productName,
 		productId,
 		buyer: buyerObj.id,
 		seller: sellerObj.id,
+		type,
 	})
 	// Save the online status of the buyer in Redis
 
 	const chatObj = await (await chat.save()).populate('seller buyer')
 	createChatProducer.sendMessage({
 		productId: productId,
+		type: type,
 	})
 	const chatInfo = new GetChatInfo(chatObj, 0)
 
