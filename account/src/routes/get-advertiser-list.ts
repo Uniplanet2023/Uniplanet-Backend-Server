@@ -31,6 +31,9 @@ advertiserListRouter.get(GET_ADVERTISER_LIST, tokenValidation, async (req: Reque
 		
 		advertiserList.forEach((advertiser: AdvertiserDocument) => {
 			console.log('advertiserList', advertiser.account);
+			if(!advertiser.account) {
+				return
+			}
 			const advertiserAccount = new GetAccountInfo(advertiser.account)
 			advertiserListData.push(new GetAdvertiserInfo(advertiser, advertiserAccount.serializeRest()).serializeRest())
 		})
