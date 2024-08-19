@@ -15,4 +15,5 @@ export enum Topics {
 	IncreaseClick = 'increase-click',
 	IncreasePost = 'increase-post',
 	PostDeletionRequest = 'post-deletion-request',
+	DecNumberOfFreeItemClick = 'decrease-number-of-free-item-click',
 }
