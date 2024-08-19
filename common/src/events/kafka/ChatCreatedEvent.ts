@@ -5,6 +5,5 @@ export interface ChatCreatedEvent {
 	data: {
 		productId: string
 		type: string
-		productType: string
 	}
 }
