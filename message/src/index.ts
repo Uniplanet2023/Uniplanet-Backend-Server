@@ -44,7 +44,7 @@ export const io = new SocketIOServer(server, {
 initMiddleWare()
 // 2. Socket Router
 io.on('connection', async socket => {
-	console.log('User connected')
+	
 	try {
 		if (socket.userId) {
 			redisClient.redis.sAdd(`Online User`, socket.userId)

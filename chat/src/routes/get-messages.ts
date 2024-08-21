@@ -17,7 +17,7 @@ getMessagesRouter.get(GET_MESSAGES, tokenValidation, async (req, res) => {
 		return res.status(401).send('Unauthorized')
 	}
 
-	console.log('received chatId:', chatId, 'page:', page)
+	
 	const pageNumber = parseInt(page as string) || 1
 	const limit = 20
 	const skip = (pageNumber - 1) * limit

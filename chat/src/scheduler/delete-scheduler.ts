@@ -12,7 +12,6 @@ class DeleteScheduler extends Scheduler {
 
 	async executeJob(): Promise<IScheduler> {
 		const now = new Date()
-		console.log('Chat Delete Scheduler is running')
 
 		try {
 			await this.deleteUsers(now)

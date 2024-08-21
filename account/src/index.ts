@@ -30,7 +30,6 @@ app.listen(PORT, async () => {
 
 	// secretCheck()
 	if (process.env.NODE_ENV == 'production') {
-		console.log('Kafka Broker', process.env.KAFKA_BROKER!)
 		const clickIncreaseConsumer = new ClickIncreaseConsumer(kafkaClient.kafka, 'click-increase')
 		const userCreatedConsumer = new UserCreatedConsumer(kafkaClient.kafka, 'usercreated')
 		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
