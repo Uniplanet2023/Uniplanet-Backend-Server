@@ -4,6 +4,7 @@ export interface ChatCreatedEvent {
 	topic: Topics.ChatCreate
 	data: {
 		productId: string
+		userId: string
 		type: string
 	}
 }

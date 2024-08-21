@@ -3,6 +3,7 @@ import { BaseSerializeEvent } from './BaseSerializeEvent'
 
 interface UserSignedUpRestPayload {
 	id: string
+	name: string
 	email: string
 	school: string
 	verified: boolean
@@ -26,7 +27,8 @@ export default class UserSerializer extends BaseSerializeEvent<UserSignedUpRestP
 
 	serializeRest(): UserSignedUpRestPayload {
 		return {
-			id: this.user._id,
+			id: this.user.id,
+			name: this.user.name,
 			email: this.user.email,
 			school: this.user.school,
 			verified: this.user.verified,

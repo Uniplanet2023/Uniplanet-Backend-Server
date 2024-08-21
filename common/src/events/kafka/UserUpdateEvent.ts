@@ -8,5 +8,7 @@ export interface UserUpdateEvent {
 		profileImage?: string
 		deletionDate?: string
 		unSeenMessages?: number
+		isBlocked?: boolean
+		canGetFreeItems?: boolean
 	}
 }

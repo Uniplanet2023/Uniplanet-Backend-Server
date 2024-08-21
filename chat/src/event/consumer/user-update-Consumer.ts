@@ -13,9 +13,11 @@ export class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 			console.log('consume UserUpdateEvent Kafka')
 			if (data.name) {
 				await User.findByIdAndUpdate({ _id: data.id }, { name: data.name })
-			} else if (data.profileImage) {
+			}
+			if (data.profileImage) {
 				await User.findByIdAndUpdate({ _id: data.id }, { profileImage: data.profileImage })
-			} else if (data.deletionDate != null) {
+			}
+			if (data.deletionDate != null) {
 				await Chat.updateMany({ $or: [{ seller: data.id }, { buyer: data.id }] }, { $set: { deletionDate: null } })
 
 				await User.updateOne({ _id: data.id }, { $set: { deleteDate: null } })
@@ -24,6 +26,12 @@ export class UserUpdateConsumer extends BaseConsumer<UserUpdateEvent> {
 					{ $or: [{ sender: data.id }, { receiver: data.id }] },
 					{ $set: { deletionDate: null } },
 				)
+			}
+			if (data.isBlocked != null) {
+				await User.updateOne({ _id: data.id }, { $set: { isBlocked: data.isBlocked } })
+			}
+			if (data.canGetFreeItems != null){
+				await User.updateOne({ _id: data.id }, { $set: { canGetFreeItems: data.canGetFreeItems } });
 			}
 		} catch (err) {
 			console.log(err)

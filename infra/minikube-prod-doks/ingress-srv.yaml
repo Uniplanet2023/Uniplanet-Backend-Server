@@ -86,7 +86,7 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
     service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "14854808-54c8-4e23-8e68-235e7d2a52cf"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "b60f31bd-b496-4f51-b3c8-9fef4fa0605d"
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
     service.beta.kubernetes.io/do-loadbalancer-hostname: 'uniplanet.shop'
   labels:

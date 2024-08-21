@@ -15,6 +15,8 @@ export type AccountDocument = Document & {
 	numberOfReports: number
 	status: string
 	type: string
+	subscription: string
+	numberOfFreeItemClick: number
 }
 
 type AccountAttrs = {
@@ -61,7 +63,7 @@ const accountSchema: Schema = new Schema(
 		type: {
 			type: String,
 			required: true,
-			default: 'student',
+			default: 'student', // student, local, admin, advertiser
 		},
 		unSeenNotification: {
 			type: Number,
@@ -73,7 +75,15 @@ const accountSchema: Schema = new Schema(
 		},
 		status: {
 			type: String,
-			default: 'active',
+			default: 'active', // active, inactive
+		},
+		subscription:{
+			type: String,
+			default: 'free', // free, premium
+		},
+		numberOfFreeItemClick:{
+			type: Number,
+			default: 3,
 		},
 		deletionDate: { type: Date, default: null },
 		isBlocked: { type: Boolean, default: false },

@@ -8,6 +8,8 @@ export type UserDocument = Document & {
 	profileImage: string
 	school: string
 	type: string
+	isBlocked: boolean
+	canGetFreeItems: boolean
 }
 
 type UserAttrs = {
@@ -52,6 +54,8 @@ const userSchema: Schema = new Schema(
 			required: true,
 			default: 'local',
 		},
+		isBlocked: { type: Boolean, default: false },
+		canGetFreeItems: { type: Boolean, default: true },
 	},
 	{
 		toJSON: {

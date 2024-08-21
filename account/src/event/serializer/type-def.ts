@@ -8,6 +8,8 @@ export type GetAccountRestPayload = {
 	isBlocked: boolean
 	isBlockedPost: boolean
 	isBlockedChat: boolean
+	subscription: string
+	numberOfFreeItemClick: number
 }
 export type GetAdvertiserRestPayload = {
 	id: string
@@ -26,6 +28,8 @@ export type GetAdvertiserRestPayload = {
 	freeCredit: number
 	credit: number
 	creditUsed: number
+	subscription: string
+	numberOfFreeItemClick: number
 }
 
 export type UserRestPayload = {

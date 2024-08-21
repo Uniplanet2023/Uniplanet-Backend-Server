@@ -10,9 +10,6 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 	// Implement the onMessage method
 	async onMessage(data: IncNumberOfProductEvent['data']): Promise<void> {
 		try {
-			// Process the user:created message, e.g., send an email
-			console.log(`account product increase ${data.id} -- account server`);
-
 			const account = await Account.findOne({ _id: data.id });
 			if (!account) {
 				throw new Error('Account not found');
@@ -36,8 +33,6 @@ export default class ProductIncreaseConsumer extends BaseConsumer<IncNumberOfPro
 
 			await advertiser.save();
 			await account.save();
-
-			console.log('Account number of product increased successfully');
 		} catch (error) {
 			console.error(`Failed to increase product number for account ${data.id}: ${error}`);
 		}

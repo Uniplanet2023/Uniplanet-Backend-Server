@@ -3,7 +3,7 @@ import app from './app'
 
 // import { secretCheck } from './secret-check'
 import UserCreatedConsumer from './event/consumer/user-created'
-import { kafkaClient, redisClient } from '@uniplanet-lib/common'
+import { kafkaClient, redisClient, Topics } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import UserDeletedConsumer from './event/consumer/user-deleted'
 import UserUpdatedConsumer from './event/consumer/user-updated'
@@ -13,6 +13,8 @@ import ClickIncreaseConsumer from './event/consumer/product-click-increase'
 import ProductIncreaseConsumer from './event/consumer/product-increase'
 import { initializeFirebase } from './config/firebase'
 import AccountDeleteScheduler from './scheduler/account-delete-schedule'
+import UpdateFreeUserScheduler from './scheduler/update-free-user'
+import DecNumberOfFreeItem from './event/consumer/dec-num-of-freeItem-click'
 
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
@@ -34,12 +36,14 @@ app.listen(PORT, async () => {
 		const userDeletedConsumer = new UserDeletedConsumer(kafkaClient.kafka, 'userdeleted-account')
 		const userUpdatedConsumer = new UserUpdatedConsumer(kafkaClient.kafka, 'userupdated-account')
 		const productIncreaseConsumer = new ProductIncreaseConsumer(kafkaClient.kafka, 'product-increase')
+		const DecreaseNumberOfFreeItemEvent = new DecNumberOfFreeItem(kafkaClient.kafka, Topics.DecNumberOfFreeItemClick);
 
 		await productIncreaseConsumer.connect()
 		await userUpdatedConsumer.connect()
 		await userCreatedConsumer.connect()
 		await userDeletedConsumer.connect()
 		await clickIncreaseConsumer.connect()
+		await DecreaseNumberOfFreeItemEvent.connect()
 
 		await userUpdateProducer.connect()
 		await userPostBlockProducer.connect()
@@ -49,6 +53,7 @@ app.listen(PORT, async () => {
 	await mongoose.connect(`${process.env.MONGO_DB_HOST as string}`).then(async () => {
 		console.log('MongoDB is connected')
 		new AccountDeleteScheduler().taskInitializer()
+		new UpdateFreeUserScheduler().taskInitializer()
 		await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {

@@ -27,6 +27,8 @@ export default class GetAccountInfo extends BaseSerializeEvent<GetAccountRestPay
 			isBlockedPost: this.account.isBlockedPost,
 			isBlockedChat: this.account.isBlockedChat,
 			type: this.account.type,
+			subscription: this.account.subscription,
+			numberOfFreeItemClick: this.account.numberOfFreeItemClick
 		}
 	}
 }

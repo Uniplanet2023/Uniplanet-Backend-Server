@@ -18,11 +18,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 	let buyerObj = await User.findById(buyerParsed.id)
 	if (!sellerObj) {
 		sellerObj = User.build(sellerParsed)
-		sellerObj.save()
+		await sellerObj.save()
 	}
 	if (!buyerObj) {
 		buyerObj = User.build(buyerParsed)
-		buyerObj.save()
+		await buyerObj.save()
+	}
+	if(req.user!.id !== buyerObj.id && buyerObj.canGetFreeItems === false){
+		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
+	}else if (req.user!.id !== sellerObj.id && sellerObj.canGetFreeItems === false){
+		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
 	}
 
 	// Check if a chat already exists between these two users for this product

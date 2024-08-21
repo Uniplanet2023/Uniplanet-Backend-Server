@@ -36,6 +36,8 @@ export default class GetAdvertiserInfo extends BaseSerializeEvent<GetAdvertiserR
 			freeCredit: this.advertiser.freeCredit,
 			credit: this.advertiser.credit,
 			creditUsed: this.advertiser.creditUsed,
+			subscription: this.account.subscription,
+			numberOfFreeItemClick: this.account.numberOfFreeItemClick,
 		}
 	}
 }

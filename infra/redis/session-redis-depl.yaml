@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: session-redis-depl
+  namespace: session
 spec:
   replicas: 1
   selector:
@@ -31,6 +32,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: session-redis-srv
+  namespace: session
 spec:
   selector:
     app: session-redis
@@ -43,6 +45,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: redis-pv
+  namespace: session
 spec:
   capacity:
     storage: 10Gi
@@ -57,6 +60,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: redis-pvc
+  namespace: session
 spec:
   accessModes:
     - ReadWriteOnce
