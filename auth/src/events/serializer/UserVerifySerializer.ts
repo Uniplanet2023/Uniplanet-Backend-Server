@@ -22,7 +22,7 @@ export default class UserVerifySerializer extends BaseSerializeEvent<UserVerifie
 
 	serializeRest(): UserVerifiedRestPayload {
 		return {
-			id: this.user._id,
+			id: this.user.id,
 			verificationStatus: 'success',
 		}
 	}
