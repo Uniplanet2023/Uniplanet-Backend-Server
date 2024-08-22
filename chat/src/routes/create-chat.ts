@@ -24,16 +24,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		buyerObj = User.build(buyerParsed)
 		await buyerObj.save()
 	}
+	console.log('productType', productType);
+	console.log('buyerObj #num clik', buyerObj.numberOfFreeItemClick);
+	console.log('sellerObj #num clik', sellerObj.numberOfFreeItemClick);
+	console.log('buyer', req.user!.id == buyerObj.id);
+	console.log('seller', req.user!.id == sellerObj.id);
 	if(productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick < 1){
-		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
-	}else if (productType == "Free Item" && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick < 1){
 		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
 	}else if (productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick > 0){
 			buyerObj.numberOfFreeItemClick -= 1
 			await buyerObj.save()
-	}else if (productType == "Free Item" && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick > 0){
-			sellerObj.numberOfFreeItemClick -= 1
-			await sellerObj.save()
 	}
 	// Check if a chat already exists between these two users for this product
 	const existingChat = await Chat.findOne({
