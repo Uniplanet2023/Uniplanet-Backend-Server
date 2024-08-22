@@ -24,14 +24,14 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		buyerObj = User.build(buyerParsed)
 		await buyerObj.save()
 	}
-	if(productType == 'free' && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick < 1){
+	if(productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick < 1){
 		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
-	}else if (productType == 'free' && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick < 1){
+	}else if (productType == "Free Item" && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick < 1){
 		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
-	}else if (productType == 'free' && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick > 0){
+	}else if (productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick > 0){
 			buyerObj.numberOfFreeItemClick -= 1
 			await buyerObj.save()
-	}else if (productType == 'free' && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick > 0){
+	}else if (productType == "Free Item" && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick > 0){
 			sellerObj.numberOfFreeItemClick -= 1
 			await sellerObj.save()
 	}
