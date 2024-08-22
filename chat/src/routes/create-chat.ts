@@ -1,84 +1,89 @@
-import express from 'express'
-import Chat from '../models/chat'
-import { tokenValidation } from '@uniplanet-lib/common'
-import { CREATE_CHAT } from './routes-def'
-import GetChatInfo from '../event/serializer/get-chat'
-import User from '../models/user'
-import Message from '../models/message'
-import { createChatProducer } from '../app'
+import express, { Request, Response } from 'express';
+import Chat from '../models/chat';
+import { tokenValidation } from '@uniplanet-lib/common';
+import { CREATE_CHAT } from './routes-def';
+import GetChatInfo from '../event/serializer/get-chat';
+import User from '../models/user';
+import Message from '../models/message';
+import { createChatProducer } from '../app';
 
-const createChatRouter = express.Router()
+const createChatRouter = express.Router();
 
-createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-	const { productId, productName, productType, seller, buyer, type } = req.body
-
-	const sellerParsed = JSON.parse(seller)
-	const buyerParsed = JSON.parse(buyer)
-	let sellerObj = await User.findById(sellerParsed.id)
-	let buyerObj = await User.findById(buyerParsed.id)
-	if (!sellerObj) {
-		sellerObj = User.build(sellerParsed)
-		await sellerObj.save()
+createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Response) => {
+    const { productId, productName, productType, seller, buyer, type } = req.body;
+	if(!productId || !productName || !productType || !seller || !buyer || !type){
+		return res.status(400).json({ msg: 'Missing required fields' });
 	}
-	if (!buyerObj) {
-		buyerObj = User.build(buyerParsed)
-		await buyerObj.save()
-	}
-	console.log('productType', productType);
-	console.log('buyerObj #num clik', buyerObj.numberOfFreeItemClick);
-	console.log('sellerObj #num clik', sellerObj.numberOfFreeItemClick);
-	console.log('buyer', req.user!.id == buyerObj.id);
-	console.log('seller', req.user!.id == sellerObj.id);
-	if(productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick < 1){
-		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
-	}else if (productType == "Free Item" && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick > 0){
-			buyerObj.numberOfFreeItemClick -= 1
-			await buyerObj.save()
-	}
-	// Check if a chat already exists between these two users for this product
-	const existingChat = await Chat.findOne({
-		productId,
-		buyer: buyerObj,
-		seller: sellerObj,
-	})
-		.populate('buyer')
-		.populate('seller')
-		.populate('lastMessage')
+    let sellerParsed, buyerParsed;
+    try {
+        sellerParsed = JSON.parse(seller);
+        buyerParsed = JSON.parse(buyer);
+    } catch (error) {
+        return res.status(400).json({ msg: 'Invalid seller or buyer data' });
+    }
 
-	if (existingChat) {
-		let msg = 'existing chat'
-		if (existingChat.deletionDate !== null) {
-			msg = 'chat restored'
-			await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false })
-			await Message.updateMany({ chat: existingChat.id }, { deletionDate: null })
-			existingChat.deletionDate = undefined
-			existingChat.deletedFrom = undefined
-			existingChat.perminentDelete = false
-		}
-		const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null })
-		const chatInfo = new GetChatInfo(existingChat, unseenMessage.length)
-		return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg })
-	}
-	
-	// Create and save the chat
-	const chat = Chat.build({
-		productName,
-		productId,
-		buyer: buyerObj.id,
-		seller: sellerObj.id,
-		type,
-	})
-	// Save the online status of the buyer in Redis
+    let sellerObj = await User.findById(sellerParsed.id);
+    let buyerObj = await User.findById(buyerParsed.id);
 
-	const chatObj = await (await chat.save()).populate('seller buyer')
-	createChatProducer.sendMessage({
-		productId: productId,
-		type: type,
-	})
-	const chatInfo = new GetChatInfo(chatObj, 0)
+    if (!sellerObj) {
+        sellerObj = User.build(sellerParsed);
+        await sellerObj.save();
+    }
 
-	// Include serialized buyer and seller data in the response
-	return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg: 'new chat' })
-})
+    if (!buyerObj) {
+        buyerObj = User.build(buyerParsed);
+        await buyerObj.save();
+    }
 
-export default createChatRouter
+    // Validate free item conditions
+    if (productType === "Free Item" && req.user!.id === buyerObj.id) {
+        if (buyerObj.numberOfFreeItemClick <= 0) {
+            return res.status(400).json({ msg: 'You can only receive 2 free items per day. Please try again tomorrow!' });
+        } else {
+            buyerObj.numberOfFreeItemClick -= 1;
+            await buyerObj.save();
+        }
+    }
+
+    // Check if a chat already exists between these two users for this product
+    const existingChat = await Chat.findOne({ productId, buyer: buyerObj, seller: sellerObj })
+        .populate('buyer')
+        .populate('seller')
+        .populate('lastMessage');
+
+    if (existingChat) {
+        let msg = 'existing chat';
+
+        if (existingChat.deletionDate) {
+            msg = 'chat restored';
+            await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false });
+            await Message.updateMany({ chat: existingChat.id }, { deletionDate: null });
+        }
+
+        const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null });
+        const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
+        return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg });
+    }
+
+    // Create and save the new chat
+    const chat = Chat.build({
+        productName,
+        productId,
+        buyer: buyerObj.id,
+        seller: sellerObj.id,
+        type,
+    });
+
+    const chatObj = await (await chat.save()).populate('seller buyer');
+
+    try {
+        await createChatProducer.sendMessage({ productId, type });
+    } catch (error) {
+        return res.status(500).json({ msg: 'Error sending message to producer' });
+    }
+
+    const chatInfo = new GetChatInfo(chatObj, 0);
+    return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg: 'new chat' });
+});
+
+export default createChatRouter;
