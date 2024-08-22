@@ -53,13 +53,12 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
 
     if (existingChat) {
         let msg = 'existing chat';
-
+		existingChat.deletionDate = undefined;
+		existingChat.deletedFrom = undefined;
+		existingChat.perminentDelete = false;
         if (existingChat.deletionDate) {
             msg = 'chat restored';
             await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false });
-			existingChat.deletionDate = undefined;
-			existingChat.deletedFrom = undefined;
-			existingChat.perminentDelete = false;
             await Message.updateMany({ chat: existingChat.id }, { deletionDate: null });
         }
 
