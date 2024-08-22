@@ -10,7 +10,7 @@ import { createChatProducer } from '../app'
 const createChatRouter = express.Router()
 
 createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
-	const { productId, productName, seller, buyer, type } = req.body
+	const { productId, productName, productType, seller, buyer, type } = req.body
 
 	const sellerParsed = JSON.parse(seller)
 	const buyerParsed = JSON.parse(buyer)
@@ -24,12 +24,17 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req, res) => {
 		buyerObj = User.build(buyerParsed)
 		await buyerObj.save()
 	}
-	if(req.user!.id !== buyerObj.id && buyerObj.canGetFreeItems === false){
+	if(productType == 'free' && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick < 1){
 		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
-	}else if (req.user!.id !== sellerObj.id && sellerObj.canGetFreeItems === false){
+	}else if (productType == 'free' && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick < 1){
 		return res.status(400).json({ msg: 'Please Subscribe UniPlanet Platform to get Free Items' })
+	}else if (productType == 'free' && req.user!.id === buyerObj.id && buyerObj.numberOfFreeItemClick > 0){
+			buyerObj.numberOfFreeItemClick -= 1
+			await buyerObj.save()
+	}else if (productType == 'free' && req.user!.id === sellerObj.id && sellerObj.numberOfFreeItemClick > 0){
+			sellerObj.numberOfFreeItemClick -= 1
+			await sellerObj.save()
 	}
-
 	// Check if a chat already exists between these two users for this product
 	const existingChat = await Chat.findOne({
 		productId,

@@ -9,7 +9,7 @@ export type UserDocument = Document & {
 	school: string
 	type: string
 	isBlocked: boolean
-	canGetFreeItems: boolean
+	numberOfFreeItemClick: number
 }
 
 type UserAttrs = {
@@ -55,7 +55,8 @@ const userSchema: Schema = new Schema(
 			default: 'local',
 		},
 		isBlocked: { type: Boolean, default: false },
-		canGetFreeItems: { type: Boolean, default: true },
+		numberOfFreeItemClick: { type: Number, default: 2 },
+		subscription: { type: String, default: 'free' },
 	},
 	{
 		toJSON: {

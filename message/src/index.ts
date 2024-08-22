@@ -93,11 +93,6 @@ io.on('connection', async socket => {
 			const seller = JSON.parse(chat.seller)
 			const buyer = JSON.parse(chat.buyer)
 
-			// Log the entire chat object
-			console.log(`chat: ${JSON.stringify(chat)}`)
-			console.log(`seller: ${JSON.stringify(seller)}`)
-			console.log(`buyer: ${JSON.stringify(buyer)}`)
-
 			// Join chat rooms only if the socket is not already in them
 			if (!socket.rooms.has(chat.id)) {
 				socket.chatRoomId.push(chat.id)
