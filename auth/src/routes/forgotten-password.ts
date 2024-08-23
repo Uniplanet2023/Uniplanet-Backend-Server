@@ -2,7 +2,7 @@ import express from 'express'
 import { User } from '../models/index'
 import { EmailSender, UserNotFoundError } from '@uniplanet-lib/common'
 import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
-import admin from 'firebase-admin';
+import { firebaseAdmin } from '..'
 const forgottenPasswordRouter = express.Router()
 
 forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
@@ -15,7 +15,7 @@ forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 	}
 
 	const emailSender = EmailSender.getInstance()
-	admin
+	firebaseAdmin
 	.firestore()
 	.collection("mail")
 	.add({
