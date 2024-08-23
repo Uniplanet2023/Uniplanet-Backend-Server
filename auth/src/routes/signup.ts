@@ -42,7 +42,7 @@ signUpRouter.post(
 				// Create and save new user
 				return res.status(201).json({ existingUser })
 			} else {
-				const { hash } = await sendVerificationEmail(existingUser.email)
+				const hash = await sendVerificationEmail(existingUser.email)
 				return res.status(201).json({ hash })
 			}
 		}
@@ -55,7 +55,7 @@ signUpRouter.post(
 			return res.status(201).json({ newUser })
 		} else {
 			// Send verification email to new user
-			const { hash } = await sendVerificationEmail(newUser.email)
+			const hash = await sendVerificationEmail(newUser.email)
 			// const userSignedUp = new UserSerializer(newUser)
 			return res.status(201).json({ hash })
 		}
