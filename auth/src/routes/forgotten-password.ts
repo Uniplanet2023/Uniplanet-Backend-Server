@@ -1,8 +1,10 @@
 import express from 'express'
 import { User } from '../models/index'
-import { EmailSender, UserNotFoundError } from '@uniplanet-lib/common'
+import { generatePassword, UserNotFoundError } from '@uniplanet-lib/common'
 import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
 import { firebaseAdmin } from '..'
+import { buildResetPasswordEmailBody, buildResetPasswordEmailHtml, buildResetPasswordEmailSubject } from '../config/reset-password-email-format'
+import { sendResetPasswordEmail } from '../utils/send-reset-password-email'
 const forgottenPasswordRouter = express.Router()
 
 forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
@@ -14,24 +16,12 @@ forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 		throw new UserNotFoundError()
 	}
 
-	const emailSender = EmailSender.getInstance()
-	firebaseAdmin
-	.firestore()
-	.collection("mail")
-	.add({
-	  to: "sije.park@gmail.com",
-	  message: {
-		subject: "Hello from Firebase!",
-		text: "This is the plaintext section of the email body.",
-		html: "This is the <code>HTML</code> section of the email body.",
-	  },
-	})
-	.then(() => console.log("Queued email for delivery!"));
-	const ResetPasswordRespond = await emailSender.sendPasswordResetEmail({ toEmail: email })
+	const tempPassword = await sendResetPasswordEmail(email);
 
-	await existingUser.updateOne({ password: ResetPasswordRespond.tempPassword })
+	await existingUser.updateOne({ password: tempPassword })
 
 	res.status(200).json({ message: 'Password updated successfully' })
 })
 
 export default forgottenPasswordRouter
+
