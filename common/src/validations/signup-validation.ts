@@ -55,7 +55,7 @@ export const passwordValidation: ValidationChain[] = [
 ];
 
 export const phoneNumberValidation: ValidationChain = body('phoneNumber')
-  .isMobilePhone('en-US') // Specify locale for validation
+.isMobilePhone(['en-US', 'ko-KR']) // Specify locales for validation
   .withMessage('Phone number must be a valid US mobile number');
 
 export const userTypeValidation: ValidationChain = body('userType')
