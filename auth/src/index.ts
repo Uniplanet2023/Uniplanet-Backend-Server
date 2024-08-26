@@ -5,7 +5,6 @@ import { secretCheck } from './secret-check'
 import { EmailSender, NodemailerEmailApi, kafkaClient, redisClient } from '@uniplanet-lib/common'
 import { UserCreatedProducer, UserRestoreProducer } from './events'
 import { UserDeletedProducer } from './events/producer/user-deleteted'
-import TokenRefreshScheduler from './scheduler/token-refresh-schedule'
 import { initializeFirebase } from './config/firebase'
 
 const { PORT = 3000, NODE_ENV, KAFKA_BROKER, MONGO_DB_HOST, DEVELOPMENT_MODE } = process.env
@@ -40,7 +39,6 @@ app.listen(PORT, async () => {
 	await mongoose.connect(`${MONGO_DB_HOST as string}`).then(async () => {
 		console.log('MongoDB is connected')
 		new UserDeleteScheduler().taskInitializer()
-		new TokenRefreshScheduler().taskInitializer()
 		await redisClient.create(process.env.REDIS_HOST!, parseInt(process.env.REDIS_PORT!))
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
