@@ -8,7 +8,6 @@ export default class UserUpdatedConsumer extends BaseConsumer<UserUpdateEvent> {
 	// Implement the onMessage method
 	async onMessage(data: UserUpdateEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email
-		console.log(`user update ${data.id} -- account server`)
 
 		try {
 			if (data.deletionDate != null) {

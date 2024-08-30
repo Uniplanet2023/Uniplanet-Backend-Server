@@ -30,7 +30,6 @@ advertiserListRouter.get(GET_ADVERTISER_LIST, tokenValidation, async (req: Reque
 			.sort('updatedAt')
 		
 		advertiserList.forEach((advertiser: AdvertiserDocument) => {
-			console.log('advertiserList', advertiser.account);
 			if(!advertiser.account) {
 				return
 			}

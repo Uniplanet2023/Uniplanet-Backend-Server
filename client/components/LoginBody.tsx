@@ -53,7 +53,7 @@ const LoginBody = () => {
   const router = useRouter();
   const { login, tokenLogin, isLoggedIn} = useAuth();
   useEffect(() => {
-    console.log('LoginBody useEffect');
+    
     handleTokenLogin();
   }, [router]);
 

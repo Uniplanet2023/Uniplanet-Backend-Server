@@ -22,7 +22,6 @@ getStripeClientSecret.post(GET_PAYMENT_INTENT, tokenValidation, async (req: Requ
 		process.env.JWT_TOKEN_SECRET as string,
 		{ expiresIn: '30m' },
 	)
-	console.log(paymentIntentJwt)
 	return res.status(201).send({
 		clientSecret: paymentIntent.client_secret,
 		token: paymentIntentJwt,

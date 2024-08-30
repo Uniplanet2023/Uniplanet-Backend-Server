@@ -10,7 +10,7 @@ class UserDeleteScheduler extends Scheduler {
 
 	executeJob(): Promise<IScheduler> {
 		const now = new Date()
-		console.log(now.toLocaleTimeString())
+		
 		return new Promise(async resolve => {
 			await User.deleteMany({ deletionDate: { $lte: now } })
 			resolve({

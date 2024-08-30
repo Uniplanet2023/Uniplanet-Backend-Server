@@ -7,7 +7,7 @@ import GetChatInfo from '../event/serializer/get-chat'
 const getChatRouter = express.Router()
 getChatRouter.get(GET_CHAT_LIST, tokenValidation, async (req, res) => {
 	const { page } = req.query
-	console.log('page:', page)
+	
 	const pageNumber = parseInt(page as string) || 1
 	const limit = 10
 	const skip = (pageNumber - 1) * limit

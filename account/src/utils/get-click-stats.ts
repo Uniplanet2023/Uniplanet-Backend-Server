@@ -47,7 +47,7 @@ export async function getClickStats(advertiserId: ObjectId) {
 	]
 
 	const stats = await AdDailyStats.aggregate(pipeline)
-	console.log(stats)
+	
 
 	const todayStats = stats.length ? stats[0].today : 0
 	const weekStats = stats.length ? stats[0].thisWeek : 0

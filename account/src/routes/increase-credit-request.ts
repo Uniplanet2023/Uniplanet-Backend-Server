@@ -14,14 +14,14 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async
 	if (!authHeader) {
 		return res.status(401).send({ success: false, error: 'No token provided' })
 	}
-	console.log('authHeader', authHeader)
+	
 	const account = await Account.findById(req.user!.id)
 	if (!account) {
 		return res.status(404).send({ message: 'Account not found' })
 	}
 
 	const token = authHeader.split(' ')[1]
-	console.log('token', token)
+	
 	const accountInfo = new GetAccountInfo(account)
 
 	if (req.user!.type === 'advertiser') {
@@ -31,12 +31,12 @@ increaseCreditRequestRouter.post(INCREASE_CREDIT_REQUEST, tokenValidation, async
 			return res.status(404).send({ message: 'Advertiser not found' })
 		}
 		const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET as string)
-		console.log('decoded', decoded)
+		
 		const { paymentIntentId, creditValue } = decoded as any
 
 		// Verify the payment intent status
 		const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
-		console.log('payment status', paymentIntent)
+		
 
 		// if (paymentIntent.status !== 'succeeded') {
 		// return res.status(400).send({ success: false, error: 'Payment not confirmed' });

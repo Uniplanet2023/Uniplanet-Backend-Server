@@ -23,7 +23,7 @@ const CheckoutForm: React.FC<PaymentProps> = ({ paymentToken }) => {
     }
 
     setIsProcessing(true);
-    console.log('test');
+    
 
     try {
       const response = await fetch('https://account.uniplanet.shop/api/account/increase-credit-request', {
@@ -34,7 +34,7 @@ const CheckoutForm: React.FC<PaymentProps> = ({ paymentToken }) => {
         },
         credentials: 'include', // Include cookies in requests
       });
-      console.log('response', response);
+      
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

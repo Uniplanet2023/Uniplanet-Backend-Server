@@ -13,8 +13,6 @@ async function deleteFilesByPrefix(prefix: string): Promise<void> {
 		// Delete all files in the folder
 		const deletePromises = files.map(file => file.delete())
 		await Promise.all(deletePromises)
-
-		console.log(`All files with prefix ${prefix} deleted successfully`)
 	} catch (error) {
 		console.error('Error deleting files:', error)
 	}

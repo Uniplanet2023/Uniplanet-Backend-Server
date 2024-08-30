@@ -11,7 +11,7 @@ export class MessageReadAllConsumer extends BaseConsumer<MessageReadAllEvent> {
 	// Implement the onMessage method
 	async onMessage(data: MessageReadAllEvent['data']): Promise<void> {
 		try {
-			console.log('Message Read All Kafka')
+			
 			await Message.find({ chat: data.chat, receiver: data.sender, readDate: null })
 				.sort({ createdAt: -1 })
 				.limit(20)

@@ -21,7 +21,6 @@ export abstract class BaseProducer<T extends Event> {
 
 	async connect() {
 		await this.producer.connect()
-		console.log('Kafka Producer connected')
 	}
 
 	async sendMessage(data: T['data']): Promise<void> {
@@ -33,7 +32,7 @@ export abstract class BaseProducer<T extends Event> {
 				// acks: -1,
 				// compression: CompressionTypes.GZIP,
 			})
-			console.log('Event published to topic', this.topic)
+			
 		} catch (error) {
 			console.error('Error in publishing event', error)
 			throw error
@@ -42,6 +41,6 @@ export abstract class BaseProducer<T extends Event> {
 
 	async disconnect() {
 		await this.producer.disconnect()
-		console.log('Kafka Producer disconnected')
+		
 	}
 }

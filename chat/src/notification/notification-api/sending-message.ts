@@ -25,13 +25,13 @@ export async function sendingMessageNotification({
 				.messaging()
 				.send(messageNotification)
 				.then(response => {
-					console.log('Successfully sent message:', response)
+					
 				})
 				.catch(error => {
 					console.log('Error sending message:', error)
 				})
 		} else {
-			console.log('receiverToken not found')
+			
 		}
 	} catch (e) {
 		console.log(e)

@@ -39,7 +39,6 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 	// Implement the onMessage method
 	async onMessage(data: IncNumberOfClickEvent['data']): Promise<void> {
 		// Process the user:created message, e.g., send an email
-		console.log(`account click increase ${data.id} -- account server`)
 		const account = await Account.findOne({ _id: data.id })
 		if (!account) {
 			throw new Error('Account not found')
@@ -74,9 +73,9 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 			// Check if the advertiser's budget is less than or equal to 0
 			// If so, block the account
 			if (advertiser.creditUsed + advertiser.freeCreditUsed >= advertiser.freeCredit && advertiser.credit <= 0) {
-				account.isBlocked = true
-				account.isBlockedPost = true
-				account.isBlockedChat = true
+				account.isBlocked = false
+				account.isBlockedPost = false
+				account.isBlockedChat = false
 				// Product Deletion Request
 				postDeletionReqProducer.sendMessage({
 					id: account._id,
@@ -91,6 +90,5 @@ export default class ClickIncreaseConsumer extends BaseConsumer<IncNumberOfClick
 		}
 
 		await account.save()
-		console.log('account number of click increase successfully')
 	}
 }

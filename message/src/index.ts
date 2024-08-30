@@ -67,7 +67,7 @@ io.on('connection', async socket => {
 	}
 
 	socket.on('setup', firebaseToken => {
-		console.log('setup')
+		
 		if (!firebaseToken) {
 			console.log('firebase token not found')
 			return
@@ -99,19 +99,15 @@ io.on('connection', async socket => {
 				socket.join(chat.id)
 				redisClient.redis.sAdd(`Chat: ${socket.userId}`, chat.id)
 				io.to(seller.id).emit('chat room created', chatJson, existingChat)
-			} else {
-				console.log(`Socket already in chat room: ${chat.id}`)
 			}
 
 			if (!socket.rooms.has(seller.id)) {
 				socket.join(seller.id)
-			} else {
-				console.log(`Socket already in seller's room: ${seller.id}`)
 			}
 
 			// Ensure seller.id is a string
 			const sellerId = String(seller.id)
-			console.log(`seller.id: ${sellerId} (type: ${typeof sellerId})`)
+			
 
 			// Check if the seller is online and send notification if not
 			const isOnline = await redisClient.redis.sIsMember('Online User', sellerId)
@@ -123,7 +119,7 @@ io.on('connection', async socket => {
 				try {
 					const notification = creatingChatNotification(receiverToken, chatJson, buyer)
 					const response = await admin.messaging().send(notification)
-					console.log('Successfully sent message:', response)
+					
 				} catch (error) {
 					console.error('Error sending message:', error)
 				}
@@ -133,7 +129,7 @@ io.on('connection', async socket => {
 		}
 	})
 	socket.on('chat room deleted', async ({ chatRoom, clientId }, callback) => {
-		console.log('Deleting chat room:', chatRoom)
+		
 		try {
 			await socket.leave(chatRoom)
 			io.to(chatRoom).emit('chat room deleted', { chatRoom, clientId })
@@ -151,7 +147,7 @@ io.on('connection', async socket => {
 			// Callback with success message
 			callback({ success: true, message: 'Chat room deleted successfully' })
 		} catch (error) {
-			console.error('Error deleting chat room:', error)
+			
 			callback({ success: false, message: 'Error deleting chat room' })
 		}
 	})

@@ -11,7 +11,7 @@ function getCookie(name: string) {
 }
 
 const PaymentPage: React.FC = () => {
-  console.log('version 1-3');
+  
   const [creditValue, setCreditValue] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState('');
   const [paymentToken, setPaymentToken] = useState<string | null>(null);

@@ -10,7 +10,7 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 	// Implement the onMessage method
 	async onMessage(data: MessageCreatedEvent['data']): Promise<void> {
 		try {
-			console.log('Message Received')
+			
 
 			const chat = await Chat.findById(data.chat).populate('buyer seller lastMessage')
 

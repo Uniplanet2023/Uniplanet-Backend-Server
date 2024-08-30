@@ -28,6 +28,7 @@ export const newMessageNotification = async (
 		productName: chatData.productName,
 		lastMessage: chatData.lastMessage,
 		unseenMessageCount: chatData.unseenMessageCount.toString(),
+		type: chatData.type,
 		deletedFrom: chatData.deletedFrom,
 	}
 
@@ -48,7 +49,7 @@ export const newMessageNotification = async (
 				showWhen: true,
 				autoDismissible: true,
 				privacy: 'Private',
-				payload: payload.toString(),
+				payload: payload.toString(), // for android
 			}),
 			'iOS.content.payload.ios': JSON.stringify({
 				id: chatData.id,
@@ -58,6 +59,7 @@ export const newMessageNotification = async (
 				productName: chatData.productName,
 				lastMessage: chatData.lastMessage ? JSON.parse(chatData.lastMessage) : undefined,
 				unseenMessageCount: chatData.unseenMessageCount,
+				type: chatData.type,
 				deletedFrom: chatData.deletedFrom,
 			}),
 		},

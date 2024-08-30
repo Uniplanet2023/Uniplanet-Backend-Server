@@ -14,7 +14,7 @@ searchHistoryRouter.get(GET_SEARCH_HISTORY, tokenValidation, async (req: Request
 	const skip = (pageNumber - 1) * limit
 
 	const searchHistory = await redisClient.redis.lRange(`Search Record: ${req.user!.id}`, skip, limit)
-	console.log(searchHistory)
+	
 	res.status(200).send({
 		success: true,
 		data: searchHistory,
