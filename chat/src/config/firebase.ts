@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 
-export function initializeFirebase(): void {
-	admin.initializeApp({
+export function initializeFirebase() {
+	return admin.initializeApp({
 		credential: admin.credential.cert({
 			projectId: process.env.FIREBASE_PROJECT_ID,
 			privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),

@@ -2,7 +2,9 @@ import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common
 import Message from '../../models/message'
 import Chat from '../../models/chat'
 import { addUnSeenMessage } from '../../function/add-unseen-message'
-import { sendingMessageNotification } from '../../notification/notification-api/sending-message'
+import { sendingMessageNotification } from '../../notification/notification-api/sending-message-notification'
+import { sendNewMessageEmail } from '../../notification/notification-api/sending-message-email'
+import { BuildMessageEmailTextArgs } from '../../notification/format/signup-email-format'
 // Extend the BaseConsumer for the user:created event
 export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 	topic: Topics.MessageCreated = Topics.MessageCreated
@@ -34,6 +36,14 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 			await addUnSeenMessage({ userId: data.receiver, message })
 			// Send notification to the receiver
 			await sendingMessageNotification({ sender, receiver, message, chat })
+			// Send Email to the receiver
+			await sendNewMessageEmail(
+				{
+					email: receiver.email,
+					senderName: sender.name,
+					receiverName: receiver.name,
+				} as BuildMessageEmailTextArgs,
+			)
 		} catch (err) {
 			console.log(err)
 		}
