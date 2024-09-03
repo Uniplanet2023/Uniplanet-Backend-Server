@@ -19,7 +19,7 @@ import DecNumberOfFreeItem from './event/consumer/dec-num-of-freeItem-click'
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
 
-initializeFirebase()
+export const firebaseAdmin =initializeFirebase();
 
 export const userUpdateProducer = new UserUpdateProducer(kafkaClient.kafka)
 export const userPostBlockProducer = new UserPostBlockProducer(kafkaClient.kafka)
