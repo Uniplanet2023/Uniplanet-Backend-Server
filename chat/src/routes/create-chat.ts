@@ -33,6 +33,8 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
     if (!buyerObj) {
         buyerObj = User.build(buyerParsed);
         await buyerObj.save();
+    }else if( buyerObj.isBlocked){
+        return res.status(400).json({ msg: 'You are blocked from sending messages' });
     }
 
     // Validate free item conditions
@@ -79,7 +81,10 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
     const chatObj = await (await chat.save()).populate('seller buyer');
 
     try {
-        await createChatProducer.sendMessage({ productId, type });
+        await createChatProducer.sendMessage({
+            userId: req.user!.id,
+            productId,
+            type });
     } catch (error) {
         return res.status(500).json({ msg: 'Error sending message to producer' });
     }
