@@ -1,4 +1,4 @@
-import { Topics, BaseConsumer, MessageCreatedEvent } from '@uniplanet-lib/common'
+import { Topics, BaseConsumer, MessageCreatedEvent, redisClient } from '@uniplanet-lib/common'
 import Message from '../../models/message'
 import Chat from '../../models/chat'
 import { addUnSeenMessage } from '../../function/add-unseen-message'
@@ -37,6 +37,8 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 			// Send notification to the receiver
 			await sendingMessageNotification({ sender, receiver, message, chat })
 			// Send Email to the receiver
+			const receiverIsOnline = await redisClient.redis.sIsMember('Online User', receiver.id);
+			receiverIsOnline ? null:
 			await sendNewMessageEmail(
 				{
 					email: receiver.email,
