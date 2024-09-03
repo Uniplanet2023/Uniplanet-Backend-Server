@@ -30,7 +30,10 @@ signUpRouter.post(
 		const { name, email, password, school, userType, phoneNumber } = req.body
 
 		const existingUser = await User.findOne({ email })
-
+		// if email is not end with .edu, throw error
+		if (!email.endsWith('.edu')) {
+			return res.status(400).json({ errors: [{ message: 'Currently we only accept .edu email' }] })
+		}
 		if (existingUser) {
 			if (existingUser.verified) {
 				throw new DuplicatedEmail()
