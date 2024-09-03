@@ -19,6 +19,7 @@ type UserAttrs = {
 	profileImage: string
 	school: string
 	type: string
+	isBlocked: boolean
 }
 interface UserModel extends Model<UserDocument> {
 	build(attrs: UserAttrs): UserDocument

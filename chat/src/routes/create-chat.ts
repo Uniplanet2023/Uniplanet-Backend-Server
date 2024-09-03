@@ -29,11 +29,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
         sellerObj = User.build(sellerParsed);
         await sellerObj.save();
     }
-
+    // if the buyer is not a student or admin, block the user ( only students and admins can send messages)
     if (!buyerObj) {
+        if( buyerParsed.type != 'student' && buyerParsed.type != 'admin'){
+            buyerParsed.isBlocked = true;
+        }
         buyerObj = User.build(buyerParsed);
         await buyerObj.save();
-    }else if( buyerObj.isBlocked){
+    }
+    
+    if( buyerObj.isBlocked){
         return res.status(400).json({ msg: 'You are blocked from sending messages' });
     }
 
