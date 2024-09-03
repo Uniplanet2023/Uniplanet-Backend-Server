@@ -1,6 +1,7 @@
 // validators.ts
 import { body, ValidationChain } from 'express-validator';
 import { UserType } from '../entities/user-type';
+import { urlInfo } from '../utils/domain-check';
 
 export const emailValidation: ValidationChain[] = [
   body('email')
@@ -10,12 +11,19 @@ export const emailValidation: ValidationChain[] = [
       if (/.+@[A-Z]/g.test(value)) {
         throw new Error('Email is not normalized');
       }
+      const info = urlInfo(value)
+			if (info.tld !== 'edu') {
+				throw new Error('It should be .edu email')
+			}
       return true;
     })
-    .withMessage('Email is not normalized')
+    .withMessage('It should be .edu email')
     .normalizeEmail({
       gmail_remove_dots: false,
-    }),
+    })
+		
+		
+    ,
 ];
 
 export const nameValidation: ValidationChain = body('name')
