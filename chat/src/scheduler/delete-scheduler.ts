@@ -55,6 +55,8 @@ class DeleteScheduler extends Scheduler {
 		try {
 			const prefix = `chat-images/${chat.id}/`
 			await deleteFilesByPrefix(prefix)
+			const prefixVideo = `chat-videos/${chat.id}/`
+			await deleteFilesByPrefix(prefixVideo)
 			console.log(`Deleted files for chat ${chat.id}`)
 		} catch (error) {
 			console.error(`Error deleting files for chat ${chat.id}:`, error)
