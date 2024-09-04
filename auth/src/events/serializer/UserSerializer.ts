@@ -28,7 +28,7 @@ export default class UserSerializer extends BaseSerializeEvent<UserSignedUpRestP
 	serializeRest(): UserSignedUpRestPayload {
 		return {
 			id: this.user.id,
-			name: this.user.name,
+			name: this.user.name ?? 'user',
 			email: this.user.email,
 			school: this.user.school,
 			verified: this.user.verified,
