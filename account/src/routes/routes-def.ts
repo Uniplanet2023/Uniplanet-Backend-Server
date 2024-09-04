@@ -14,4 +14,5 @@ export const UPDATE_NAME_ROUTE = '/api/account/update-name'
 export const UPDATE_PROFILE_ROUTE = '/api/account/update-profile'
 export const DELETE_SEARCH_HISTORY = '/api/account/delete-search-history/:searchHistory'
 export const DELETE_ALL_SEARCH_HISTORY = '/api/account/delete-all-search-history'
-export const UPDATE_NOTIFICTAION_ROUTE = '/api/products/update-notification'
+//banner
+export const GET_BANNER_AD = '/api/account/banner-ad'

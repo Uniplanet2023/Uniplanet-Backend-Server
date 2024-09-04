@@ -15,9 +15,11 @@ import blockRouter from './user-bloc-controll'
 import getStripePublicKeyRouter from './payment-config'
 import getStripeClientSecret from './create-payment-intent'
 import increaseCreditRequestRouter from './increase-credit-request'
+import bannerAdRouter from './banner/get-banner-ad'
 
 const accountRouter = express.Router()
 
+accountRouter.use(bannerAdRouter)
 accountRouter.use(increaseCreditRequestRouter)
 accountRouter.use(getStripeClientSecret)
 accountRouter.use(getStripePublicKeyRouter)
