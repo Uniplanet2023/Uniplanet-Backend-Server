@@ -81,6 +81,7 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 		profileImage: attrs.profileImage,
 		school: attrs.school,
 		type: attrs.type,
+		isBlocked: attrs.isBlocked,
 	})
 	return user
 }
