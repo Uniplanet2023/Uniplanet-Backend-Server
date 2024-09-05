@@ -116,6 +116,11 @@ spec:
                 secretKeyRef:
                   name: fcm-auth
                   key: FIREBASE_STORAGE_BUCKET
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe
+                  key: STRIPE_SECRET_KEY
             
 ---
 apiVersion: v1
