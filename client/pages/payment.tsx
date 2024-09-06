@@ -21,7 +21,7 @@ const PaymentPage: React.FC = () => {
     const response = await fetch('https://account.uniplanet.shop/api/account/payment-intent', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'applic ation/json',
       },
       body: JSON.stringify({ creditValue: parseFloat(value) * 100 }), // Convert to cents
       credentials: 'include', // Include cookies in requests

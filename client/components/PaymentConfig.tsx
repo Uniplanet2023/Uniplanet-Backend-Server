@@ -13,28 +13,7 @@ const PaymentConfig: React.FC<PaymentProps> = ({ clientSecret, paymentToken }) =
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
 
   useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const response = await fetch('https://account.uniplanet.shop/api/account/stripe-public-key', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // Add any other headers your backend requires
-          },
-          body: JSON.stringify({}), // convert to cents
-          credentials: 'include', // Include cookies in requests
-        });
-        const { stripePublicKey } = await response.json();
-
-        if (stripePublicKey) {
-          setStripePromise(loadStripe(stripePublicKey));
-        }
-      } catch (e) {
-        console.log("Error fetching stripe public key", e);
-      }
-    };
-
-    fetchConfig();
+    setStripePromise( loadStripe('pk_test_51PRNjiCWNFZrh8eIhgiCqEkUz9efXY4ppBCusr3fzosyO17zne7rP6WH1ct38zRkHzK5gq1rbA97VYOZH6ZTahEm00mIn0yZxQ'));
   }, []);
 
   return (
