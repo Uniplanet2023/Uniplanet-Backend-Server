@@ -4,7 +4,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { Box, Button, Container, TextField, Typography, Card, CardContent } from '@mui/material';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import PaymentConfig from '../components/PaymentConfig';
 import { useSearchParams } from 'next/navigation';
 
 const stripePromise = loadStripe('pk_test_51PRNjiCWNFZrh8eIhgiCqEkUz9efXY4ppBCusr3fzosyO17zne7rP6WH1ct38zRkHzK5gq1rbA97VYOZH6ZTahEm00mIn0yZxQ');
@@ -28,7 +27,7 @@ const CheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: st
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `https://product.uniplanet.shop/ad-payment-success?token=${token}`,
+        return_url: `https://uniplanet.shop`, // Adjusted return URL
         receipt_email: email,
       },
       redirect: 'if_required', // Handle redirection based on the requirement
@@ -37,10 +36,31 @@ const CheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: st
     if (error) {
       setError(error.message || 'An unexpected error occurred.');
     } else {
-      router.push(`/payment-success?token=${token}`);
+      try {
+        // Send the payment confirmation to the backend
+        const response = await fetch(`https://product.uniplanet.shop/api/products/ad-payment-success`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token,
+            paymentIntentId: paymentIntent?.id,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to confirm payment on the server.');
+        }
+
+        // Redirect to the main site after successful payment and backend processing
+        // router.push(`https://uniplanet.shop/payment-success?token=${token}`);
+      } catch (err) {
+        setError('An error occurred while processing your payment.');
+      }
     }
   };
-
+1
   return (
     <form onSubmit={handleSubmit}>
       <Card>
