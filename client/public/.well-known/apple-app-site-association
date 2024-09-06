@@ -1,0 +1,20 @@
+{
+  "applinks":{
+    "apps":[
+       
+    ],
+    "details":[
+      {
+        "appIDs":[
+          "33SYJ25VQW.shop.uniplanet.uniplanet"
+        ],
+        "components":[
+          {
+            "/":"/payment-success",
+            "comment":"Matches URL with a path /payment-success"
+          }
+        ]
+      }
+    ]
+  }
+}
