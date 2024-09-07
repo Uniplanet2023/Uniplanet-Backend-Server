@@ -22,14 +22,12 @@ const AdCheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: 
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `https://uniplanet.shop`, // Adjusted return URL
-          receipt_email: 'qkrtlwp1111@gmail.com',
+          return_url: `https://uniplanet.shop/payment-success`, // Adjusted return URL
+          // receipt_email: 'qkrtlwp1111@gmail.com',
         },
         redirect: 'if_required', // Handle redirection based on the requirement
       });
-      console.log('hi- here1');
-      console.log('error:', error);
-      console.log('paymentIntent:', paymentIntent);
+      
       if (error) {
         setError(error.message || 'An unexpected error occurred.');
       } else {
@@ -52,7 +50,7 @@ const AdCheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: 
           }
   
           // Redirect to the main site after successful payment and backend processing
-          // router.push(`https://uniplanet.shop/payment-success?token=${token}`);
+          router.push(`https://uniplanet.shop/payment-success`);
         } catch (err) {
           setError('An error occurred while processing your payment.');
         }

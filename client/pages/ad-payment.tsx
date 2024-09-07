@@ -23,15 +23,6 @@ const PaymentPage = () => {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    if (clientSecret) {
-      console.log('clientSecret:', clientSecret);
-    }
-    if (token) {
-      console.log('token:', token);
-    }
-  }, [clientSecret, token]);
-
   return (
     <Container maxWidth="sm">
       <Box my={4}>
