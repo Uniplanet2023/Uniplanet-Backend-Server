@@ -21,6 +21,7 @@ const AdCheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: 
       console.log('hi- here');
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
+        clientSecret,
         confirmParams: {
           return_url: `https://uniplanet.shop/payment-success`, // Adjusted return URL
           // receipt_email: 'qkrtlwp1111@gmail.com',
@@ -32,7 +33,6 @@ const AdCheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: 
         setError(error.message || 'An unexpected error occurred.');
       } else {
         try {
-          console.log('hi- here2');
           // Send the payment confirmation to the backend
           const response = await fetch(`https://products.uniplanet.shop/api/products/ad-payment-success`, {
             method: 'POST',
