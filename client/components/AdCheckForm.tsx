@@ -14,46 +14,57 @@ const AdCheckoutForm = ({ clientSecret, token }: { clientSecret: string, token: 
   
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
-      
+    
       if (!stripe || !elements) {
+        setError('Stripe has not loaded properly.');
         return;
       }
-      console.log('hi- here');
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `https://uniplanet.shop/payment-success`, // Adjusted return URL
-          // receipt_email: 'qkrtlwp1111@gmail.com',
-        },
-        redirect: 'if_required', // Handle redirection based on the requirement
-      });
-      
-      if (error) {
-        setError(error.message || 'An unexpected error occurred.');
-      } else {
-        try {
-          // Send the payment confirmation to the backend
-          const response = await fetch(`https://products.uniplanet.shop/api/products/ad-payment-success`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              token,
-              paymentIntentId: paymentIntent?.id,
-            }),
-          });
-  
-          if (!response.ok) {
-            throw new Error('Failed to confirm payment on the server.');
-          }
-  
-          // Redirect to the main site after successful payment and backend processing
-          router.push(`https://uniplanet.shop/payment-success`);
-        } catch (err) {
-          setError('An error occurred while processing your payment.');
+    
+      try {
+        // Submit the form to validate and gather payment method details
+        const { error: submitError } = await elements.submit();
+    
+        if (submitError) {
+          throw new Error(submitError.message || 'An error occurred during form submission.');
         }
+    
+        // Confirm payment with Stripe
+        const { error, paymentIntent } = await stripe.confirmPayment({
+          elements,
+          clientSecret,
+          confirmParams: {
+            return_url: `https://uniplanet.shop/payment-success`, // Adjusted return URL
+            // receipt_email: 'qkrtlwp1111@gmail.com', // Optional: Add receipt email if needed
+          },
+          redirect: 'if_required', // Handle redirection based on the requirement
+        });
+    
+        if (error) {
+          throw new Error(error.message || 'An unexpected error occurred during payment confirmation.');
+        }
+    
+        // Send payment confirmation to the backend
+        const response = await fetch('https://products.uniplanet.shop/api/products/ad-payment-success', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token,
+            paymentIntentId: paymentIntent?.id,
+          }),
+        });
+    
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message || 'Failed to confirm payment on the server.');
+        }
+    
+        // Redirect to the payment success page after successful processing
+        await router.push('https://uniplanet.shop/payment-success');
+      } catch (err) {
+        console.error('Payment processing error:', err);
+        setError(String(err) || 'An error occurred while processing your payment.');
       }
     };
     

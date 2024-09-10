@@ -30,7 +30,7 @@ const PaymentPage = () => {
           Review payment
         </Typography>
         {clientSecret && token ? (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <Elements stripe={stripePromise}>
             <AdCheckoutForm clientSecret={clientSecret} token={token} />
           </Elements>
         ) : (
