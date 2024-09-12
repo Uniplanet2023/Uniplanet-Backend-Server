@@ -2,10 +2,12 @@ import express, { Request, Response } from 'express';
 import { firebaseAdmin } from '../..';
 import { tokenValidation } from '@uniplanet-lib/common';
 import { SEND_USER_MAIL } from '../routes-def';
-import Account from '../../models/account';  // Import the Account model
+import Account from '../../models/account';
+import { Queue } from 'bullmq';
+import { redisClient } from '@uniplanet-lib/common';
+import { queueEmails } from '../../event/worker/email-queue';
 
 export const sendMailRouter = express.Router();
-
 // Define the interface for the request body
 interface MailRequestBody {
   title: string;
@@ -15,9 +17,10 @@ interface MailRequestBody {
   html?: string;  // Optional if using plain text description
 }
 
-// Route to send mail
+
+
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
-  const { title, description, toEmail, html, } = req.body as MailRequestBody;
+  const { title, description, toEmail, html } = req.body as MailRequestBody;
 
   try {
     let emails: string[] = [];
@@ -28,31 +31,16 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
     } else {
       // Fetch all users' emails from the Account collection
       const users = await Account.find({}, 'email');  // Only select the email field
-      emails = users.map(user => user.email);
+      // emails = users.map(user => user.email);
     }
-    
-    // Send an email to each user
-    const emailPromises = emails.map(email => {
-      return firebaseAdmin
-        .firestore()
-        .collection('mail')
-        .add({
-          to: email,
-          message: {
-            subject: title,
-            html: html || '',  // Default to an empty string if not provided
-            text: description || '',  // Default to an empty string if not provided
-          },
-        });
-    });
 
-    // Wait for all emails to be sent
-    await Promise.all(emailPromises);
+    // Queue email batches for processing
+    await queueEmails(emails, title, html || '', description || '');
 
-    return res.status(200).json({ message: 'Emails sent successfully' });
+    return res.status(200).json({ message: 'Emails queued successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return res.status(500).json({ message: 'Failed to send emails', error });
+    console.error('Error queuing emails:', error);
+    return res.status(500).json({ message: 'Failed to queue emails', error });
   }
 });
 

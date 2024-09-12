@@ -15,6 +15,7 @@ import { initializeFirebase } from './config/firebase'
 import AccountDeleteScheduler from './scheduler/account-delete-schedule'
 import UpdateFreeUserScheduler from './scheduler/update-free-user'
 import DecNumberOfFreeItem from './event/consumer/dec-num-of-freeItem-click'
+import { emailWorker } from './event/worker/email-worker'
 
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
@@ -57,6 +58,7 @@ app.listen(PORT, async () => {
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
 			console.log('Redis is connected')
+			emailWorker.run();
 		})
 	})
 })
