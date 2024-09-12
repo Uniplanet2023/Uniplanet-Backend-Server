@@ -5,7 +5,7 @@ import { SEND_USER_MAIL } from '../routes-def';
 import Account from '../../models/account';
 import { Queue } from 'bullmq';
 import { redisClient } from '@uniplanet-lib/common';
-import { queueEmails } from '../../event/worker/email-queue';
+// import { queueEmails } from '../../event/worker/email-queue';
 
 export const sendMailRouter = express.Router();
 // Define the interface for the request body
@@ -35,7 +35,7 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
     }
 
     // Queue email batches for processing
-    await queueEmails(emails, title, html || '', description || '');
+    // await queueEmails(emails, title, html || '', description || '');
 
     return res.status(200).json({ message: 'Emails queued successfully' });
   } catch (error) {
