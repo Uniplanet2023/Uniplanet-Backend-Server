@@ -30,24 +30,27 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
       const users = await Account.find({}, 'email');  // Only select the email field
       emails = users.map(user => user.email);
     }
-
+    emails.map(email => {
+      console.log(email);
+    }
+    )
     // Send an email to each user
-    const emailPromises = emails.map(email => {
-      return firebaseAdmin
-        .firestore()
-        .collection('mail')
-        .add({
-          to: email,
-          message: {
-            subject: title,
-            html: html || '',  // Default to an empty string if not provided
-            text: description || '',  // Default to an empty string if not provided
-          },
-        });
-    });
+    // const emailPromises = emails.map(email => {
+    //   return firebaseAdmin
+    //     .firestore()
+    //     .collection('mail')
+    //     .add({
+    //       to: email,
+    //       message: {
+    //         subject: title,
+    //         html: html || '',  // Default to an empty string if not provided
+    //         text: description || '',  // Default to an empty string if not provided
+    //       },
+    //     });
+    // });
 
     // Wait for all emails to be sent
-    await Promise.all(emailPromises);
+    // await Promise.all(emailPromises);
 
     return res.status(200).json({ message: 'Emails sent successfully' });
   } catch (error) {
