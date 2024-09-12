@@ -16,9 +16,11 @@ import getStripePublicKeyRouter from './payment-config'
 import getStripeClientSecret from './create-payment-intent'
 import increaseCreditRequestRouter from './increase-credit-request'
 import bannerAdRouter from './banner/get-banner-ad'
+import sendMailRouter from './mail/send-admail'
 
 const accountRouter = express.Router()
 
+accountRouter.use(sendMailRouter)
 accountRouter.use(bannerAdRouter)
 accountRouter.use(increaseCreditRequestRouter)
 accountRouter.use(getStripeClientSecret)
