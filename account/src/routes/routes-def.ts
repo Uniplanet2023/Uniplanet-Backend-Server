@@ -16,3 +16,4 @@ export const DELETE_SEARCH_HISTORY = '/api/account/delete-search-history/:search
 export const DELETE_ALL_SEARCH_HISTORY = '/api/account/delete-all-search-history'
 //banner
 export const GET_BANNER_AD = '/api/account/banner-ad'
+export const SEND_USER_MAIL = '/api/account/send-user-mail'

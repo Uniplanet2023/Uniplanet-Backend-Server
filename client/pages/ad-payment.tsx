@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { Box, Container, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import AdCheckoutForm from '../components/AdCheckForm';
-
+//pk_test_51PRNjiCWNFZrh8eIhgiCqEkUz9efXY4ppBCusr3fzosyO17zne7rP6WH1ct38zRkHzK5gq1rbA97VYOZH6ZTahEm00mIn0yZxQ
 const stripePromise = loadStripe('pk_live_51PRNjiCWNFZrh8eI88o3o9y5aAWInIFyjFzVLBtv2lNAWWP91A4djOjdY12quU4LEnzFdjLvjbxHITxWyHabtjXc00YsXGXsvm');
 
 
