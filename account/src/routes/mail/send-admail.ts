@@ -17,7 +17,7 @@ interface MailRequestBody {
 
 // Route to send mail
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
-  const { title, description, toEmail, html } = req.body as MailRequestBody;
+  const { title, description, toEmail, html, } = req.body as MailRequestBody;
 
   try {
     let emails: string[] = [];
@@ -27,8 +27,8 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
       emails.push(toEmail);
     } else {
       // Fetch all users' emails from the Account collection
-      // const users = await Account.find({}, 'email');  // Only select the email field
-      // emails = users.map(user => user.email);
+      const users = await Account.find({}, 'email');  // Only select the email field
+      emails = users.map(user => user.email);
     }
 
     // Send an email to each user
