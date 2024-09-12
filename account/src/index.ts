@@ -58,7 +58,7 @@ app.listen(PORT, async () => {
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
 			console.log('Redis is connected')
-			emailWorker.run();
+			// emailWorker.run();
 		})
 	})
 })

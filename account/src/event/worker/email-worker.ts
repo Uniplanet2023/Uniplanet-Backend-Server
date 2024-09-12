@@ -31,10 +31,6 @@ export const emailWorker = new Worker('emailQueue', async job => {
   });
 
   await Promise.all(emailPromises);
-}, {
-  connection: connectionOptions, // Use the same connection options for the Worker
-});
-
 
 emailWorker.on('completed', (job) => {
   console.log(`Job ${job.id} completed successfully`);
@@ -43,3 +39,7 @@ emailWorker.on('completed', (job) => {
 emailWorker.on('failed', (job, err) => {
   console.error(`Job ${job?.id} failed with error ${err.message}`);
 });
+}, {
+  connection: connectionOptions, // Use the same connection options for the Worker
+});
+
