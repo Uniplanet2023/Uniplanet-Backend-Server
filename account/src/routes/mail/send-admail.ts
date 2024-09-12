@@ -9,18 +9,15 @@ export const sendMailRouter = express.Router();
 // Define the interface for the request body
 interface MailRequestBody {
   title: string;
-  description: string;
+  description?: string;  // Optional if using HTML content
   toEmail?: string;  // Optional if you want to send to a specific user
   type: string;
-  html: string;
+  html?: string;  // Optional if using plain text description
 }
 
 // Route to send mail
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
-  const { title, description, toEmail,html } = req.body as MailRequestBody;
-    // if(req.user!.type !== 'admin'){
-    //     return res.status(401).json({ message: 'Unauthorized' });
-    // }
+  const { title, description, toEmail, html } = req.body as MailRequestBody;
 
   try {
     let emails: string[] = [];
@@ -33,8 +30,6 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
       // const users = await Account.find({}, 'email');  // Only select the email field
       // emails = users.map(user => user.email);
     }
-    //testing
-    emails = ['qkrtlwp1111@gmail.com'];
 
     // Send an email to each user
     const emailPromises = emails.map(email => {
@@ -45,8 +40,8 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
           to: email,
           message: {
             subject: title,
-            html: html,
-            text: description,
+            html: html || '',  // Default to an empty string if not provided
+            text: description || '',  // Default to an empty string if not provided
           },
         });
     });
