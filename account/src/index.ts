@@ -3,7 +3,7 @@ import app from './app'
 
 // import { secretCheck } from './secret-check'
 import UserCreatedConsumer from './event/consumer/user-created'
-import { kafkaClient, redisClient, Topics } from '@uniplanet-lib/common'
+import { kafkaClient, redisClient, Topics, URL_LIST_DEV } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import UserDeletedConsumer from './event/consumer/user-deleted'
 import UserUpdatedConsumer from './event/consumer/user-updated'
@@ -15,7 +15,8 @@ import { initializeFirebase } from './config/firebase'
 import AccountDeleteScheduler from './scheduler/account-delete-schedule'
 import UpdateFreeUserScheduler from './scheduler/update-free-user'
 import DecNumberOfFreeItem from './event/consumer/dec-num-of-freeItem-click'
-import { emailWorker } from './event/worker/email-worker'
+import { startWorker } from './event/worker/email-worker'
+import { initializeQueue } from './event/worker/email-queue'
 
 const PORT = process.env.PORT || 3002
 kafkaClient.create('my-app', [process.env.KAFKA_BROKER! as string])
@@ -58,7 +59,7 @@ app.listen(PORT, async () => {
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
 			console.log('Redis is connected')
-			// emailWorker.run();
+			startWorker();
 		})
 	})
 })

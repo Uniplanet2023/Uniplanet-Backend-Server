@@ -51,7 +51,7 @@ build:
 manifests:
   rawYaml:
     - ./infra/minikube/*
-    - ./infra/minikube-dev/*
+    - ./infra/minikube-dev-local/*
 deploy:
   kubectl: {}
  

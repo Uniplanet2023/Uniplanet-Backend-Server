@@ -5,7 +5,8 @@ import { SEND_USER_MAIL } from '../routes-def';
 import Account from '../../models/account';
 import { Queue } from 'bullmq';
 import { redisClient } from '@uniplanet-lib/common';
-// import { queueEmails } from '../../event/worker/email-queue';
+import { queueEmails } from '../../event/worker/email-queue';
+import { startWorker } from '../../event/worker/email-worker';
 
 export const sendMailRouter = express.Router();
 // Define the interface for the request body
@@ -21,22 +22,24 @@ interface MailRequestBody {
 
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
   const { title, description, toEmail, html } = req.body as MailRequestBody;
-
+  if(req.user!.type !== 'admin') {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
   try {
     let emails: string[] = [];
-
+    
     // If toEmail is provided, send only to that email, otherwise send to all users
     if (toEmail) {
       emails.push(toEmail);
     } else {
       // Fetch all users' emails from the Account collection
       const users = await Account.find({}, 'email');  // Only select the email field
-      // emails = users.map(user => user.email);
+      emails = users.map(user => user.email);
     }
-
+    
     // Queue email batches for processing
-    // await queueEmails(emails, title, html || '', description || '');
-
+    await queueEmails(emails, title, html || '', description || '');
+    
     return res.status(200).json({ message: 'Emails queued successfully' });
   } catch (error) {
     console.error('Error queuing emails:', error);
