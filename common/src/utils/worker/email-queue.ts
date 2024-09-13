@@ -1,9 +1,10 @@
 import { redisClient } from '@uniplanet-lib/common'
 import { Queue } from 'bullmq'
+import { MAIL_QUEUE } from './queue-name'
 
 export async function initMailQueue() {
 	// Set up BullMQ Queue with Redis connection
-	return new Queue('emailQueue', {
+	return new Queue(MAIL_QUEUE, {
 		connection: {
 			host: process.env.REDIS_HOST!,
 			port: parseInt(process.env.REDIS_PORT!),
