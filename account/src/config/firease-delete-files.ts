@@ -1,9 +1,9 @@
-import { getBucket } from './firebase'
+import { firebaseAdmin } from ".."
 
 async function deleteFilesByPrefix(prefix: string): Promise<void> {
 	try {
 		// List all files with the given prefix
-		const [files] = await getBucket().getFiles({ prefix })
+		const [files] = await firebaseAdmin.storage().bucket().getFiles({ prefix })
 
 		if (files.length === 0) {
 			console.log(`No files found with prefix ${prefix}`)

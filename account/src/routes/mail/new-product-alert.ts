@@ -1,0 +1,74 @@
+export function generateProductEmailHtml(productName:string, productPrice:Number, imageUrl:string, shopUrl:string) {
+    return `
+      <!DOCTYPE html>
+      <html lang='en'>
+        <head>
+          <meta charset='UTF-8'>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              color: #333;
+              background-color: #ffffff;
+              margin: 0;
+              padding: 20px;
+            }
+            .container {
+              max-width: 600px;
+              margin: auto;
+              background-color: #ffffff;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              color: #0066cc;
+              font-size: 24px;
+              margin-bottom: 20px;
+            }
+            p {
+              font-size: 16px;
+              line-height: 1.5;
+              margin-bottom: 20px;
+            }
+            .product-image {
+              width: 100%;
+              max-width: 100%;
+              border-radius: 8px;
+              margin-bottom: 20px;
+            }
+            .button {
+              display: inline-block;
+              padding: 10px 20px;
+              color: #ffffff;
+              background-color: #0066cc;
+              text-decoration: none;
+              border-radius: 5px;
+              margin-top: 20px;
+            }
+            .footer {
+              margin-top: 30px;
+              font-size: 14px;
+              color: #777;
+            }
+          </style>
+        </head>
+        <body>
+          <div class='container'>
+            <h1>Selling ${productName} for $${productPrice} on Campus!</h1>
+            <p>We are excited to introduce our latest addition to UniPlanet: ${productName} for just $${productPrice}. Check it out below:</p>
+            <img src='${imageUrl}' alt='New Product' class='product-image'>
+            <p>Don't miss out on this fantastic product. Visit our website now to learn more and make your purchase!</p>
+            <a href='${shopUrl}' class='button'>Shop Now</a>
+            <div class='footer'>
+              <p>If you have any questions, feel free to reply to this email or contact us at support@uniplanet.shop.</p>
+              <p>Best regards,<br>UniPlanet Team</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+  }
+  
+  

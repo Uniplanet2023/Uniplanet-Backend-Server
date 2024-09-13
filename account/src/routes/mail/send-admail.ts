@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
 import { firebaseAdmin } from '../..';
-import { tokenValidation } from '@uniplanet-lib/common';
+import { queueEmails, tokenValidation } from '@uniplanet-lib/common';
 import { SEND_USER_MAIL } from '../routes-def';
 import Account from '../../models/account';
 import { Queue } from 'bullmq';
 import { redisClient } from '@uniplanet-lib/common';
-import { queueEmails } from '../../event/worker/email-queue';
-import { startWorker } from '../../event/worker/email-worker';
+import { generateProductEmailHtml } from './new-product-alert';
 
 export const sendMailRouter = express.Router();
 // Define the interface for the request body
@@ -16,12 +15,16 @@ interface MailRequestBody {
   toEmail?: string;  // Optional if you want to send to a specific user
   type: string;
   html?: string;  // Optional if using plain text description
+  productName: string;
+  productPrice: Number;
+  imageUrl: string;
+
 }
 
 
 
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
-  const { title, description, toEmail, html } = req.body as MailRequestBody;
+  const { title, toEmail, productName, productPrice, imageUrl, description } = req.body as MailRequestBody;
   if(req.user!.type !== 'admin') {
     return res.status(403).json({ message: 'Unauthorized' });
   }
@@ -36,6 +39,8 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
       const users = await Account.find({}, 'email');  // Only select the email field
       emails = users.map(user => user.email);
     }
+
+    const html = generateProductEmailHtml(productName, productPrice, imageUrl, 'https://uniplanet.shop/payment-success');
     
     // Queue email batches for processing
     await queueEmails(emails, title, html || '', description || '');
