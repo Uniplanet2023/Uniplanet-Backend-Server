@@ -24,7 +24,7 @@ interface MailRequestBody {
 
 
 sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: Response) => {
-  const { title, toEmail, productName, productPrice, imageUrl, description } = req.body as MailRequestBody;
+  const { title, toEmail, html, productName, productPrice, imageUrl, description } = req.body as MailRequestBody;
   if(req.user!.type !== 'admin') {
     return res.status(403).json({ message: 'Unauthorized' });
   }
@@ -40,7 +40,7 @@ sendMailRouter.post(SEND_USER_MAIL, tokenValidation, async (req: Request, res: R
       emails = users.map(user => user.email);
     }
 
-    const html = generateProductEmailHtml(productName, productPrice, imageUrl, 'https://uniplanet.shop/payment-success');
+    const html = generateProductEmailHtml(productName, productPrice as number, imageUrl, 'https://uniplanet.shop/payment-success');
     
     // Queue email batches for processing
     await queueEmails(emails, title, html || '', description || '');

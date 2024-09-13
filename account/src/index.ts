@@ -3,7 +3,7 @@ import app from './app'
 
 // import { secretCheck } from './secret-check'
 import UserCreatedConsumer from './event/consumer/user-created'
-import { initializeFirebase, kafkaClient, redisClient, Topics } from '@uniplanet-lib/common'
+import {  initializeFirebase, kafkaClient, redisClient, startMailWorker, Topics } from '@uniplanet-lib/common'
 import { UserUpdateProducer } from './event/producer/UserUpdateProducer'
 import UserDeletedConsumer from './event/consumer/user-deleted'
 import UserUpdatedConsumer from './event/consumer/user-updated'
@@ -56,7 +56,7 @@ app.listen(PORT, async () => {
 		redisClient.redis.on('error', err => console.log('Redis Client Error', err))
 		await redisClient.redis.connect().then(() => {
 			console.log('Redis is connected')
-			// startWorker();
+			startMailWorker(firebaseAdmin);
 		})
 	})
 })
