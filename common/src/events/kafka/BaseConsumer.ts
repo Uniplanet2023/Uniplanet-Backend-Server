@@ -26,7 +26,6 @@ export abstract class BaseConsumer<T extends Event> {
 		await this.consumer.subscribe({ topic: this.topic, fromBeginning: true })
 		await this.consumer.run({
 			eachMessage: async (message: EachMessagePayload) => {
-				
 				try {
 					// Check if the message value is not null and parse it
 					if (message.message.value) {
@@ -41,11 +40,9 @@ export abstract class BaseConsumer<T extends Event> {
 				}
 			},
 		})
-		
 	}
 
 	async disconnect() {
 		await this.consumer.disconnect()
-		
 	}
 }

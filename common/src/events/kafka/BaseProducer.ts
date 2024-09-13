@@ -32,7 +32,6 @@ export abstract class BaseProducer<T extends Event> {
 				// acks: -1,
 				// compression: CompressionTypes.GZIP,
 			})
-			
 		} catch (error) {
 			console.error('Error in publishing event', error)
 			throw error
@@ -41,6 +40,5 @@ export abstract class BaseProducer<T extends Event> {
 
 	async disconnect() {
 		await this.producer.disconnect()
-		
 	}
 }

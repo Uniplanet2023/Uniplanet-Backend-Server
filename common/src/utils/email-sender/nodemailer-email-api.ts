@@ -37,7 +37,6 @@ export class NodemailerEmailApi implements EmailApi {
 		const { toEmail } = args
 
 		const [otpCode, fullHash] = otpGenerate(toEmail)
-		
 
 		const subject = buildSignUpVerificationEmailSubject()
 		const textBody = buildSignUpVerificationEmailTextBody({ otpCode })
