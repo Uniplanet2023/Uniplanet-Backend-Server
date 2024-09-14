@@ -27,6 +27,6 @@ export async function queueEmails(emails: string[], title: string, html: string,
 			html,
 			description,
 		})
-		await new Promise(resolve => setTimeout(resolve, 10000)) // Delay between batches
+		await new Promise(resolve => setTimeout(resolve, 100000)) // Delay between batches
 	}
 }
