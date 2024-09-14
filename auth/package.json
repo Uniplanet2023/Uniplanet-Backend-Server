@@ -27,7 +27,7 @@
 	"dependencies": {
 		"@socket.io/redis-emitter": "5.1.0",
 		"@types/bull": "4.10.0",
-		"@uniplanet-lib/common": "1.0.31",
+		"@uniplanet-lib/common": "1.0.118",
 		"bull": "4.12.2",
 		"cookie-session": "2.1.0",
 		"cors": "2.8.5",
