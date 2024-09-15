@@ -51,6 +51,11 @@ spec:
                 secretKeyRef:
                   name: smtp-config
                   key: SMTP_MODE
+            - name: STRIPE_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe
+                  key: STRIPE_PUBLIC_KEY
 
             
 ---
