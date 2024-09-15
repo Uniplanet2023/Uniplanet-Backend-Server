@@ -1,11 +1,13 @@
 import express, { Request, Response } from 'express';
 import Chat from '../models/chat';
-import { tokenValidation } from '@uniplanet-lib/common';
+import { redisClient, tokenValidation } from '@uniplanet-lib/common';
 import { CREATE_CHAT } from './routes-def';
 import GetChatInfo from '../event/serializer/get-chat';
 import User from '../models/user';
 import Message from '../models/message';
 import { createChatProducer } from '../app';
+import { sendNewMessageEmail } from '../notification/notification-api/sending-message-email';
+import { BuildMessageEmailTextArgs } from '../notification/format/signup-email-format';
 
 const createChatRouter = express.Router();
 
@@ -68,7 +70,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
             await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false });
             await Message.updateMany({ chat: existingChat.id }, { deletionDate: null });
         }
-
+        // Send Email to the receiver
+			const receiverIsOnline = await redisClient.redis.sIsMember('Online User', sellerObj.id);
+			receiverIsOnline ? null:
+			await sendNewMessageEmail(
+				{
+					email: sellerObj.email,
+					senderName: buyerObj.name,
+					receiverName: sellerObj.name,
+				} as BuildMessageEmailTextArgs,
+			)
         const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null });
         const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
         return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg });

@@ -36,16 +36,6 @@ export class MessageCreatedConsumer extends BaseConsumer<MessageCreatedEvent> {
 			await addUnSeenMessage({ userId: data.receiver, message })
 			// Send notification to the receiver
 			await sendingMessageNotification({ sender, receiver, message, chat })
-			// Send Email to the receiver
-			const receiverIsOnline = await redisClient.redis.sIsMember('Online User', receiver.id);
-			receiverIsOnline ? null:
-			await sendNewMessageEmail(
-				{
-					email: receiver.email,
-					senderName: sender.name,
-					receiverName: receiver.name,
-				} as BuildMessageEmailTextArgs,
-			)
 		} catch (err) {
 			console.log(err)
 		}
