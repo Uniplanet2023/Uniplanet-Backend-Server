@@ -59,7 +59,16 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
         .populate('buyer')
         .populate('seller')
         .populate('lastMessage');
-
+    // Send Email to the receiver
+    const receiverIsOnline = await redisClient.redis.sIsMember('Online User', sellerObj.id);
+    receiverIsOnline ? null:
+    await sendNewMessageEmail(
+        {
+            email: sellerObj.email,
+            senderName: buyerObj.name,
+            receiverName: sellerObj.name,
+        } as BuildMessageEmailTextArgs,
+    )
     if (existingChat) {
         let msg = 'existing chat';
 		existingChat.deletionDate = undefined;
@@ -70,16 +79,7 @@ createChatRouter.post(CREATE_CHAT, tokenValidation, async (req: Request, res: Re
             await existingChat.updateOne({ deletionDate: null, deletedFrom: null, perminentDelete: false });
             await Message.updateMany({ chat: existingChat.id }, { deletionDate: null });
         }
-        // Send Email to the receiver
-			const receiverIsOnline = await redisClient.redis.sIsMember('Online User', sellerObj.id);
-			receiverIsOnline ? null:
-			await sendNewMessageEmail(
-				{
-					email: sellerObj.email,
-					senderName: buyerObj.name,
-					receiverName: sellerObj.name,
-				} as BuildMessageEmailTextArgs,
-			)
+        
         const unseenMessage = await Message.find({ chat: existingChat._id, receiver: req.user!.id, readDate: null });
         const chatInfo = new GetChatInfo(existingChat, unseenMessage.length);
         return res.status(chatInfo.getStatusCode()).json({ chat: chatInfo.serializeRest(), msg });
