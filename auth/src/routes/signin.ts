@@ -22,7 +22,7 @@ signInRouter.post(
 	async (req: Request, res: Response) => {
 		const { email, password } = req.body
 
-		const user = await User.findOne({ email })
+		const user = await User.findOne({ email:email.toLowerCase() })
 
 		// Check if user exists
 		if (!user) throw new UserNotFoundError()

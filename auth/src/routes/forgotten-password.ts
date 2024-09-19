@@ -10,13 +10,13 @@ const forgottenPasswordRouter = express.Router()
 forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 	const { email } = req.body
 
-	const existingUser = await User.findOne({ email })
+	const existingUser = await User.findOne({ email:email.toLowerCase() })
 
 	if (!existingUser) {
 		throw new UserNotFoundError()
 	}
 
-	const tempPassword = await sendResetPasswordEmail(email);
+	const tempPassword = await sendResetPasswordEmail(email.toLowerCase());
 
 	await existingUser.updateOne({ password: tempPassword })
 

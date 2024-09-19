@@ -28,8 +28,8 @@ signUpRouter.post(
 	validateRequest,
 	async (req: Request, res: Response) => {
 		const { name, email, password, school, userType, phoneNumber } = req.body
-
-		const existingUser = await User.findOne({ email })
+		
+		const existingUser = await User.findOne({ email: email.toLowerCase() })
 		if(userType === 'student'){
 			// check if the email is end with .edu email
 			if(!email.endsWith('.edu')){
@@ -54,7 +54,7 @@ signUpRouter.post(
 		}
 
 		// Determine the user type based on the email suffix
-		const newUser = User.build({ name, email, password, school, type: userType, phoneNumber, deletionDate: new Date() })
+		const newUser = User.build({ name, email:email.toLowerCase(), password, school, type: userType, phoneNumber, deletionDate: new Date() })
 		await newUser.save()
 
 		if (process.env.SMTP_HOST === 'kubernetes-env') {

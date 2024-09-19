@@ -8,7 +8,6 @@ import { generateToken } from '../utils/enforce-token-unique'
 const tokenLoginRouter = express.Router()
 tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, res: Response) => {
 	const user = await User.findById(req.user!.id)
-	console.log('user', user)
 	if (!user) throw new UserNotFoundError()
 	if (!user.verified) throw new VerificationRequiredError()
 	const userJwt = await generateToken(user)

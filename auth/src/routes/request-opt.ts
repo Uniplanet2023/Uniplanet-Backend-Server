@@ -18,7 +18,7 @@ requestOTPRouter.post(SEND_OTP_ROUTE, [...emailValidation], validateRequest, asy
 	if (errors.length > 0) throw new InvalidInput(errors)
 
 	const { email } = req.body
-	const user = await User.findOne({ email })
+	const user = await User.findOne({ email:email.toLowerCase() })
 	if (!user) throw new UserNotFoundError()
 	if (user.verified) throw new DuplicatedEmail()
 	const hash = await sendVerificationEmail(user.email)
