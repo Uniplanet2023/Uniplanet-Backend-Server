@@ -10,8 +10,12 @@
         ],
         "components":[
           {
-            "/":"/payment-success",
-            "comment":"Matches URL with a path /payment-success"
+            "/":"/redirect",
+            "comment":"Matches URL with a path /redirect"
+          },
+          {
+            "/":"/redirect/payment-success",
+            "comment":"Matches URL with a path /redirect/*"
           }
         ]
       }

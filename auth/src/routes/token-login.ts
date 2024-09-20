@@ -10,9 +10,9 @@ tokenLoginRouter.post(TOKEN_LOGIN_ROUTE, tokenValidation, async (req: Request, r
 	const user = await User.findById(req.user!.id)
 	if (!user) throw new UserNotFoundError()
 	if (!user.verified) throw new VerificationRequiredError()
-	const userJwt = await generateToken(user)
-	// Store it on session object
-	req.session = { jwt: userJwt }
+	// const userJwt = await generateToken(user)
+	// // Store it on session object
+	// req.session = { jwt: userJwt }
 	const userInfo = new UserSerializer(user)
 	return res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
 })

@@ -10,11 +10,11 @@ const otpValidationRouter = express.Router()
 otpValidationRouter.post(VERIFY_OTP_ROUTE, async (req: Request, res: Response) => {
 	const { otpHash, email, otpCode } = req.body
 
-	const result = await verifyOtp({ otpHash, email, otpCode })
+	const result = await verifyOtp({ otpHash, email:email.toLowerCase(), otpCode })
 
 	switch (result) {
 		case 'Success':
-			const user = await User.findOne({ email })
+			const user = await User.findOne({ email:email.toLowerCase() })
 			if (!user) throw new UserNotFoundError()
 			await User.findByIdAndUpdate(user.id, { verified: true, deletionDate: null })
 			userCreatedProducer.sendMessage({
