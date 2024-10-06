@@ -51,7 +51,7 @@ spec:
                 secretKeyRef:
                   name: smtp-config
                   key: SMTP_MODE
-            - name: REACT_APP_STRIPE_PUBLIC_KEY
+            - name: STRIPE_PUBLIC_KEY
               valueFrom:
                 secretKeyRef:
                   name: stripe
