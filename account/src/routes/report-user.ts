@@ -22,15 +22,15 @@ createReportRouter.post(REPORT_USER, tokenValidation, async (req: Request, res: 
 	}
 
 	reportedUser.numberOfReports += 1
-	if (reportedUser.numberOfReports >= 3) {
-		reportedUser.status = 'suspended'
-		if (reportedUser.numberOfReports >= 10) {
-			reportedUser.status = 'banned'
-			reportedUser.isBlocked = true
-			reportedUser.isBlockedChat = true
-			reportedUser.isBlockedPost = true
-		}
-	}
+	// if (reportedUser.numberOfReports >= 3) {
+		// reportedUser.status = 'suspended'
+		// if (reportedUser.numberOfReports >= 10) {
+		// 	reportedUser.status = 'banned'
+		// 	reportedUser.isBlocked = true
+		// 	reportedUser.isBlockedChat = true
+		// 	reportedUser.isBlockedPost = true
+		// }
+	// }
 	await reportedUser.save()
 	// Create the report
 	const report = Report.build({

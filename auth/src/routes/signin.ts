@@ -22,7 +22,7 @@ signInRouter.post(
 	async (req: Request, res: Response) => {
 		const { email, password } = req.body
 
-		const user = await User.findOne({ email:email.toLowerCase() })
+		const user = await User.findOne({ email: email.toLowerCase() })
 
 		// Check if user exists
 		if (!user) throw new UserNotFoundError()
@@ -45,7 +45,7 @@ signInRouter.post(
 		// Store it on session object
 		req.session = { jwt: userJwt }
 		const userInfo = new UserSerializer(user)
-		
+
 		res.status(userInfo.getStatusCode()).send(userInfo.serializeRest())
 	},
 )

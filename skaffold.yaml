@@ -41,7 +41,7 @@ build:
           - src: src/**/*.ts
             dest: .
     - image: uniplanet/client
-      context: client
+      context: website
       sync:
         manual:
           - src: '**/*.tsx'

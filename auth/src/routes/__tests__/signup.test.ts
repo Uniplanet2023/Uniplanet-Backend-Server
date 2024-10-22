@@ -189,7 +189,7 @@ describe('tests saving the signed up user to the database', () => {
 
 declare global {
 	//eslint-disable-next-line no-var
-	var signin: () => Promise<string[]>
+	var signin: () => Promise<string[] | undefined>
 }
 global.signin = async () => {
 	const response = await request(app).post(SIGNUP_ROUTE).send(validUserInfo).expect(201)

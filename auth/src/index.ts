@@ -13,7 +13,7 @@ const emailSender = EmailSender.getInstance()
 emailSender.activate()
 emailSender.setEmailApi(new NodemailerEmailApi())
 
-export const firebaseAdmin =initializeFirebase();
+export const firebaseAdmin = initializeFirebase()
 // Creating and configuring Kafka client
 if (NODE_ENV === 'production') {
 	if (!KAFKA_BROKER) {

@@ -1,9 +1,0 @@
-[{
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "shop.uniplanet.uniplanet",
-      "sha256_cert_fingerprints":
-      ["FD:61:32:57:1D:BB:B6:22:F5:51:11:35:E9:40:87:4D:21:06:F2:F0:A3:C5:65:B4:61:F9:B2:5D:C0:FD:4D:9B"]
-    }
-  }]

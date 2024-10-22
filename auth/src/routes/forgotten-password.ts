@@ -1,22 +1,20 @@
 import express from 'express'
 import { User } from '../models/index'
-import { generatePassword, UserNotFoundError } from '@uniplanet-lib/common'
+import { UserNotFoundError } from '@uniplanet-lib/common'
 import { FORGGOTTEN_PASSWORD_ROUTE } from './routes-def'
-import { firebaseAdmin } from '..'
-import { buildResetPasswordEmailBody, buildResetPasswordEmailHtml, buildResetPasswordEmailSubject } from '../config/reset-password-email-format'
 import { sendResetPasswordEmail } from '../utils/send-reset-password-email'
 const forgottenPasswordRouter = express.Router()
 
 forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 	const { email } = req.body
 
-	const existingUser = await User.findOne({ email:email.toLowerCase() })
+	const existingUser = await User.findOne({ email: email.toLowerCase() })
 
 	if (!existingUser) {
 		throw new UserNotFoundError()
 	}
 
-	const tempPassword = await sendResetPasswordEmail(email.toLowerCase());
+	const tempPassword = await sendResetPasswordEmail(email.toLowerCase())
 
 	await existingUser.updateOne({ password: tempPassword })
 
@@ -24,4 +22,3 @@ forgottenPasswordRouter.put(FORGGOTTEN_PASSWORD_ROUTE, async (req, res) => {
 })
 
 export default forgottenPasswordRouter
-

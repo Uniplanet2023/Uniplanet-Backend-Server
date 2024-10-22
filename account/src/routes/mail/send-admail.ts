@@ -1,10 +1,7 @@
 import express, { Request, Response } from 'express';
-import { firebaseAdmin } from '../..';
 import { queueEmails, tokenValidation } from '@uniplanet-lib/common';
 import { SEND_USER_MAIL } from '../routes-def';
 import Account from '../../models/account';
-import { Queue } from 'bullmq';
-import { redisClient } from '@uniplanet-lib/common';
 import { generateProductEmailHtml } from './new-product-alert';
 
 export const sendMailRouter = express.Router();
