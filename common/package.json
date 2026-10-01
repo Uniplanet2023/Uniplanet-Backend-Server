@@ -61,7 +61,7 @@
 		"mongoose": "8.1.2",
 		"node-cron": "3.0.3",
 		"node-nats-streaming": "0.3.2",
-		"nodemailer": "6.9.9",
+		"nodemailer": "10.0.6",
 		"otp-generator": "4.0.1"
 	},
 	"lint-staged": {
